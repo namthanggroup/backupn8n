@@ -1,0 +1,683 @@
+{
+  "createdAt": "2025-10-18T03:43:17.719Z",
+  "updatedAt": "2025-10-27T00:28:35.000Z",
+  "id": "28ErnxlriDODLvKF",
+  "name": "Webhook Voip tổng đài",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b27f1968-eabe-4d88-aa22-40f53391b8ac",
+              "leftValue": "={{ $json['count_Trạng_thái'] }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1472,
+        32
+      ],
+      "id": "64f07347-c1ff-499c-9ce1-967be380beca",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "path": "voip",
+        "options": {}
+      },
+      "id": "50e93361-901d-4809-b566-79a30a4e8f47",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "665a1bd1-e1d2-4a46-8dba-8005cdf458c3"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "info",
+              "value": "This node runs after response; check Executions to see captured payload."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "40920727-9f5e-4cb8-ac55-e021d3f5131d",
+      "name": "Set các trường thông tin",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        256,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1ic4sLkxmx6aZATACVTTj_vG2GU1mNZyyvIEBPNw2I1A/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ic4sLkxmx6aZATACVTTj_vG2GU1mNZyyvIEBPNw2I1A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Số nội bộ": "={{ $json.query.ext }}",
+            "Trạng thái": "={{ $json.query.state }}",
+            "SĐT KH": "={{ $json.query.phoneNumber }}",
+            "Hàng đợi": "={{ $json.query.queue }}",
+            "Ngày gọi": "={{ $json.query.currentDateEvent.toDateTime().format('dd/MM/yyyy') }}",
+            "Thời gian": "={{ $json.query.currentDateEvent.toDateTime().format('HH:mm:ss') }}",
+            "Call ID": "={{ $json.query.call_id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Ngày gọi",
+              "displayName": "Ngày gọi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thời gian",
+              "displayName": "Thời gian",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Call ID",
+              "displayName": "Call ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Số nội bộ",
+              "displayName": "Số nội bộ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Trạng thái",
+              "displayName": "Trạng thái",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "SĐT KH",
+              "displayName": "SĐT KH",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hàng đợi",
+              "displayName": "Hàng đợi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        512,
+        0
+      ],
+      "id": "84b458ae-8b1a-464d-beac-b72a51d08006",
+      "name": "Thêm dữ liệu vào sheet log",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "field": "Trạng thái"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1.1,
+      "position": [
+        1280,
+        16
+      ],
+      "id": "2b81a908-90fb-4135-a0f3-af545a7cad9f",
+      "name": "Đếm số lượng"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1ic4sLkxmx6aZATACVTTj_vG2GU1mNZyyvIEBPNw2I1A/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ic4sLkxmx6aZATACVTTj_vG2GU1mNZyyvIEBPNw2I1A/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Call ID",
+              "lookupValue": "={{ $json['Call ID'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1088,
+        0
+      ],
+      "id": "81998f89-b6b2-408b-8b36-8535f12cee35",
+      "name": "Lấy dữ liệu của sheet log có filter",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        416
+      ],
+      "id": "f813944a-39cc-45be-b897-d4bf41fb0d50",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1ic4sLkxmx6aZATACVTTj_vG2GU1mNZyyvIEBPNw2I1A/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ic4sLkxmx6aZATACVTTj_vG2GU1mNZyyvIEBPNw2I1A/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Ngày gọi",
+              "lookupValue": "={{ $now.minus({ days: 1 }).format('dd/MM/yyyy') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        512,
+        416
+      ],
+      "id": "c5f13fea-4205-4735-ba87-ba2e1e4f1397",
+      "name": "Lấy ngày - 1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "1ic4sLkxmx6aZATACVTTj_vG2GU1mNZyyvIEBPNw2I1A",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ic4sLkxmx6aZATACVTTj_vG2GU1mNZyyvIEBPNw2I1A/edit#gid=0"
+        },
+        "numberToDelete": "={{ $json.row_number -1 }}"
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1008,
+        432
+      ],
+      "id": "ae1a10df-0959-4817-a259-978c17ddd1df",
+      "name": "Delete rows or columns from sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        768,
+        432
+      ],
+      "id": "538e717e-96da-43c7-afa8-191855e7955f",
+      "name": "Lấy dòng cuối"
+    },
+    {
+      "parameters": {
+        "content": "Xóa dữ liệu day - 1",
+        "height": 288,
+        "width": 1056
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        208,
+        336
+      ],
+      "typeVersion": 1,
+      "id": "5be9401a-7f0b-4e32-8ce3-05b025791511",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        832,
+        0
+      ],
+      "id": "0360a7ac-9db8-4414-9cc3-ce666b413dc8",
+      "name": "Chờ 60s để xem trạng thái là gì",
+      "webhookId": "c1d72075-6f26-45d6-8ef9-6a111801fc5a",
+      "alwaysOutputData": false,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1ic4sLkxmx6aZATACVTTj_vG2GU1mNZyyvIEBPNw2I1A/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1045397299,
+          "mode": "list",
+          "cachedResultName": "log_miss_call",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ic4sLkxmx6aZATACVTTj_vG2GU1mNZyyvIEBPNw2I1A/edit#gid=1045397299"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ngày gọi": "={{ $('Lấy dữ liệu của sheet log có filter').item.json['Ngày gọi'] }}",
+            "Call ID": "={{ $('Lấy dữ liệu của sheet log có filter').item.json['Call ID'] }}",
+            "Số nội bộ": "={{ $('Lấy dữ liệu của sheet log có filter').item.json['Số nội bộ'] }}",
+            "Thời gian": "={{ $('Lấy dữ liệu của sheet log có filter').item.json['Thời gian'] }}",
+            "Trạng thái": "={{ $('Lấy dữ liệu của sheet log có filter').item.json['Trạng thái'] }}",
+            "SĐT KH": "={{ $('Lấy dữ liệu của sheet log có filter').item.json['SĐT KH'] }}",
+            "Hàng đợi": "={{ $('Lấy dữ liệu của sheet log có filter').item.json['Hàng đợi'] }}"
+          },
+          "matchingColumns": [
+            "Call ID"
+          ],
+          "schema": [
+            {
+              "id": "Ngày gọi",
+              "displayName": "Ngày gọi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Thời gian",
+              "displayName": "Thời gian",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Call ID",
+              "displayName": "Call ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Số nội bộ",
+              "displayName": "Số nội bộ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Trạng thái",
+              "displayName": "Trạng thái",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "SĐT KH",
+              "displayName": "SĐT KH",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Hàng đợi",
+              "displayName": "Hàng đợi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Khu vực",
+              "displayName": "Khu vực",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Trigger gửi tin",
+              "displayName": "Trigger gửi tin",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Trạng thái gửi ZNS",
+              "displayName": "Trạng thái gửi ZNS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Log gửi",
+              "displayName": "Log gửi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1728,
+        112
+      ],
+      "id": "f9b89b4c-4980-489f-8634-9a9d71ac0959",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Set các trường thông tin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set các trường thông tin": {
+      "main": [
+        [
+          {
+            "node": "Thêm dữ liệu vào sheet log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Thêm dữ liệu vào sheet log": {
+      "main": [
+        [
+          {
+            "node": "Chờ 60s để xem trạng thái là gì",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Đếm số lượng": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy dữ liệu của sheet log có filter": {
+      "main": [
+        [
+          {
+            "node": "Đếm số lượng",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Lấy ngày - 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy ngày - 1": {
+      "main": [
+        [
+          {
+            "node": "Lấy dòng cuối",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy dòng cuối": {
+      "main": [
+        [
+          {
+            "node": "Delete rows or columns from sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chờ 60s để xem trạng thái là gì": {
+      "main": [
+        [
+          {
+            "node": "Lấy dữ liệu của sheet log có filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timeSavedPerExecution": 1
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "a9dbf8f0-8c83-46b6-b096-c34764dae6e8",
+  "triggerCount": 2,
+  "shared": [
+    {
+      "createdAt": "2025-10-18T03:43:17.724Z",
+      "updatedAt": "2025-10-18T03:43:17.724Z",
+      "role": "workflow:owner",
+      "workflowId": "28ErnxlriDODLvKF",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
