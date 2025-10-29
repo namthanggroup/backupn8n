@@ -1,0 +1,28 @@
+{
+  "createdAt": "2025-10-27T08:14:40.091Z",
+  "updatedAt": "2025-10-27T08:14:40.091Z",
+  "id": "eGlGwgJWtX8WdCqd",
+  "name": "Lấy bài viết Facebook đăng Zalo",
+  "active": false,
+  "isArchived": false,
+  "nodes": [],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "1d0b85b2-d648-4dec-abff-ffcadee50919",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-27T08:14:40.095Z",
+      "updatedAt": "2025-10-27T08:14:40.095Z",
+      "role": "workflow:owner",
+      "workflowId": "eGlGwgJWtX8WdCqd",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
