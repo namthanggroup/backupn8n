@@ -1,0 +1,1559 @@
+{
+  "createdAt": "2025-10-25T00:28:22.190Z",
+  "updatedAt": "2025-10-27T07:48:11.000Z",
+  "id": "0N0mGLDfE19iqwGX",
+  "name": "Lấy danh sách mail xanhsm",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 10,
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -144,
+        -16
+      ],
+      "id": "622cba62-a95d-4747-b1ac-ab0279bcc675",
+      "name": "Get many messages",
+      "webhookId": "1268ad46-33d5-44c8-8b3f-99fb97378b41",
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yNndh0JSLzJ4Q84a",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b8b3e93e-ca57-4001-91af-14df4af6b70a",
+              "name": "message_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "e325d93e-1c79-477a-884a-042c1fc02756",
+              "name": "nguoi_gui",
+              "value": "={{ $json.From }}",
+              "type": "string"
+            },
+            {
+              "id": "99c8f0be-9189-45eb-b038-2abe71424433",
+              "name": "tieu_de",
+              "value": "={{ $json.Subject }}",
+              "type": "string"
+            },
+            {
+              "id": "9c1987f5-7d39-4e70-993d-1be67ea1858b",
+              "name": "noi_dung",
+              "value": "={{ $json.snippet }}",
+              "type": "string"
+            },
+            {
+              "id": "5c1e0226-8f36-42a2-bf6e-93e3e3ff3350",
+              "name": "folder_outlook",
+              "value": "={{ $json.labels }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        64,
+        -16
+      ],
+      "id": "d022a29d-8d9c-4323-9fe3-d31c98fe9c85",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "232889df-b463-4ec1-a9af-95fe685763c4",
+              "leftValue": "={{ $json.noi_dung }}",
+              "rightValue": "Trung tâm Chăm sóc Khách Hàng Xanh SM",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        272,
+        -16
+      ],
+      "id": "9a82fb02-943c-4fa8-a053-cd1b529c5fde",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "messageId": "={{ $json.message_id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        768,
+        144
+      ],
+      "id": "39568e05-f57e-4c2d-bec2-aaa27a6b9361",
+      "name": "Delete a message",
+      "webhookId": "e9981a81-b4dd-484c-be6e-225ad6fcb696",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yNndh0JSLzJ4Q84a",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1McTjtJUOnrC1vyFSJBVKd5WyOyofsxFWEMuALHvH118",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1185984937,
+          "mode": "list",
+          "cachedResultName": "Cà Mau",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1McTjtJUOnrC1vyFSJBVKd5WyOyofsxFWEMuALHvH118/edit#gid=1185984937"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ngày ghi nhận": "={{ new Date().toDateTime().format('dd/MM/yyyy') }}",
+            "Message_id": "={{ $json.message_id }}",
+            "Mail gửi": "={{ $json.nguoi_gui }}",
+            "Tiêu đề": "={{ $json.tieu_de }}",
+            "Nội dung": "={{ $json.noi_dung }}",
+            "Folder trong Outlook": "={{ $json.folder_outlook }}",
+            "Khu vực": "Cà Mau"
+          },
+          "matchingColumns": [
+            "Message_id"
+          ],
+          "schema": [
+            {
+              "id": "Ngày ghi nhận",
+              "displayName": "Ngày ghi nhận",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Message_id",
+              "displayName": "Message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Mail gửi",
+              "displayName": "Mail gửi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tiêu đề",
+              "displayName": "Tiêu đề",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nội dung",
+              "displayName": "Nội dung",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Folder trong Outlook",
+              "displayName": "Folder trong Outlook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Khu vực",
+              "displayName": "Khu vực",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1008,
+        -128
+      ],
+      "id": "27210440-79b5-4b90-b78d-68e2f14b585c",
+      "name": "Thêm - Cập nhật - Cà Mau",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1McTjtJUOnrC1vyFSJBVKd5WyOyofsxFWEMuALHvH118",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1185984937,
+          "mode": "list",
+          "cachedResultName": "Cà Mau",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1McTjtJUOnrC1vyFSJBVKd5WyOyofsxFWEMuALHvH118/edit#gid=1185984937"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ngày ghi nhận": "={{ new Date().toDateTime().format('dd/MM/yyyy') }}",
+            "Message_id": "={{ $json.message_id }}",
+            "Mail gửi": "={{ $json.nguoi_gui }}",
+            "Tiêu đề": "={{ $json.tieu_de }}",
+            "Nội dung": "={{ $json.noi_dung }}",
+            "Folder trong Outlook": "={{ $json.folder_outlook }}",
+            "Khu vực": "Rạch Giá"
+          },
+          "matchingColumns": [
+            "Message_id"
+          ],
+          "schema": [
+            {
+              "id": "Ngày ghi nhận",
+              "displayName": "Ngày ghi nhận",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Message_id",
+              "displayName": "Message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Mail gửi",
+              "displayName": "Mail gửi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tiêu đề",
+              "displayName": "Tiêu đề",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nội dung",
+              "displayName": "Nội dung",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Folder trong Outlook",
+              "displayName": "Folder trong Outlook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Khu vực",
+              "displayName": "Khu vực",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        752,
+        -224
+      ],
+      "id": "fdee057a-0a18-40e2-a27b-f023fff32632",
+      "name": "Thêm - Cập nhật - Rạch Giá",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1McTjtJUOnrC1vyFSJBVKd5WyOyofsxFWEMuALHvH118",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1185984937,
+          "mode": "list",
+          "cachedResultName": "Cà Mau",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1McTjtJUOnrC1vyFSJBVKd5WyOyofsxFWEMuALHvH118/edit#gid=1185984937"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ngày ghi nhận": "={{ new Date().toDateTime().format('dd/MM/yyyy') }}",
+            "Message_id": "={{ $json.message_id }}",
+            "Mail gửi": "={{ $json.nguoi_gui }}",
+            "Tiêu đề": "={{ $json.tieu_de }}",
+            "Nội dung": "={{ $json.noi_dung }}",
+            "Folder trong Outlook": "={{ $json.folder_outlook }}",
+            "Khu vực": "An Giang"
+          },
+          "matchingColumns": [
+            "Message_id"
+          ],
+          "schema": [
+            {
+              "id": "Ngày ghi nhận",
+              "displayName": "Ngày ghi nhận",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Message_id",
+              "displayName": "Message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Mail gửi",
+              "displayName": "Mail gửi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tiêu đề",
+              "displayName": "Tiêu đề",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nội dung",
+              "displayName": "Nội dung",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Folder trong Outlook",
+              "displayName": "Folder trong Outlook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Khu vực",
+              "displayName": "Khu vực",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1264,
+        -80
+      ],
+      "id": "85aec75a-4646-48a6-9910-b28fd3257097",
+      "name": "Thêm - Cập nhật - An Giang",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1McTjtJUOnrC1vyFSJBVKd5WyOyofsxFWEMuALHvH118",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1185984937,
+          "mode": "list",
+          "cachedResultName": "Cà Mau",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1McTjtJUOnrC1vyFSJBVKd5WyOyofsxFWEMuALHvH118/edit#gid=1185984937"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ngày ghi nhận": "={{ new Date().toDateTime().format('dd/MM/yyyy') }}",
+            "Message_id": "={{ $json.message_id }}",
+            "Mail gửi": "={{ $json.nguoi_gui }}",
+            "Tiêu đề": "={{ $json.tieu_de }}",
+            "Nội dung": "={{ $json.noi_dung }}",
+            "Folder trong Outlook": "={{ $json.folder_outlook }}",
+            "Khu vực": "Cần Thơ"
+          },
+          "matchingColumns": [
+            "Message_id"
+          ],
+          "schema": [
+            {
+              "id": "Ngày ghi nhận",
+              "displayName": "Ngày ghi nhận",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Message_id",
+              "displayName": "Message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Mail gửi",
+              "displayName": "Mail gửi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tiêu đề",
+              "displayName": "Tiêu đề",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nội dung",
+              "displayName": "Nội dung",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Folder trong Outlook",
+              "displayName": "Folder trong Outlook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Khu vực",
+              "displayName": "Khu vực",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1520,
+        32
+      ],
+      "id": "8086c611-59c5-4a2f-9193-5ff9e1a3cfc1",
+      "name": "Thêm - Cập nhật  - Cần Thơ",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1McTjtJUOnrC1vyFSJBVKd5WyOyofsxFWEMuALHvH118",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1185984937,
+          "mode": "list",
+          "cachedResultName": "Cà Mau",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1McTjtJUOnrC1vyFSJBVKd5WyOyofsxFWEMuALHvH118/edit#gid=1185984937"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ngày ghi nhận": "={{ new Date().toDateTime().format('dd/MM/yyyy') }}",
+            "Message_id": "={{ $json.message_id }}",
+            "Mail gửi": "={{ $json.nguoi_gui }}",
+            "Tiêu đề": "={{ $json.tieu_de }}",
+            "Nội dung": "={{ $json.noi_dung }}",
+            "Folder trong Outlook": "={{ $json.folder_outlook }}",
+            "Khu vực": "Khác"
+          },
+          "matchingColumns": [
+            "Message_id"
+          ],
+          "schema": [
+            {
+              "id": "Ngày ghi nhận",
+              "displayName": "Ngày ghi nhận",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Message_id",
+              "displayName": "Message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Mail gửi",
+              "displayName": "Mail gửi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tiêu đề",
+              "displayName": "Tiêu đề",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nội dung",
+              "displayName": "Nội dung",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Folder trong Outlook",
+              "displayName": "Folder trong Outlook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Khu vực",
+              "displayName": "Khu vực",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1520,
+        208
+      ],
+      "id": "69b5f096-ea9b-4361-bc41-9648a08fdf7d",
+      "name": "Thêm - Cập nhật  - tỉnh khác",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "431c3233-fa4b-4d51-bcee-a0c91a99f525",
+              "leftValue": "={{ $json.folder_outlook }}",
+              "rightValue": "Rạch Giá",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        528,
+        -16
+      ],
+      "id": "ec70455f-ffe6-4a21-b679-902f3ff25d43",
+      "name": "Nếu trong folder Rạch Giá"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "431c3233-fa4b-4d51-bcee-a0c91a99f525",
+              "leftValue": "={{ $json.folder_outlook }}",
+              "rightValue": "Cà Mau",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        752,
+        -16
+      ],
+      "id": "16744cde-047a-4008-ad6d-6f3171ed7493",
+      "name": "Nếu trong folder Cà Mau"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "431c3233-fa4b-4d51-bcee-a0c91a99f525",
+              "leftValue": "={{ $json.folder_outlook }}",
+              "rightValue": "An Giang",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1008,
+        48
+      ],
+      "id": "1c3abfea-ad6e-4682-bd2d-b36650103988",
+      "name": "Nếu trong folder An Giang"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "431c3233-fa4b-4d51-bcee-a0c91a99f525",
+              "leftValue": "={{ $json.folder_outlook }}",
+              "rightValue": "Cần Thơ",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1264,
+        144
+      ],
+      "id": "99414012-ccb0-44cc-8c07-f88d16684d46",
+      "name": "Nếu trong folder Cần Thơ"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "hour": 0
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -336,
+        -16
+      ],
+      "id": "b57a00cc-809f-4fd6-aa1e-a062377b1e1c",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yNndh0JSLzJ4Q84a",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "431c3233-fa4b-4d51-bcee-a0c91a99f525",
+              "leftValue": "={{ $json.tieu_de }}",
+              "rightValue": "Summary of failures",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        160
+      ],
+      "id": "7e92c5d1-75fc-4567-945b-98e097c9db8c",
+      "name": "nếu mail lỗi Appscript"
+    }
+  ],
+  "connections": {
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Nếu trong folder Rạch Giá",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "nếu mail lỗi Appscript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nếu trong folder Rạch Giá": {
+      "main": [
+        [
+          {
+            "node": "Thêm - Cập nhật - Rạch Giá",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Nếu trong folder Cà Mau",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nếu trong folder Cà Mau": {
+      "main": [
+        [
+          {
+            "node": "Thêm - Cập nhật - Cà Mau",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Nếu trong folder An Giang",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nếu trong folder An Giang": {
+      "main": [
+        [
+          {
+            "node": "Thêm - Cập nhật - An Giang",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Nếu trong folder Cần Thơ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nếu trong folder Cần Thơ": {
+      "main": [
+        [
+          {
+            "node": "Thêm - Cập nhật  - Cần Thơ",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Thêm - Cập nhật  - tỉnh khác",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "nếu mail lỗi Appscript": {
+      "main": [
+        [
+          {
+            "node": "Delete a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timeSavedPerExecution": 1
+  },
+  "staticData": {
+    "node:Gmail Trigger": {
+      "Gmail Trigger": {
+        "lastTimeChecked": 1761667191,
+        "possibleDuplicates": [
+          "19a2b8c13a0252fe",
+          "19a2b571ef8a5ff9",
+          "19a2b569065a003c",
+          "19a2b392f7c6e293",
+          "19a2b1af667cbae8",
+          "19a2a3f8d864a58b",
+          "19a2a3f8b49cfb9d",
+          "19a2a0bc2e3d847d",
+          "19a29fb1f0ee7856",
+          "19a29f29c9383f69",
+          "19a29df256aad793",
+          "19a29b7f8329fc09",
+          "19a292962827d441",
+          "19a29033d10af51c",
+          "19a28f4fb72dac03",
+          "19a28d916d7de496",
+          "19a286257d47aa68",
+          "19a2751342ed686a",
+          "19a26338faefc15d",
+          "19a26338eaef0ed6"
+        ]
+      }
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Gmail Trigger": [
+      {
+        "json": {
+          "id": "19a216883ed87a47",
+          "threadId": "19a216883ed87a47",
+          "snippet": "Your script, Ẩn dòng trống QLPT-NTPQ, has recently failed to finish successfully. A summary of the failure(s) is shown below. To configure the triggers for this script, or change your setting for",
+          "payload": {
+            "mimeType": "multipart/alternative"
+          },
+          "sizeEstimate": 10674,
+          "historyId": "2048199",
+          "internalDate": "1761497088000",
+          "labels": [
+            {
+              "id": "INBOX",
+              "name": "INBOX"
+            },
+            {
+              "id": "CATEGORY_UPDATES",
+              "name": "CATEGORY_UPDATES"
+            },
+            {
+              "id": "UNREAD",
+              "name": "UNREAD"
+            },
+            {
+              "id": "Label_5371175582991731837",
+              "name": "Appscript Noti"
+            }
+          ],
+          "Subject": "Summary of failures for Google Apps Script: Ẩn dòng trống QLPT-NTPQ",
+          "From": "noreply-apps-scripts-notifications@google.com",
+          "To": "namthanggroup2021@gmail.com"
+        }
+      },
+      {
+        "json": {
+          "id": "19a2058066987ce2",
+          "threadId": "19a2058066987ce2",
+          "snippet": "Kính gửi: Quý Đối Tác Nam Thắng Nhượng Quyền, Trung tâm Chăm Sóc Khách Hàng Xanh SM xin gửi tới Anh/Chị lời chúc sức khỏe và lời chào trân trọng nhất, Hiện nay, Trung tâm Chăm Sóc Khách Hàng Xanh SM",
+          "payload": {
+            "mimeType": "multipart/alternative"
+          },
+          "sizeEstimate": 22916,
+          "historyId": "2048119",
+          "internalDate": "1761479221000",
+          "labels": [
+            {
+              "id": "INBOX",
+              "name": "INBOX"
+            },
+            {
+              "id": "CATEGORY_PERSONAL",
+              "name": "CATEGORY_PERSONAL"
+            },
+            {
+              "id": "UNREAD",
+              "name": "UNREAD"
+            }
+          ],
+          "From": "\"P. Chăm sóc khách hàng GSM\" <v.cskh@xanhsm.com>",
+          "To": "namthanggroup2021 <namthanggroup2021@gmail.com>",
+          "Subject": "(#7380360) - [Xanh SM]_KH_Phản ánh TX hoàn thành không đón"
+        }
+      },
+      {
+        "json": {
+          "id": "19a20237d97c55e7",
+          "threadId": "19a20237d97c55e7",
+          "snippet": "Your script, Script QUẢN LÝ CUỐC XE HĐ - CHO LX, has recently failed to finish successfully. A summary of the failure(s) is shown below. To configure the triggers for this script, or change your",
+          "payload": {
+            "mimeType": "multipart/alternative"
+          },
+          "sizeEstimate": 8362,
+          "historyId": "2047772",
+          "internalDate": "1761475787000",
+          "labels": [
+            {
+              "id": "INBOX",
+              "name": "INBOX"
+            },
+            {
+              "id": "CATEGORY_UPDATES",
+              "name": "CATEGORY_UPDATES"
+            },
+            {
+              "id": "UNREAD",
+              "name": "UNREAD"
+            },
+            {
+              "id": "Label_5371175582991731837",
+              "name": "Appscript Noti"
+            }
+          ],
+          "Subject": "Summary of failures for Google Apps Script: Script QUẢN LÝ CUỐC XE HĐ - CHO LX",
+          "From": "noreply-apps-scripts-notifications@google.com",
+          "To": "namthanggroup2021@gmail.com"
+        }
+      },
+      {
+        "json": {
+          "id": "19a202350b392c48",
+          "threadId": "19a202350b392c48",
+          "snippet": "02873 002 123 Kính chào Trường Mai Nhựt, Chân thành cám ơn quý khách đã đăng ký dịch vụ của 123HOST. Chúng tôi xin trân trọng thông báo hóa đơn sau chưa được thanh toán: Số hóa đơn #142512 Trạng thái:",
+          "payload": {
+            "mimeType": "multipart/mixed"
+          },
+          "sizeEstimate": 67969,
+          "historyId": "2048117",
+          "internalDate": "1761475768000",
+          "labels": [
+            {
+              "id": "INBOX",
+              "name": "INBOX"
+            },
+            {
+              "id": "IMPORTANT",
+              "name": "IMPORTANT"
+            },
+            {
+              "id": "CATEGORY_UPDATES",
+              "name": "CATEGORY_UPDATES"
+            },
+            {
+              "id": "UNREAD",
+              "name": "UNREAD"
+            }
+          ],
+          "To": "\"Trường Mai Nhựt\" <namthanggroup2021@gmail.com>",
+          "Subject": "Hóa đơn số #142512: Chưa được thanh toán",
+          "From": "\"123HOST.VN\" <info@123host.vn>"
+        }
+      },
+      {
+        "json": {
+          "id": "19a1ff5fd298d9af",
+          "threadId": "19a1ff5fd298d9af",
+          "snippet": "Kính gửi: Qúy Đối Tác Nam Thắng Kiên Giang Trung tâm Chăm Sóc Khách Hàng Xanh SM xin gửi tới Anh/Chị lời chúc sức khỏe và lời chào trân trọng nhất. Hiện nay, Trung tâm Chăm sóc Khách Hàng Xanh SM đang",
+          "payload": {
+            "mimeType": "multipart/alternative"
+          },
+          "sizeEstimate": 22762,
+          "historyId": "2048115",
+          "internalDate": "1761472801000",
+          "labels": [
+            {
+              "id": "INBOX",
+              "name": "INBOX"
+            },
+            {
+              "id": "CATEGORY_PERSONAL",
+              "name": "CATEGORY_PERSONAL"
+            },
+            {
+              "id": "UNREAD",
+              "name": "UNREAD"
+            }
+          ],
+          "From": "\"P. Chăm sóc khách hàng GSM\" <v.cskh@xanhsm.com>",
+          "To": "namthanggroup2021 <namthanggroup2021@gmail.com>",
+          "Subject": "(#7379303) - (1*) KH_TX thu thêm tiền "
+        }
+      },
+      {
+        "json": {
+          "id": "19a1fcc2b018407f",
+          "threadId": "19a1fcc2b018407f",
+          "snippet": "Your script, Ẩn dòng trống KD NTRG, has recently failed to finish successfully. A summary of the failure(s) is shown below. To configure the triggers for this script, or change your setting for",
+          "payload": {
+            "mimeType": "multipart/alternative"
+          },
+          "sizeEstimate": 8390,
+          "historyId": "2047482",
+          "internalDate": "1761470065000",
+          "labels": [
+            {
+              "id": "INBOX",
+              "name": "INBOX"
+            },
+            {
+              "id": "CATEGORY_UPDATES",
+              "name": "CATEGORY_UPDATES"
+            },
+            {
+              "id": "UNREAD",
+              "name": "UNREAD"
+            },
+            {
+              "id": "Label_5371175582991731837",
+              "name": "Appscript Noti"
+            }
+          ],
+          "Subject": "Summary of failures for Google Apps Script: Ẩn dòng trống KD NTRG",
+          "From": "noreply-apps-scripts-notifications@google.com",
+          "To": "namthanggroup2021@gmail.com"
+        }
+      },
+      {
+        "json": {
+          "id": "19a1fc69b2c04bb6",
+          "threadId": "19a1fc69b2c04bb6",
+          "snippet": "Your script, SCRIPT QLPT RG, has recently failed to finish successfully. A summary of the failure(s) is shown below. To configure the triggers for this script, or change your setting for receiving",
+          "payload": {
+            "mimeType": "multipart/alternative"
+          },
+          "sizeEstimate": 8298,
+          "historyId": "2047422",
+          "internalDate": "1761469700000",
+          "labels": [
+            {
+              "id": "INBOX",
+              "name": "INBOX"
+            },
+            {
+              "id": "CATEGORY_UPDATES",
+              "name": "CATEGORY_UPDATES"
+            },
+            {
+              "id": "UNREAD",
+              "name": "UNREAD"
+            },
+            {
+              "id": "Label_5371175582991731837",
+              "name": "Appscript Noti"
+            }
+          ],
+          "Subject": "Summary of failures for Google Apps Script: SCRIPT QLPT RG",
+          "From": "noreply-apps-scripts-notifications@google.com",
+          "To": "namthanggroup2021@gmail.com"
+        }
+      },
+      {
+        "json": {
+          "id": "19a1f8d5fff1cb6b",
+          "threadId": "19a1f8d5fff1cb6b",
+          "snippet": "Your script, Ẩn dòng trống QLPT-NTCM, has recently failed to finish successfully. A summary of the failure(s) is shown below. To configure the triggers for this script, or change your setting for",
+          "payload": {
+            "mimeType": "multipart/alternative"
+          },
+          "sizeEstimate": 8396,
+          "historyId": "2047396",
+          "internalDate": "1761465949000",
+          "labels": [
+            {
+              "id": "INBOX",
+              "name": "INBOX"
+            },
+            {
+              "id": "CATEGORY_UPDATES",
+              "name": "CATEGORY_UPDATES"
+            },
+            {
+              "id": "UNREAD",
+              "name": "UNREAD"
+            },
+            {
+              "id": "Label_5371175582991731837",
+              "name": "Appscript Noti"
+            },
+            {
+              "id": "Label_6",
+              "name": "INBOX/Google"
+            }
+          ],
+          "Subject": "Summary of failures for Google Apps Script: Ẩn dòng trống QLPT-NTCM",
+          "From": "noreply-apps-scripts-notifications@google.com",
+          "To": "namthanggroup2021@gmail.com"
+        }
+      },
+      {
+        "json": {
+          "id": "19a1f86f33c921b9",
+          "threadId": "19a1f86f33c921b9",
+          "snippet": "Your script, SCRIPT QLPT BL, has recently failed to finish successfully. A summary of the failure(s) is shown below. To configure the triggers for this script, or change your setting for receiving",
+          "payload": {
+            "mimeType": "multipart/alternative"
+          },
+          "sizeEstimate": 7901,
+          "historyId": "2047352",
+          "internalDate": "1761465528000",
+          "labels": [
+            {
+              "id": "CATEGORY_UPDATES",
+              "name": "CATEGORY_UPDATES"
+            },
+            {
+              "id": "Label_5371175582991731837",
+              "name": "Appscript Noti"
+            },
+            {
+              "id": "Label_6",
+              "name": "INBOX/Google"
+            }
+          ],
+          "Subject": "Summary of failures for Google Apps Script: SCRIPT QLPT BL",
+          "From": "noreply-apps-scripts-notifications@google.com",
+          "To": "namthanggroup2021@gmail.com"
+        }
+      },
+      {
+        "json": {
+          "id": "19a1f01837c21320",
+          "threadId": "19a1f01837c21320",
+          "snippet": "taxinamthang.com stopped using Cloudflare&#39;s nameservers Cloudflare logo taxinamthang.com stopped using Cloudflare&#39;s nameservers and no longer benefits from our network Cloudflare detected that",
+          "payload": {
+            "mimeType": "multipart/alternative"
+          },
+          "sizeEstimate": 68505,
+          "historyId": "2046968",
+          "internalDate": "1761456782000",
+          "labels": [
+            {
+              "id": "INBOX",
+              "name": "INBOX"
+            },
+            {
+              "id": "IMPORTANT",
+              "name": "IMPORTANT"
+            },
+            {
+              "id": "CATEGORY_UPDATES",
+              "name": "CATEGORY_UPDATES"
+            }
+          ],
+          "Subject": "taxinamthang.com no longer benefits from Cloudflare’s speed and security",
+          "To": "namthanggroup2021@gmail.com",
+          "From": "Cloudflare <noreply@notify.cloudflare.com>"
+        }
+      },
+      {
+        "json": {
+          "id": "19a1e6f8fda0a26e",
+          "threadId": "19a1c5de2958335d",
+          "snippet": "Your script, SCRIPT QLPT ST, has recently failed to finish successfully. A summary of the failure(s) is shown below. To configure the triggers for this script, or change your setting for receiving",
+          "payload": {
+            "mimeType": "multipart/alternative"
+          },
+          "sizeEstimate": 9087,
+          "historyId": "2047070",
+          "internalDate": "1761447218000",
+          "labels": [
+            {
+              "id": "CATEGORY_PERSONAL",
+              "name": "CATEGORY_PERSONAL"
+            },
+            {
+              "id": "Label_5371175582991731837",
+              "name": "Appscript Noti"
+            },
+            {
+              "id": "Label_6",
+              "name": "INBOX/Google"
+            }
+          ],
+          "Subject": "Summary of failures for Google Apps Script: Not found",
+          "From": "noreply-apps-scripts-notifications@google.com",
+          "To": "namthanggroup2021@gmail.com"
+        }
+      },
+      {
+        "json": {
+          "id": "19a1e03cae934604",
+          "threadId": "19a1e03cae934604",
+          "snippet": "Your script, SCIPT QLPT HẬU GIANG, has recently failed to finish successfully. A summary of the failure(s) is shown below. To configure the triggers for this script, or change your setting for",
+          "payload": {
+            "mimeType": "multipart/alternative"
+          },
+          "sizeEstimate": 8326,
+          "historyId": "2046127",
+          "internalDate": "1761440156000",
+          "labels": [
+            {
+              "id": "CATEGORY_UPDATES",
+              "name": "CATEGORY_UPDATES"
+            },
+            {
+              "id": "UNREAD",
+              "name": "UNREAD"
+            },
+            {
+              "id": "Label_5371175582991731837",
+              "name": "Appscript Noti"
+            },
+            {
+              "id": "Label_6",
+              "name": "INBOX/Google"
+            }
+          ],
+          "Subject": "Summary of failures for Google Apps Script: SCIPT QLPT HẬU GIANG",
+          "From": "noreply-apps-scripts-notifications@google.com",
+          "To": "namthanggroup2021@gmail.com"
+        }
+      },
+      {
+        "json": {
+          "id": "19a1cb44dfef07a4",
+          "threadId": "19a1c5de2958335d",
+          "snippet": "Your script, Not found, has recently failed to finish successfully. A summary of the failure(s) is shown below. To configure the triggers for this script, or change your setting for receiving future",
+          "payload": {
+            "mimeType": "multipart/alternative"
+          },
+          "sizeEstimate": 7969,
+          "historyId": "2046554",
+          "internalDate": "1761418169000",
+          "labels": [
+            {
+              "id": "CATEGORY_PERSONAL",
+              "name": "CATEGORY_PERSONAL"
+            },
+            {
+              "id": "UNREAD",
+              "name": "UNREAD"
+            },
+            {
+              "id": "Label_5371175582991731837",
+              "name": "Appscript Noti"
+            },
+            {
+              "id": "Label_6",
+              "name": "INBOX/Google"
+            }
+          ],
+          "Subject": "Summary of failures for Google Apps Script: Not found",
+          "From": "noreply-apps-scripts-notifications@google.com",
+          "To": "namthanggroup2021@gmail.com"
+        }
+      },
+      {
+        "json": {
+          "id": "19a1c5de2958335d",
+          "threadId": "19a1c5de2958335d",
+          "snippet": "Your script, ZALO ZNS Nhựt Trường - tặng voucher - 459426, has recently failed to finish successfully. A summary of the failure(s) is shown below. To configure the triggers for this script, or change",
+          "payload": {
+            "mimeType": "multipart/alternative"
+          },
+          "sizeEstimate": 9711,
+          "historyId": "2046554",
+          "internalDate": "1761412505000",
+          "labels": [
+            {
+              "id": "CATEGORY_UPDATES",
+              "name": "CATEGORY_UPDATES"
+            },
+            {
+              "id": "UNREAD",
+              "name": "UNREAD"
+            },
+            {
+              "id": "Label_5371175582991731837",
+              "name": "Appscript Noti"
+            },
+            {
+              "id": "Label_6",
+              "name": "INBOX/Google"
+            }
+          ],
+          "Subject": "Summary of failures for Google Apps Script: Not found",
+          "From": "noreply-apps-scripts-notifications@google.com",
+          "To": "namthanggroup2021@gmail.com"
+        }
+      }
+    ]
+  },
+  "versionId": "be77e797-0902-488e-ab92-e60f139c2c48",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-10-25T00:28:22.194Z",
+      "updatedAt": "2025-10-25T00:28:22.194Z",
+      "role": "workflow:owner",
+      "workflowId": "0N0mGLDfE19iqwGX",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
