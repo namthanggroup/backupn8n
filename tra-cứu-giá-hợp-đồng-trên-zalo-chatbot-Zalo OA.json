@@ -1,0 +1,271 @@
+{
+  "createdAt": "2025-10-28T02:36:05.096Z",
+  "updatedAt": "2025-10-28T15:28:29.000Z",
+  "id": "pG5lvwEY7rWtbmxF",
+  "name": "Tra cứu giá hợp đồng trên zalo chatbot",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "chatbot-zalooa",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "04fee1dc-30a0-41ed-a065-ede0618fbd39",
+      "name": "Webhook",
+      "webhookId": "8a122157-e6d7-4243-8f41-5d51d4284b63"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b415ee1f-0ba3-40e0-a6b1-f1f91c40f413",
+              "name": "so_km_1c",
+              "value": "={{ $json.query.sokm1c }}",
+              "type": "string"
+            },
+            {
+              "id": "f2fac64e-e590-40ed-9c25-3eb29ddc3bc5",
+              "name": "uid_zalo",
+              "value": "={{ $json.query.ui }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "53f7fcbd-ede0-4e85-b983-5c6507fcac0a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1446048987,
+          "mode": "list",
+          "cachedResultName": "Token Zalo OA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=1446048987"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        896,
+        0
+      ],
+      "id": "055878cd-e96a-4c2d-88f4-adb0ab275d18",
+      "name": "Token Zalo OA",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openapi.zalo.me/v3.0/oa/message/cs",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $json['Access token'] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"recipient\": {\n    \"user_id\": \"{{ $('Edit Fields').item.json.uid_zalo }}\"\n  },\n  \"message\": {\n      \"text\": {{ $('Filter').item.json.show_4_cho.toJsonString() }}\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "063c833f-640b-45fe-a5e0-fde702d60c57",
+      "name": "Phản hồi tin nhắn cho user"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Node input: items[0].json phải có ít nhất hopLe (boolean), và nếu hopLe=true thì có ketQuaTraCuu (array)\n\nreturn items.map(item => {\n  const dataIn = item.json;\n\n  let tinNhanPhanHoi;\n\n  if (dataIn.hopLe === true) {\n    tinNhanPhanHoi = {\n      \"version\": \"chatbot\",\n      \"content\": {\n        \"messages\": [\n          {\n            \"type\": \"text\",\n            \"text\": `$input.first().json.show_4_cho`,\n            \"buttons\": [\n              {\n                \"name\": \"Tổng đài gọi xe Taxi\",\n                \"type\": \"url\",\n                \"url\": \"https://taxinamthang.vn/\"\n              },\n              {\n                \"name\": \"Tải app đặt xe\",\n                \"type\": \"url\",\n                \"url\": \"https://taxinamthang.vn/taiapp\"\n              }\n            ]\n          }\n        ]\n      }\n    };\n  } else {\n    tinNhanPhanHoi = {\n      \"version\": \"chatbot\",\n      \"content\": {\n        \"messages\": [\n          {\n            \"type\": \"text\",\n            \"text\": \"Số km bạn nhập chưa hợp lệ ❌\\nSố km phải hơn 2️⃣0️⃣ km mới được tính giá hợp đồng, mời bạn bấm lại nút 'tra giá hợp đồng'\"\n          }\n        ]\n      }\n    };\n  }\n\n  // Trả object này ra ngoài để Webhook Response node dùng\n  return {\n    json: tinNhanPhanHoi\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        320
+      ],
+      "id": "e937f276-77ef-4fc2-b14c-5eb691a50033",
+      "name": "TaoTinNhanPhanHoi"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "857a762e-e324-4f9f-b203-381b17078b91",
+              "leftValue": "={{ $json.so_km_1c }}",
+              "rightValue": "={{ $('Edit Fields').item.json.so_km_1c.toNumber() }}",
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "be025ea9-ba56-49f2-9d85-4d42a58c432d",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1D0J65GcqATB8HdDclAvJDFvVdgn_ipjBfwGHdOmg6dk",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "TRA_CUU_GIA_HD",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D0J65GcqATB8HdDclAvJDFvVdgn_ipjBfwGHdOmg6dk/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        0
+      ],
+      "id": "8c16b1d7-766c-420c-a598-1c0270b71e1e",
+      "name": "Sheet giá hợp đồng thường",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Zalo OA": {
+      "main": [
+        [
+          {
+            "node": "Phản hồi tin nhắn cho user",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Sheet giá hợp đồng thường",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Token Zalo OA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sheet giá hợp đồng thường": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "710d7ba2-550f-4bbc-96c1-be5618134e1d",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-28T02:36:05.101Z",
+      "updatedAt": "2025-10-28T02:36:05.101Z",
+      "role": "workflow:owner",
+      "workflowId": "pG5lvwEY7rWtbmxF",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": [
+    {
+      "createdAt": "2025-10-28T15:26:45.377Z",
+      "updatedAt": "2025-10-28T15:26:52.169Z",
+      "id": "NTEokQCUjyBsQIW3",
+      "name": "Zalo OA"
+    }
+  ]
+}
