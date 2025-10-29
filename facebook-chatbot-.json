@@ -1,0 +1,1351 @@
+{
+  "createdAt": "2025-10-17T06:01:27.381Z",
+  "updatedAt": "2025-10-19T13:47:26.000Z",
+  "id": "rnhDaS0UShr6YZmu",
+  "name": "Facebook chatbot",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "multipleMethods": true,
+        "path": "531ee0c1-6079-4586-aac7-db747e928116",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -4512,
+        912
+      ],
+      "id": "3f1b95ae-42b2-4e61-b26e-fb8563631b5e",
+      "name": "Webhook",
+      "webhookId": "531ee0c1-6079-4586-aac7-db747e928116"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "02422b07-75c3-4047-823a-910967bc573a",
+              "name": "hubchallenge",
+              "value": "={{ $json.query['hub.challenge'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4160,
+        816
+      ],
+      "id": "99b7f0ea-297c-451b-b27a-5046ee8ad702",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $('Webhook').item.json.query['hub.challenge'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -3872,
+        816
+      ],
+      "id": "72bcbb54-ee96-41ba-b2eb-fd758a374d08",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0630145b-5fc7-4dd5-a11f-ea4921391cb1",
+              "name": "access_token",
+              "value": "EAAWnTWJlkysBPs0eEiKPjskrZBACxEIbIyXJZBt1BWFYb1T6SIBNl1pQfT4uO1ZCWXZBpNxFDdJRfuid1TevtymRoHdZC1rut35k77nYfEyEYxBbRs28j2Ktj08osp6kW4VSejVpvgXTAbNn2y3CdpAGczolIFADZC2zt5VLnMNP7EsmO5oZAG6fgqz4J7PwmZBiE97vhSJy4JZBG",
+              "type": "string"
+            },
+            {
+              "id": "d792d2dd-ada2-4d97-b3ff-bba405566a13",
+              "name": "page_id",
+              "value": "={{ $('Webhook').item.json.body.entry[0].messaging[0].recipient.id }}",
+              "type": "string"
+            },
+            {
+              "id": "caefe1d5-e21a-4128-8392-7709bce29bff",
+              "name": "psid",
+              "value": "={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}",
+              "type": "string"
+            },
+            {
+              "id": "0f483ef1-f695-4e1e-8cc0-681dcd8943e7",
+              "name": "message",
+              "value": "={{ $('Webhook').item.json.body.entry[0].messaging[0].message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4224,
+        992
+      ],
+      "id": "5a2c3e90-efe4-47f0-92c9-f1082d78b8ff",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5a78d1a7-d356-42f8-a482-6e9e1ac18435",
+              "leftValue": "={{ $('Edit Fields1').item.json.message }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3408,
+        1040
+      ],
+      "id": "9f8f38a8-250c-4e61-9614-c817e4f37807",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -3248,
+        1200
+      ],
+      "id": "b213a384-53b8-439b-8237-c5eaecec8ded",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=**Nội dung user hỏi**\n{{ $('Edit Fields1').item.json.message }}\n\n**ID của user**\n{{ $('Edit Fields1').item.json.psid }}",
+        "options": {
+          "systemMessage": "=##Vai trò\nBạn là trợ lý ảo và chuyên viên chăm sóc khách hàng của Taxi điện Nam Thắng.\nBạn am hiểu về ngành vận tải hành khách bằng taxi, đặc biệt là dịch vụ Taxi điện giá rẻ Nam Thắng.\nNhiệm vụ chính của bạn là tư vấn dịch vụ, hỗ trợ khách hàng, và trả lời nhanh – chính xác – thân thiện mọi câu hỏi liên quan đến dịch vụ Taxi điện Nam Thắng.\n\n##Quy tắc hội thoại\n- Trước khi đưa ra phản hồi, luôn luôn gọi công cụ `add_id` đầu tiên để kiểm tra và thêm thông tin của user\n1.Tin nhắn mở đầu:\n- “Dạ em chào anh/chị, em xin phép hỗ trợ mình ạ.”\n- Luôn mở đầu thân thiện, xưng em, gọi khách là anh/chị.\n2.Cách phản hồi:\n- Ngắn gọn, dễ đọc, có thể xuống dòng hoặc dùng dấu “-” hoặc “+” để tách ý.\n- Nếu chưa hiểu câu hỏi:“Dạ em chưa rõ ý anh/chị, mình có thể nói kỹ hơn để em hỗ trợ tốt hơn nha.”\n\n##Nhiệm vụ chính\n1. Tư vấn dịch vụ Taxi điện Nam Thắng\n- Giới thiệu dịch vụ taxi điện 4 chỗ là taxi điện giá rẻ Nam Thắng, các gói cước hợp đồng, giá cước theo đồng hồ, tuyến cố định.\n- Hỗ trợ khách hàng tra cứu giá hợp đồng (>20km), giá tuyến cố định/chiến lược, hoặc giá tham khảo theo đồng hồ.\nỏi nhỏ hơn 20km thì hỏi Khách ở tỉnh nào để gửi bảng giá đồng hồ cho Khách hàng\n2. Hỗ trợ quy trình chăm sóc khách hàng\n- Hướng dẫn khách đặt xe, hủy xe, phản ánh, xin việc, xuất hóa đơn...\n- Với yêu cầu phức tạp hoặc cần xử lý trực tiếp, chuyển khách hàng đến tổng đài hoặc hotline tương ứng.\n3. Sử dụng công cụ hỗ trợ\n- `Big Query`: Dùng để truy vấn SQL, trích xuất data trên nền tảng  Big Query của Google\n- `Calculator`: Tính toán chi phí cuốc xe, hợp đồng.\n- `Date & time`: Xem ngày giờ hiện tại.\n- `add_id`: Thêm ID khách hàng trước khi phản hồi.\n4. Sử dụng Google Sheet làm data tư vấn Khách hàng\n- TRA_CUU_GIA_HD_THEO_TUYEN: Khi khách hàng hỏi giá đi các bệnh viện, sân bay ở Cần Thơ và TP.HCM, Sài Gòn\n4.Không được dùng:\n- Markdown (như bold, [Tên](URL) hoặc …)\n- Ký tự *, “, hoặc **\n- Khi gửi link, chỉ viết dạng văn bản thuần:\nhttps://taxinamthang.vn  \nhttps://datxezalo.taxinamthang.vn  \nhttps://taxinamthang.vn/taiapp\n\n##Tra cứu giá và quy tắc tư vấn\n1. Giá hợp đồng thường: Khi khách hàng hỏi giá trên >=20km - 1 chiều hoặc >=40km - 2 chiều thì luôn luôn sử dụng công cụ `Big Query` để truy vấn dữ liệu trong database và phản hồi người dùng\nTable ID**: eco-tape-471516-s5.gia_hop_dong_thuong.TRA_CUU_GIA_HD\n- Đây là bảng cấu trúc dữ liệu:\nso_km_1c: Số km 1 chiều (>=20km và <=800km)\nso_km_2c: Số km 2 chiều (>=40km và <=1600km)\ngia_1c_5cho: Giá 1 chiều\ngia_2c_5cho: Giá 2 chiều\nthoigian_cho_4cho: Thời gian chờ miễn phí khi đi 2 chiều\n- Hỏi khách đi 1 chiều hay 2 chiều\n- Hỏi kĩ số km khách hàng cung cấp là 1 chiều hay 2 chiều\n- Nếu khách không rõ km → hướng dẫn Google Maps\n- phản hồi rõ thông tin bao gồm số km, số chiều đi, số tiền và giờ chờ\n2. Giá hợp đồng chiến lược, tuyến cố định:khi khách hàng hỏi giá đi bệnh viện, sân bay ở TP.HCM,Sài Gòn, Cần Thơ thì luôn luôn truy xuất vào sheet TRA_CUU_GIA_HD_THEO_TUYEN\n- Hỏi khách điểm đi – điểm đến.\n- Chỉ phản hồi những lộ trình có trong sheet.\n3. Quy tắc chung khi tư vấn giá hợp đồng:\n- Lộ trình 1 chiều chỉ có 1 tiếng chờ miễn phí.\n- Giá chưa bao gồm phí cầu đường, phà, bến bãi.\n- Quá 1 tiếng chờ miễn phí → phụ thu 50.000đ/giờ.\n3. Giá cước đồng hồ (theo tỉnh)\n- Cung cấp giá tham khảo, không báo tổng tiền chính xác.\nRạch Giá: \n- Mở cửa cho 0,6km: 9.000đ/0,6km \n- từ Km tiếp theo - 20km : 12.000đ/km \n- Từ km 21 - km 51: 10,000đ/km\nAn Giang: \n- Mở cửa cho 0,6km: 5.000đ/0,6km\n- từ Km tiếp theo - 20km : 12.000đ/km\n- Từ km 21 - km 51: 10.000đ/km\nCà Mau:\n- Mở cửa cho 0,6km: 5.000đ/0,6km \n- từ Km tiếp theo - 20km : 11.500đ/km \n- Từ km 21 - km 51: 9,500đ/km\nBạc Liêu,Sóc Trăng, Hậu Giang, Cần Thơ, Bạc Liêu, Vĩnh Long, Hà Tiên\n- Mở cửa cho 1km : 20.000đ \n- từ Km tiếp theo - 20km : 12.000đ \n- Từ km 21 - km 51 : 9.500đ\n\nCách tính giá cuốc xe theo đồng hồ tham khảo, áp dụng cho tỉnh Rạch Giá, An Giang, Cà Mau:\nví dụ 1: khách đi 9km là 12.000 x 9 = 108.000\nví dụ 2: khách đi 1km là 12.000 x 1 = 12.000\nví dụ 3: khách đi 22km là (12.000 x 20) +(10.000 *2)= 240.000 + 20.000 = 260.000\n\nLoại xe: Hiện chỉ có xe 4 chỗ, chưa có xe 7 chỗ.\n\n##Câu hỏi thường gặp (FAQ)\nTình huống - Phản hồi gợi ý\n1. Hủy xe:\nPhản hồi gợi ý:\tDạ em là trợ lý ảo nên không hủy xe được ạ. Anh/chị vui lòng gọi tổng đài để được hỗ trợ ngay nhé: (cung cấp số tổng đài theo khu vực).\n2. Xin việc / Ứng tuyển tài xế:\nTrả lời: dạ, Anh/Chị cho em xin tên, sđt và khu vực muốn chạy để bên em phòng Nhân sự liên hệ lại.\n3. Đặt xe\nPhản hồi gợi ý: Dạ để đặt xe nhanh nhất, anh/chị có thể: \n-  Tải app tại: https://taxinamthang.vn/taiapp\n- Đặt qua Zalo: https://datxezalo.taxinamthang.vn\n- Gọi tổng đài Taxi điện Nam Thắng ạ.\n4. Xuất hóa đơn Taxi Nam Thắng\nPhản hồi gợi ý:\tDạ được ạ. Anh/chị nhờ tài xế in bill và cung cấp thông tin cho kế toán công ty (có thể nhờ tài xế hỗ trợ hoặc gọi tổng đài).\n5. Xuất hóa đơn XanhSM\nPhản hồi gợi ý:\tDạ nếu anh/chị chọn xuất hóa đơn khi đặt xe, kế toán sẽ tự động xuất vào cuối ngày ạ.\n6. Số điện thoại tổng đài theo khu vực\n\t02973 69 69 69 – Rạch Giá / 02973 75 75 75 – Phú Quốc / 02903 56 56 56 – Cà Mau / 02973 56 56 56 – An Giang / 02973 95 95 95 – Hậu Giang / 02913 69 69 69 – Sóc Trăng / 02913 59 59 59 – Vĩnh Long / 02913 75 75 75 – Bạc Liêu / *6869 (Cần Thơ) / *5656 (Hà Tiên)\n7. Khiếu nại / Phản ánh\nPhản hồi gợi ý:\tDạ em xin lỗi vì sự bất tiện ạ. Anh/chị vui lòng cung cấp mã chuyến, số điện thoại đặt xe, tỉnh và ngày đi, em sẽ ghi nhận và chuyển cho bộ phận CSKH xử lý ngay ạ.\n8. Khen dịch vụ\nPhản hồi gợi ý:\tDạ em cảm ơn anh/chị nhiều ạ, rất vui khi được phục vụ! Mong anh/chị tiếp tục ủng hộ Taxi điện Nam Thắng nha 🚖\n\nCâu 10: Taxi điện giá rẻ Nam Thắng\nTaxi điện Nam Thắng với gần 1.500 xe cùng đội ngũ nhân lực chuyên nghiệp, chúng tôi tự hào là đơn vị tiên phong đưa mô hình taxi điện giá rẻ phủ sóng 10 khu vực trọng điểm tại miền Tây.\n\n##Giọng điệu & phong cách phản hồi\n- Thân thiện, lịch sự, dễ hiểu.\n- Có thể thêm emoji nhẹ nhàng như 🚖📱☎️ để tin nhắn gần gũi hơn.\n- Không nói quá dài; tránh dùng thuật ngữ kỹ thuật.\n- Trọng tâm là giúp khách hiểu nhanh, đặt xe dễ, phản hồi rõ.\n\n##Kênh & trang web hỗ trợ\nWebsite: https://taxinamthang.vn - https://taxinamthang.com \nĐặt xe qua Zalo: https://datxezalo.taxinamthang.vn\nTải ứng dụng: https://taxinamthang.vn/taiapp"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -2944,
+        880
+      ],
+      "id": "7c825947-f042-404a-9fc4-42c3b2cb3933",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        -2848,
+        1120
+      ],
+      "id": "ba6ef9ed-5e44-40d5-8fc0-23973f9b3bc3",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $now }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTimeTool",
+      "typeVersion": 2,
+      "position": [
+        -2736,
+        1136
+      ],
+      "id": "29223189-8f78-4683-bfd5-7a8cf42fb95d",
+      "name": "Date & Time",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1i0ZV-0ZBUF0j5QWW1ag3boWHjFWM6XJ3Zn-NKriGeFo",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1526269808,
+          "mode": "list",
+          "cachedResultName": "TRA_CUU_GIA_THEO_TUYEN",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1i0ZV-0ZBUF0j5QWW1ag3boWHjFWM6XJ3Zn-NKriGeFo/edit#gid=1526269808"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -2368,
+        1120
+      ],
+      "id": "c7191716-59b7-40ab-97ac-16ed1ee43c64",
+      "name": "TRA_CUU_GIA_THEO_TUYEN",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Gọi công cụ này để thêm thông tin KH vào google sheet",
+        "workflowId": {
+          "__rl": true,
+          "value": "3wGV8oRuIvu0pJO7",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/3wGV8oRuIvu0pJO7",
+          "cachedResultName": "Quản lý id Khách hàng Facebook"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "psid": "={{ $('Edit Fields1').item.json.psid }}"
+          },
+          "matchingColumns": [
+            "psid"
+          ],
+          "schema": [
+            {
+              "id": "psid",
+              "displayName": "psid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -2640,
+        1136
+      ],
+      "id": "583d6ec1-1d4a-4ac0-9ed0-dd52da586eae",
+      "name": "add_id"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v24.0/1722821767960482/messages/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAWnTWJlkysBPgIQFQEoFbZCIzl4wfKZCSJfPnP4xgkpeSjZCdZCsOOFfs75lZCSA3CVTKISMslrzo76DBCIK3OiY0gxlUpintWyIShFf2CWrpZBvFvRA5kvv03Ep2CFrZC7gAbxqXkN56Nv0N1eXWxe8x7llxHPB9tEOCfRd8eydeIlD2UNZBwmx6b9Lie0VBOct3zkqiZByANgnyWj6vdx9dKgg"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.data }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2176,
+        880
+      ],
+      "id": "ec819200-a7c8-4fe9-a3ff-f27b78041037",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "16mGZZNAQ9iLQRuCIYZ7Qab2iQGEwoZJdbFYwu1GxPds",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1761515620,
+          "mode": "list",
+          "cachedResultName": "Khiếu nại KH",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16mGZZNAQ9iLQRuCIYZ7Qab2iQGEwoZJdbFYwu1GxPds/edit#gid=1761515620"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ngày": "={{ $now.format('dd/MM/yyyy') }}",
+            "Thời gian": "={{ $now.format('HH:mm') }}",
+            "Phản hồi AI": "={{ $('AI Agent').item.json.output }}",
+            "Tin nhắn KH": "={{ $('Webhook').item.json.body.entry[0].messaging[0].message.text }}",
+            "PSID": "={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Ngày",
+              "displayName": "Ngày",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thời gian",
+              "displayName": "Thời gian",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PSID",
+              "displayName": "PSID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Tin nhắn KH",
+              "displayName": "Tin nhắn KH",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phản hồi AI",
+              "displayName": "Phản hồi AI",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2384,
+        288
+      ],
+      "id": "a7588f18-5102-49d2-af31-8f5a5f6195f9",
+      "name": "Thêm dòng sheet KH phản ánh",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "16mGZZNAQ9iLQRuCIYZ7Qab2iQGEwoZJdbFYwu1GxPds",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 816322819,
+          "mode": "list",
+          "cachedResultName": "Log tin nhắn",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16mGZZNAQ9iLQRuCIYZ7Qab2iQGEwoZJdbFYwu1GxPds/edit#gid=816322819"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ngày": "={{$now.format('dd/MM/yyyy')}}",
+            "Thời gian": "={{$now.format('HH:mm')}}",
+            "PSID": "={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}",
+            "Tin nhắn KH": "={{ $('Webhook').item.json.body.entry[0].messaging[0].message.text }}",
+            "Phản hồi AI": "={{ $('AI Agent').item.json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Ngày",
+              "displayName": "Ngày",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Thời gian",
+              "displayName": "Thời gian",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "PSID",
+              "displayName": "PSID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tin nhắn KH",
+              "displayName": "Tin nhắn KH",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phản hồi AI",
+              "displayName": "Phản hồi AI",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2096,
+        560
+      ],
+      "id": "83a29a38-b861-4563-8960-7cea36bc90e3",
+      "name": "Thêm dòng ở sheet log tin nhắn",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const body={\n  \"recipient\":{\n    \"id\":`${$('Edit Fields1').first().json.psid}`\n  },\n  \"message\":{\n    \"text\":`${$input.first().json.output}`\n  }\n}\n  return {\n  data:body\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2432,
+        896
+      ],
+      "id": "5b378852-1bab-4e1f-85cf-6b766652e330",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "16mGZZNAQ9iLQRuCIYZ7Qab2iQGEwoZJdbFYwu1GxPds",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1322386776,
+          "mode": "list",
+          "cachedResultName": "Xin việc",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16mGZZNAQ9iLQRuCIYZ7Qab2iQGEwoZJdbFYwu1GxPds/edit#gid=1322386776"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ngày": "={{ $now.format('dd/MM/yyyy') }}",
+            "Thời gian": "={{ $now.format('HH:mm') }}",
+            "Phản hồi AI": "={{ $('AI Agent').item.json.output }}",
+            "Tin nhắn KH": "={{ $('Webhook').item.json.body.entry[0].messaging[0].message.text }}",
+            "PSID": "={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Ngày",
+              "displayName": "Ngày",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thời gian",
+              "displayName": "Thời gian",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PSID",
+              "displayName": "PSID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Tin nhắn KH",
+              "displayName": "Tin nhắn KH",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phản hồi AI",
+              "displayName": "Phản hồi AI",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2096,
+        368
+      ],
+      "id": "b8094f51-041d-4481-85db-537f01acf472",
+      "name": "Thêm dòng sheet xin việc",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f3251316-5ed6-492c-81ba-a64f55ec1360",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "phản ánh",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "6154e508-1f19-48b5-b73c-c985fb0c271b",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "khiếu nại",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "c87d33d0-d418-4177-b708-1e10d81511f8",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "xin lỗi",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2624,
+        496
+      ],
+      "id": "96a78118-00e7-4c99-ac80-6dd4100da6da",
+      "name": "Bắt keyword lưu vào sheet tưởng ứng"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f3251316-5ed6-492c-81ba-a64f55ec1360",
+              "leftValue": "={{ $('Webhook').item.json.body.entry[0].messaging[0].message.text }},{{ $json.output }}",
+              "rightValue": "xin việc",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "b802a6e9-4c45-482c-807d-d84f1e2ed527",
+              "leftValue": "={{ $('Webhook').item.json.body.entry[0].messaging[0].message.text }},{{ $json.output }}",
+              "rightValue": "còn tuyển",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "b92e45b0-5975-4864-b636-0d846663cf25",
+              "leftValue": "={{ $('Webhook').item.json.body.entry[0].messaging[0].message.text }},{{ $json.output }}",
+              "rightValue": "ứng tuyển",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "884e29bc-c20a-4531-b9a4-48a1eae75a65",
+              "leftValue": "={{ $('Webhook').item.json.body.entry[0].messaging[0].message.text }},{{ $json.output }}",
+              "rightValue": "đăng ký tài xế",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "5712459d-f486-42e3-9772-6fc8df57eb44",
+              "leftValue": "={{ $('Webhook').item.json.body.entry[0].messaging[0].message.text }},{{ $json.output }}",
+              "rightValue": " đăng ký lái xe",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2384,
+        512
+      ],
+      "id": "cac12f97-3739-447f-aa3f-6faf08f0eeb0",
+      "name": "xin việc1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -3120,
+        1088
+      ],
+      "id": "ce9067e0-18fe-4d0b-a09e-97f2ddd7929f",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "h8uMGM40rjJEezE6",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "16mGZZNAQ9iLQRuCIYZ7Qab2iQGEwoZJdbFYwu1GxPds",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2033616209,
+          "mode": "list",
+          "cachedResultName": "DS KH Chatbot không trả lời",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16mGZZNAQ9iLQRuCIYZ7Qab2iQGEwoZJdbFYwu1GxPds/edit#gid=2033616209"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -4000,
+        1008
+      ],
+      "id": "aac9e7e4-f773-49fe-98d5-fac6ffac8a9b",
+      "name": "Lấy DSKH bot không  trả lời",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "PSID"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -3840,
+        1024
+      ],
+      "id": "3a0552dc-e73e-4917-9f34-39e5fbcb2dd2",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1c6976d-fcc5-47f3-b28a-8448095dfd01",
+              "leftValue": "={{ $('Aggregate').first().json.PSID }}",
+              "rightValue": "={{ $('Edit Fields1').item.json.psid }}",
+              "operator": {
+                "type": "array",
+                "operation": "contains",
+                "rightType": "any"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3664,
+        1024
+      ],
+      "id": "09620901-3332-4ed0-bf60-18b4bcd8b075",
+      "name": "Kiểm tra DSKH loại trừ",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ed88c9b9-766a-43bb-acb4-19117342c6a7",
+              "leftValue": "={{ $json.content.toJsonString() }}",
+              "rightValue": "Hiếu",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1504,
+        880
+      ],
+      "id": "a419ea16-7e8e-4aeb-ba9a-fd665da668cf",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "16mGZZNAQ9iLQRuCIYZ7Qab2iQGEwoZJdbFYwu1GxPds",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2033616209,
+          "mode": "list",
+          "cachedResultName": "DS KH Chatbot không trả lời",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16mGZZNAQ9iLQRuCIYZ7Qab2iQGEwoZJdbFYwu1GxPds/edit#gid=2033616209"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "PSID": "={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}"
+          },
+          "matchingColumns": [
+            "PSID"
+          ],
+          "schema": [
+            {
+              "id": "PSID",
+              "displayName": "PSID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1296,
+        784
+      ],
+      "id": "f1e22fd4-6dd9-4470-ab15-b66251ce7751",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1296,
+        976
+      ],
+      "id": "c6854341-884a-4d60-ac95-bc2a58905980",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "n8n_chat_histories",
+        "limit": 5,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}-{{ $now.format('ddMMyyyy') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1936,
+        912
+      ],
+      "id": "8d6e1055-2130-45ec-b4f2-7f610cc10de0",
+      "name": "Get many rows",
+      "credentials": {
+        "supabaseApi": {
+          "id": "pduMfv8WZtmQadD4",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "message.content"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -1760,
+        896
+      ],
+      "id": "908cf3fc-becd-4432-a737-e620958f1ea1",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -3520,
+        912
+      ],
+      "id": "5fbc2542-1e49-4535-b80c-60de648ee028",
+      "name": "No Operation, do nothing2"
+    },
+    {
+      "parameters": {
+        "projectId": {
+          "__rl": true,
+          "value": "eco-tape-471516-s5",
+          "mode": "list",
+          "cachedResultName": "n8nproject",
+          "cachedResultUrl": "https://console.cloud.google.com/bigquery?project=eco-tape-471516-s5"
+        },
+        "sqlQuery": "{{ $fromAI(\"sql\",\"Thông tin sql để truy vấn nhầm phản hổi yêu cầu của người dùng\") }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleBigQueryTool",
+      "typeVersion": 2.1,
+      "position": [
+        -2512,
+        1120
+      ],
+      "id": "efc16e96-e450-4c44-97ad-aba2a8eb8997",
+      "name": "Execute a SQL query in Google BigQuery",
+      "credentials": {
+        "googleBigQueryOAuth2Api": {
+          "id": "F2UdM4fGR9lX8pnR",
+          "name": "Google BigQuery account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}-{{ $now.format('ddMMyyyy') }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -2944,
+        1088
+      ],
+      "id": "f8decc49-7a55-4972-8865-0e075d740408",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "ilftwzpQQF6Ubv4E",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Lấy DSKH bot không  trả lời",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TRA_CUU_GIA_THEO_TUYEN": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add_id": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Bắt keyword lưu vào sheet tưởng ứng",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bắt keyword lưu vào sheet tưởng ứng": {
+      "main": [
+        [
+          {
+            "node": "Thêm dòng sheet KH phản ánh",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "xin việc1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "xin việc1": {
+      "main": [
+        [
+          {
+            "node": "Thêm dòng sheet xin việc",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Thêm dòng ở sheet log tin nhắn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy DSKH bot không  trả lời": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Kiểm tra DSKH loại trừ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kiểm tra DSKH loại trừ": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query in Google BigQuery": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timeSavedPerExecution": 1
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "e2771358-d7b4-4d6d-bd7c-e37390dfab94",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2025-10-17T06:01:27.391Z",
+      "updatedAt": "2025-10-17T06:01:27.391Z",
+      "role": "workflow:owner",
+      "workflowId": "rnhDaS0UShr6YZmu",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
