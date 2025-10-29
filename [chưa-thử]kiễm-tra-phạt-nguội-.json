@@ -1,0 +1,300 @@
+{
+  "createdAt": "2025-10-27T15:27:15.355Z",
+  "updatedAt": "2025-10-28T00:18:33.000Z",
+  "id": "5CvpFUVVNi9R54qq",
+  "name": "[CHƯA THỬ]Kiễm tra phạt nguội",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        80,
+        320
+      ],
+      "id": "9086ee25-6e2e-4444-a2cd-3b04c1187d6a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.csgt.vn/?mod=contact&task=tracuu_post&ajax",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Cookie",
+              "value": "={{ $('Lấy captcha').item.json.headers['set-cookie'][0] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "BienKS",
+              "value": "={{ $('Thông tin xe tra cứu').item.json.BienSoXe }}"
+            },
+            {
+              "name": "Xe",
+              "value": "={{ $('Thông tin xe tra cứu').item.json.LoaiXe }}"
+            },
+            {
+              "name": "captcha",
+              "value": "={{ $json.content }}"
+            },
+            {
+              "name": "ipClient",
+              "value": "=9.9.9.91"
+            },
+            {
+              "name": "cUrl",
+              "value": "=1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1264,
+        320
+      ],
+      "id": "53bef27b-55a0-4303-9d2b-c53d0267538a",
+      "name": "Call link get result"
+    },
+    {
+      "parameters": {
+        "content": "## Ghi Chú\n#Mã Loại Xe\n- Nếu là Ô TÔ thì MaLoaiXe=1\n- Nếu là XE MÁY thì MaLoaiXe=2\n- Nếu là XE MÁY ĐIỆN thì MaLoaiXe=3\n",
+        "height": 816,
+        "width": 2320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "4dfb45c6-7229-4249-b1a3-e3fa4e4f752e",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "jsCode": "\n\n// Get raw text from input\nconst text =$input.first().json.data\n// Remove extra newlines and parse JSON\nlet url = null;\ntry {\n  const cleanText = text.toString().trim();\n  const json = JSON.parse(cleanText);\n  url = json.href.replace(/\\\\\\//g, \"/\"); // fix escaped slashes\n} catch (err) {\n}\n\n// Return extracted URL\nreturn [{ url }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1552,
+        320
+      ],
+      "id": "eedf594d-4257-4a49-bceb-4df2c696091a",
+      "name": "ExtractUrl"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bc792cf3-94cb-47fa-957c-9af44d628fc4",
+              "name": "BienSoXe",
+              "value": "51K84072",
+              "type": "string"
+            },
+            {
+              "id": "f248c12f-2f0f-4d91-8169-bf9592a5b1df",
+              "name": "LoaiXe",
+              "value": "1",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        320
+      ],
+      "id": "8510f3f1-c099-45ee-acc0-b15f2a53d818",
+      "name": "Thông tin xe tra cứu"
+    },
+    {
+      "parameters": {
+        "url": "https://www.csgt.vn/lib/captcha/captcha.class.php",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        752,
+        320
+      ],
+      "id": "a5314983-cbd1-4572-aff8-0cbaf2e61d13",
+      "name": "Lấy captcha"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "extract text from this image.\nresponse only text extracted from image",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1008,
+        320
+      ],
+      "id": "21921e2e-a54a-4cfe-9376-75fb91309c26",
+      "name": "Giải captcha",
+      "credentials": {
+        "openAiApi": {
+          "id": "S7PDY5QIHfPcgTkT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "CUSTOM.puppeteer",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        512
+      ],
+      "id": "fc683768-50f4-4d89-8fcd-94475fd7519f",
+      "name": "Chụp màn hình"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Cookie",
+              "value": "={{ $('Lấy captcha').item.json.headers['set-cookie'][0] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1968,
+        320
+      ],
+      "id": "0cdb731e-b9d4-402f-b4ae-c95b402ab821",
+      "name": "Lấy html kết quả",
+      "disabled": true
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Thông tin xe tra cứu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call link get result": {
+      "main": [
+        [
+          {
+            "node": "ExtractUrl",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ExtractUrl": {
+      "main": [
+        [
+          {
+            "node": "Lấy html kết quả",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Thông tin xe tra cứu": {
+      "main": [
+        [
+          {
+            "node": "Lấy captcha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy captcha": {
+      "main": [
+        [
+          {
+            "node": "Giải captcha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Giải captcha": {
+      "main": [
+        [
+          {
+            "node": "Call link get result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "a7e2dcd5-0731-4bc0-97b2-2367377fe945",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-27T15:27:15.358Z",
+      "updatedAt": "2025-10-27T15:27:15.358Z",
+      "role": "workflow:owner",
+      "workflowId": "5CvpFUVVNi9R54qq",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
