@@ -1,0 +1,300 @@
+{
+  "createdAt": "2025-10-27T15:27:42.944Z",
+  "updatedAt": "2025-10-28T00:18:23.000Z",
+  "id": "9bxkSrXEnsmcjNfv",
+  "name": "[CHƯA THỬ]Create a YouTube Thumbnail",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Create youtube thumbnail",
+        "formDescription": "Help create a YouTube thumbnail\nRequirements:\n- One background image (size: 1280×720)\n- One avatar image (with background removed)\n- Include a hook text or catchy headline",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Background_Image",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Avatar_Image",
+              "fieldType": "file",
+              "requiredField": true
+            },
+            {
+              "fieldName": "avatar_width",
+              "fieldType": "hiddenField",
+              "fieldValue": "500"
+            },
+            {
+              "fieldName": "avatar_height",
+              "fieldType": "hiddenField",
+              "fieldValue": "700"
+            },
+            {
+              "fieldName": "backgroud_width",
+              "fieldType": "hiddenField",
+              "fieldValue": "1280"
+            },
+            {
+              "fieldName": "backgroud_height",
+              "fieldType": "hiddenField",
+              "fieldValue": "720"
+            },
+            {
+              "fieldLabel": "Your_Hook",
+              "placeholder": "Your Hook",
+              "requiredField": true
+            }
+          ]
+        },
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        16,
+        256
+      ],
+      "id": "0c41be11-4250-4dd8-9c48-2a43c2d2cb25",
+      "name": "On form submission",
+      "webhookId": "694bf0ca-f868-417e-98b0-f6df794076c1",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "operation": "resize",
+        "dataPropertyName": "Avatar_Image",
+        "width": "={{ $json[\"avatar_width\"] }}",
+        "height": "={{ $json.avatar_height }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        464,
+        256
+      ],
+      "id": "fe3fc684-4400-497e-9268-2d4e972355ac",
+      "name": "Resize Avatar "
+    },
+    {
+      "parameters": {
+        "operation": "resize",
+        "dataPropertyName": "=Background_Image",
+        "width": "={{ $json[\"backgroud_width\"] }}",
+        "height": "={{ $json.backgroud_height }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        240,
+        256
+      ],
+      "id": "e95dc0cf-58c0-423e-8501-39bd78739d78",
+      "name": "Rezise Background"
+    },
+    {
+      "parameters": {
+        "operation": "composite",
+        "dataPropertyName": "Background_Image",
+        "dataPropertyNameComposite": "Avatar_Image",
+        "positionX": "={{ $('Background_ImageInfo').item.json.size.width - $('Avatar_ImageInfo').item.json.size.width}}",
+        "positionY": "={{ $('Background_ImageInfo').item.json.size.height - $('Avatar_ImageInfo').item.json.size.height}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        256
+      ],
+      "id": "6bcf4401-1e09-4940-a50f-f3181bf7a28b",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "information",
+        "dataPropertyName": "Background_Image"
+      },
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        688,
+        256
+      ],
+      "id": "da2af6eb-10c7-4611-a6b9-e97c33fb42ae",
+      "name": "Background_ImageInfo"
+    },
+    {
+      "parameters": {
+        "operation": "information",
+        "dataPropertyName": "Avatar_Image"
+      },
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        912,
+        256
+      ],
+      "id": "8fa0011f-abc2-45db-adc6-faf258da0bcc",
+      "name": "Avatar_ImageInfo"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "dataPropertyName": "Background_Image",
+        "text": "={{ $('On form submission').item.json.Your_Hook }}",
+        "fontSize": 60,
+        "fontColor": "#E7E419",
+        "positionY": 100,
+        "lineLength": 25,
+        "options": {
+          "font": "/usr/share/fonts/truetype/msttcorefonts/Arial_Bold_Italic.ttf"
+        }
+      },
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        256
+      ],
+      "id": "ad72810b-cf37-4b76-be4b-450eb32c8d71",
+      "name": "Add Hook"
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "respondWith": "returnBinary",
+        "completionTitle": "Succes generate your thumnail",
+        "inputDataFieldName": "Background_Image",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.3,
+      "position": [
+        1584,
+        256
+      ],
+      "id": "439a4718-0004-4ace-bbea-5960e1279599",
+      "name": "Form",
+      "webhookId": "7b498f9b-55c2-4bac-86b7-f11c751e5b22"
+    },
+    {
+      "parameters": {
+        "content": "## Help Create a YouTube Thumbnail\n\n### Requirements\n- **Background image:** 1280 × 720 px  \n- **Avatar image:** Remove background  \n- **Hook text:** Add a catchy headline or short message\n",
+        "height": 192,
+        "width": 608
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "e8d156cc-d47c-4777-be69-b725767836ba",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Rezise Background",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resize Avatar ": {
+      "main": [
+        [
+          {
+            "node": "Background_ImageInfo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rezise Background": {
+      "main": [
+        [
+          {
+            "node": "Resize Avatar ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Add Hook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Background_ImageInfo": {
+      "main": [
+        [
+          {
+            "node": "Avatar_ImageInfo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Avatar_ImageInfo": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Hook": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "ec3df6da-d9a4-438a-8861-1cd023b8f6de",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-27T15:27:42.946Z",
+      "updatedAt": "2025-10-27T15:27:42.946Z",
+      "role": "workflow:owner",
+      "workflowId": "9bxkSrXEnsmcjNfv",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
