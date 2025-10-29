@@ -1,0 +1,234 @@
+{
+  "createdAt": "2025-10-25T07:00:01.382Z",
+  "updatedAt": "2025-10-28T15:28:22.000Z",
+  "id": "7Lav9ifPiIrenBvx",
+  "name": "Gửi mã khuyến mãi Zalo OA quan tâm",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        0
+      ],
+      "id": "9cac048b-ad28-45fb-bb3d-522ef69bfe66",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://openapi.zalo.me/v3.0/oa/user/getlist",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "data",
+              "value": "{\"offset\":0,\"count\":20,\"last_interaction_period\":\"TODAY\",\"is_follower\":\"true\"}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "FWMhNKl57tyx0Q5PICCSVpm4fLn8sMa_E72r1qssVKL87PK6HRvlHay4g64_lde-C2c3IW2lHGyY5uTRKh5S1dOMgtzqf45JMoUTTr-WSb1r19OFLQPBHN0KyoTEq4S6H46LPdl6V4fK0QCIVeDURdK7X3TcirrzI2wbFa-iV6bEDvvHJQPfFJusW4O0acK3S0YQN5wuBXz7Fz5lDguO5YGN_ZixYnW3DIxDNnoR9pmn9C5QCf0B6baAtq16a1OiTaxk0NpU34Pv7SuTN8GeKby6n0yWmG1S1MEx6mtVPbP_7vCJIurnVZLAlaP2msOZF0JQOYAGCaHLD_fdUPm1HtegtcTHi1y0PmwWRHY9620x8zjdAhCc4G4lwMS4XJi3CXpwU3FT8I4uN9y0DFLWJoHCZn1XPqRpZHLCs19x"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -32,
+        -96
+      ],
+      "id": "036777a4-ebaa-4467-9d9a-ec2064fcedf8",
+      "name": "Lấy ds quan tâm OA"
+    },
+    {
+      "parameters": {
+        "url": "https://openapi.zalo.me/v3.0/oa/user/detail",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "data",
+              "value": "={\"user_id\":\"{{ $json.user_id }}\"} "
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "FWMhNKl57tyx0Q5PICCSVpm4fLn8sMa_E72r1qssVKL87PK6HRvlHay4g64_lde-C2c3IW2lHGyY5uTRKh5S1dOMgtzqf45JMoUTTr-WSb1r19OFLQPBHN0KyoTEq4S6H46LPdl6V4fK0QCIVeDURdK7X3TcirrzI2wbFa-iV6bEDvvHJQPfFJusW4O0acK3S0YQN5wuBXz7Fz5lDguO5YGN_ZixYnW3DIxDNnoR9pmn9C5QCf0B6baAtq16a1OiTaxk0NpU34Pv7SuTN8GeKby6n0yWmG1S1MEx6mtVPbP_7vCJIurnVZLAlaP2msOZF0JQOYAGCaHLD_fdUPm1HtegtcTHi1y0PmwWRHY9620x8zjdAhCc4G4lwMS4XJi3CXpwU3FT8I4uN9y0DFLWJoHCZn1XPqRpZHLCs19x"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        528,
+        -128
+      ],
+      "id": "f9b9f15d-5e90-4dd2-a4b4-66da49202cac",
+      "name": "Lấy ds quan tâm OA1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data.users",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        304,
+        -160
+      ],
+      "id": "668ea99b-7fae-44cc-a0b4-8fc48b892177",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "url": "https://openapi.zalo.me/v3.0/oa/user/detail",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "data",
+              "value": "={\"user_id\":\"393680199261278909\"} "
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "FWMhNKl57tyx0Q5PICCSVpm4fLn8sMa_E72r1qssVKL87PK6HRvlHay4g64_lde-C2c3IW2lHGyY5uTRKh5S1dOMgtzqf45JMoUTTr-WSb1r19OFLQPBHN0KyoTEq4S6H46LPdl6V4fK0QCIVeDURdK7X3TcirrzI2wbFa-iV6bEDvvHJQPfFJusW4O0acK3S0YQN5wuBXz7Fz5lDguO5YGN_ZixYnW3DIxDNnoR9pmn9C5QCf0B6baAtq16a1OiTaxk0NpU34Pv7SuTN8GeKby6n0yWmG1S1MEx6mtVPbP_7vCJIurnVZLAlaP2msOZF0JQOYAGCaHLD_fdUPm1HtegtcTHi1y0PmwWRHY9620x8zjdAhCc4G4lwMS4XJi3CXpwU3FT8I4uN9y0DFLWJoHCZn1XPqRpZHLCs19x"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        320,
+        80
+      ],
+      "id": "9bb191cd-63c2-4554-aa54-36f827bdf79f",
+      "name": "Lấy thông tin người dùng"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openapi.zalo.me/v3.0/oa/message/transaction",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "wsanCzpNI3VkRJittz5BD-beFpBVomvxetCA0zUz0dZWO3ejeDeoIyazF0Afv1z2o2ij0VdE2cQiB0m2s-zyPhW5LGNPs2Tckn4pFkhnB7cwIGL-tFSa7BnECKB8Yo82WKmAIB2L3ZI5K0TXqBiU6hfvDsFnlYWuXW0gKi_vA0-UE0bQtSOTBxm1P4oBoaaBkYLiITJGG16L1pWMtAS_Qx1l2WV2bnXOadbkElA_UJwSL516qx1p9xnKPKFfesT7f4rD9DgKQo-lSdie-Sv1BQSlQYhlbcn-Wr9W7V3eQdIp8WS5rVyVTR0d4ZNum2C_ZnatGUIiCoQMK3vifUGCQDCXDJYVun9EsYCQIwQ34Z3zGYTCY8jKERbpLrptctmSbIvNTUZsI12bIp1wxe4M6f1x05_wm0Kh18r0CzlAHJC"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"recipient\": {\n    \"user_id\": \"393680199261278909\"\n  },\n  \"message\": {\n    \"attachment\": {\n      \"type\": \"template\",\n      \"payload\": {\n        \"template_type\": \"transaction_event\",\n        \"language\": \"VI\",\n        \"elements\": [\n          {\n            \"type\": \"header\",\n            \"content\": \"Tặng mã giám giá khi đi Taxi điện Nam Thắng\",\n            \"align\": \"center\"\n          },\n          {\n            \"type\": \"text\",\n            \"align\": \"left\",\n            \"content\": \"Cảm ơn Anh/Chị đã ủng hộ dịch vụ Taxi điện Nam Thắng <br> Công ty xin tặng Quý khách mã giảm giá thông tin như sau:\"\n          },\n          {\n            \"type\": \"table\",\n            \"content\": [\n              {\n                \"value\": \"F-01332973223\",\n                \"key\": \"Mã khách hàng\"\n              },\n              {\n                \"style\": \"yellow\",\n                \"value\": \"NT20k\",\n                \"key\": \"Mã giảm giá:\"\n              },\n              {\n                \"value\": \"20.000đ\",\n                \"key\": \"Giá trị voucher\"\n              }\n            ]\n          },\n          {\n            \"type\": \"text\",\n            \"align\": \"center\",\n            \"content\": \"📱Lưu ý: Áp dụng cho cuốc xe có trên 50.000!\"\n          }\n        ],\n        \"buttons\": [\n\n          {\n            \"title\": \"Tải App đặt xe\",\n                        \"payload\": {\n                            \"url\": \"https://taxinamthang.vn/taiapp\"\n                        },\n                        \"type\": \"oa.open.url\"\n          }\n        ]\n      }\n    }\n  }\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        608,
+        80
+      ],
+      "id": "fc975111-9c9d-445a-91db-4e1286e60e15",
+      "name": "Gửi mã KM cho người dùng"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        []
+      ]
+    },
+    "Lấy ds quan tâm OA": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy ds quan tâm OA1": {
+      "main": [
+        []
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Lấy ds quan tâm OA1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy thông tin người dùng": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "fd768753-ac98-4e72-b546-4569fd15956a",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-25T07:00:01.386Z",
+      "updatedAt": "2025-10-25T07:00:01.386Z",
+      "role": "workflow:owner",
+      "workflowId": "7Lav9ifPiIrenBvx",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": [
+    {
+      "createdAt": "2025-10-28T15:26:45.377Z",
+      "updatedAt": "2025-10-28T15:26:52.169Z",
+      "id": "NTEokQCUjyBsQIW3",
+      "name": "Zalo OA"
+    }
+  ]
+}
