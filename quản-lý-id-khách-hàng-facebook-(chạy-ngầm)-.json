@@ -1,0 +1,296 @@
+{
+  "createdAt": "2025-10-18T03:44:36.955Z",
+  "updatedAt": "2025-10-27T00:28:59.000Z",
+  "id": "ggnxQ9CS8L4EgObk",
+  "name": "Quản lý id Khách hàng Facebook (chạy ngầm)",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"psid\":\"thông tin ID của user\",\n  \"name\":\"Thông tin tên của user\"\n}"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        112
+      ],
+      "id": "b6af02f8-adc3-4be9-ae02-7e67406e0526",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b234a91e-3ea2-4025-b676-b9c9ce5f4627",
+              "name": "check",
+              "value": "={{$('Check trùng ID').item.json.isEmpty()}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        112
+      ],
+      "id": "f5591b37-9963-423c-821e-09d3652567fc",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "16mGZZNAQ9iLQRuCIYZ7Qab2iQGEwoZJdbFYwu1GxPds",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Danh sách khách hàng",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16mGZZNAQ9iLQRuCIYZ7Qab2iQGEwoZJdbFYwu1GxPds/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "PSID",
+              "lookupValue": "={{ $json.psid }}"
+            },
+            {
+              "lookupColumn": "Tên",
+              "lookupValue": "={{ $json.name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        320,
+        112
+      ],
+      "id": "55b584f2-92a1-4069-84db-dcdac937fabb",
+      "name": "Check trùng ID",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "18e2500b-5089-4f3e-8520-bbc32c4862a5",
+              "leftValue": "={{ $json.check }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        736,
+        112
+      ],
+      "id": "e6815044-11b8-4055-94f3-9638ac322ea1",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "16mGZZNAQ9iLQRuCIYZ7Qab2iQGEwoZJdbFYwu1GxPds",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Danh sách khách hàng",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16mGZZNAQ9iLQRuCIYZ7Qab2iQGEwoZJdbFYwu1GxPds/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ngày tạo": "={{$now.format('dd/MM/yyyy')}}",
+            "PSID": "={{ $('When Executed by Another Workflow').item.json.psid.toString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Ngày tạo",
+              "displayName": "Ngày tạo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "PSID",
+              "displayName": "PSID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tên",
+              "displayName": "Tên",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        944,
+        16
+      ],
+      "id": "b740a36b-874b-47cc-a795-fc0772558303",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        944,
+        208
+      ],
+      "id": "2156fcfb-0b29-40fc-b576-7d46c37b5f99",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "content": "Thêm ID Khách hàng Facebook",
+        "height": 352,
+        "width": 1168
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "89d7a108-9a26-4018-916e-9bedd1964dc6",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Check trùng ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check trùng ID": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "95f3bb18-2545-4998-9cfb-c836878bbc7d",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-18T03:44:36.959Z",
+      "updatedAt": "2025-10-18T03:44:36.959Z",
+      "role": "workflow:owner",
+      "workflowId": "ggnxQ9CS8L4EgObk",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
