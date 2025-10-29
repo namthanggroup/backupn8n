@@ -1,0 +1,2214 @@
+{
+  "createdAt": "2025-10-17T04:03:33.106Z",
+  "updatedAt": "2025-10-29T02:31:18.000Z",
+  "id": "osNNjEUOiurM9RWG",
+  "name": "Chatbot Zalo OA + Refresh Token",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Tách trường thông tin').item.json.message ||$('Tách trường thông tin').item.json.type_message}}",
+        "options": {
+          "systemMessage": "=##Vai trò\nBạn là trợ lý ảo và chuyên viên chăm sóc khách hàng của Taxi điện Nam Thắng.\nBạn am hiểu về ngành vận tải hành khách bằng taxi, đặc biệt là dịch vụ Taxi điện giá rẻ Nam Thắng.\nNhiệm vụ chính của bạn là tư vấn dịch vụ, hỗ trợ khách hàng, và trả lời nhanh – chính xác – thân thiện mọi câu hỏi liên quan đến dịch vụ Taxi điện Nam Thắng.\n\n##Quy tắc hội thoại\n- Trước khi đưa ra phản hồi, luôn luôn gọi công cụ `add_id` đầu tiên để kiểm tra và thêm thông tin của user\n1.Tin nhắn mở đầu:\n- “Dạ em chào anh/chị, em xin phép hỗ trợ mình ạ.”\n- Luôn mở đầu thân thiện, xưng em, gọi khách là anh/chị.\n2.Cách phản hồi:\n- Câu trả lời Không quá 1000 ký tự\n- Ngắn gọn, dễ đọc, có thể xuống dòng hoặc dùng dấu “-” hoặc “+” để tách ý.\n- Nếu chưa hiểu câu hỏi:“Dạ em chưa rõ ý anh/chị, mình có thể nói kỹ hơn để em hỗ trợ tốt hơn nha.”\n\n##Nhiệm vụ chính\n1. Tư vấn dịch vụ Taxi điện Nam Thắng\n- Giới thiệu dịch vụ taxi điện Nam Thắng là taxi điện giá rẻ, các gói cước hợp đồng, giá cước theo đồng hồ, tuyến cố định.\n- Hỗ trợ khách hàng tra cứu giá hợp đồng (>20km), giá tuyến cố định/chiến lược, hoặc giá tham khảo theo đồng hồ.\nỏi nhỏ hơn 20km thì hỏi Khách ở tỉnh nào để gửi bảng giá đồng hồ cho Khách hàng\n2. Hỗ trợ quy trình chăm sóc khách hàng\n- Hướng dẫn khách đặt xe, hủy xe, phản ánh, xin việc, xuất hóa đơn...\n- Với yêu cầu phức tạp hoặc cần xử lý trực tiếp, chuyển khách hàng đến tổng đài hoặc hotline tương ứng.\n3. Sử dụng công cụ hỗ trợ\n- `Big Query`: Dùng để truy vấn SQL, trích xuất data trên nền tảng  Big Query của Google\n- `Calculator`: Tính toán chi phí cuốc xe, hợp đồng.\n- `Date & time`: Xem ngày giờ hiện tại.\n- `add_id`: Thêm ID khách hàng trước khi phản hồi.\n4. Sử dụng Google Sheet làm data tư vấn Khách hàng\n- TRA_CUU_GIA_HD_THEO_TUYEN: Khi khách hàng hỏi giá đi các bệnh viện, sân bay ở Cần Thơ và TP.HCM, Sài Gòn\n- FAQ: câu hỏi thường găp như đặt xe, hủy xe, xin việc, xuất hóa đơn, xin số điện thoại tổng đài, khiếu nại, phản ánh\n4.Không được dùng:\n- Markdown (như bold, [Tên](URL) hoặc …)\n- Ký tự *, “, hoặc **\n- Khi gửi link, chỉ viết dạng văn bản thuần:\nhttps://taxinamthang.vn  \nhttps://datxezalo.taxinamthang.vn  \nhttps://taxinamthang.vn/taiapp\n\n##Giải đáp các câu hỏi thường gặp, tra cứu giá và quy tắc tư vấn\n1. Giá hợp đồng thường: Khi khách hàng hỏi giá theo km trên >=20km - 1 chiều hoặc >=40km - 2 chiều thì luôn luôn sử dụng công cụ `Big Query` để truy vấn dữ liệu trong database và phản hồi người dùng\nTable ID**: eco-tape-471516-s5.gia_hop_dong_thuong.TRA_CUU_GIA_HD\n- Đây là bảng cấu trúc dữ liệu:\nso_km_1c: Số km 1 chiều (>=20km và <=800km)\nso_km_2c: Số km 2 chiều (>=40km và <=1600km)\ngia_1c_5cho: Giá 1 chiều\ngia_2c_5cho: Giá 2 chiều\nthoigian_cho_4cho: Thời gian chờ miễn phí khi đi 2 chiều\n- Hỏi kĩ số km khách hàng cung cấp là 1 chiều hay 2 chiều\n- Nếu khách không rõ km → hướng dẫn Google Maps.\n- phản hồi rõ thông tin bao gồm số km, số chiều đi, số tiền và giờ chờ \n- Thời gian chờ: Lộ trình 1 chiều chỉ có 1 tiếng chờ miễn phí, 2 chiều thì lấy dữ liệu thoigian_cho_4cho\n3. Giá hợp đồng chiến lược, tuyến cố định:khi khách hàng hỏi giá đi bệnh viện, sân bay ở TP.HCM,Sài Gòn, Cần Thơ thì luôn luôn truy xuất vào sheet TRA_CUU_GIA_HD_THEO_TUYEN\n- Hỏi khách điểm đi – điểm đến.\n- Chỉ phản hồi những lộ trình có trong sheet.\n4. Quy tắc chung khi tư vấn giá hợp đồng:\n- Lộ trình 1 chiều chỉ có 1 tiếng chờ miễn phí.\n- Giá chưa bao gồm phí cầu đường, phà, bến bãi.\n- Quá 1 tiếng chờ miễn phí → phụ thu 50.000đ/giờ.\n3. Giá cước đồng hồ (theo tỉnh)\n- Cung cấp giá tham khảo, không báo tổng tiền chính xác.\nRạch Giá: \n- Mở cửa cho 0,6km: 9.000đ/0,6km \n- từ Km tiếp theo - 20km : 12.000đ/km \n- Từ km 21 - km 51: 10,000đ/km\nAn Giang: \n- Mở cửa cho 0,6km: 5.000đ/0,6km\n- từ Km tiếp theo - 20km : 12.000đ/km\n- Từ km 21 - km 51: 10.000đ/km\nCà Mau:\n- Mở cửa cho 0,6km: 5.000đ/0,6km \n- từ Km tiếp theo - 20km : 11.500đ/km \n- Từ km 21 - km 51: 9,500đ/km\nBạc Liêu,Sóc Trăng, Hậu Giang, Cần Thơ, Bạc Liêu, Vĩnh Long, Hà Tiên\n- Mở cửa cho 1km : 20.000đ \n- từ Km tiếp theo - 20km : 12.000đ \n- Từ km 21 - km 51 : 9.500đ\n\nCách tính giá cuốc xe theo đồng hồ tham khảo, áp dụng cho tỉnh Rạch Giá, An Giang, Cà Mau:\nví dụ 1: khách đi 9km là 12.000 x 9 = 108.000\nví dụ 2: khách đi 1km là 12.000 x 1 = 12.000\nví dụ 3: khách đi 22km là (12.000 x 20) +(10.000 *2)= 240.000 + 20.000 = 260.000\n\nLoại xe: Hiện chỉ có xe 4 chỗ, chưa có xe 7 chỗ.\n\n##Câu hỏi thường gặp (FAQ)\nTình huống - Phản hồi gợi ý\n1. Hủy xe:\nPhản hồi gợi ý:\tDạ em là trợ lý ảo nên không hủy xe được ạ. Anh/chị vui lòng gọi tổng đài để được hỗ trợ ngay nhé: (cung cấp số tổng đài theo khu vực).\n2. Xin việc / Ứng tuyển tài xế:\nPhản hồi gợi ý:\tDạ anh/chị cho em xin họ tên, số điện thoại và khu vực muốn ứng tuyển nha hoặc  liên hệ hotline tuyển dụng 0916664160 hoặc gửi mail namthanggroup2021@gmail.com\n3. Đặt xe\nPhản hồi gợi ý: Dạ để đặt xe nhanh nhất, anh/chị có thể: \n-  Tải app tại: https://taxinamthang.vn/taiapp\n- Đặt qua Zalo: https://datxezalo.taxinamthang.vn\n- Gọi tổng đài Taxi điện Nam Thắng ạ.\n4. Xuất hóa đơn Taxi Nam Thắng\nPhản hồi gợi ý:\tDạ được ạ. Anh/chị nhờ tài xế in bill và cung cấp thông tin cho kế toán công ty (có thể nhờ tài xế hỗ trợ hoặc gọi tổng đài).\n5. Xuất hóa đơn XanhSM\nPhản hồi gợi ý:\tDạ nếu anh/chị chọn xuất hóa đơn khi đặt xe, kế toán sẽ tự động xuất vào cuối ngày ạ.\n6. Khi khách hàng hỏi Số điện thoại tổng đài đặt xe thì cung cấp SĐT theo khu vực, mỗi tỉnh là số điện thoại riêng,\n- Rạch Giá: 02973 69 69 69\n– Phú Quốc  02973 75 75 75/\n– Cà Mau: 02903 56 56 56 /\n– An Giang: 02973 56 56 56/\n– Hậu Giang: 02973 95 95 95 /\n– Sóc Trăng: 02913 69 69 69 /\n- Vĩnh Long: 02913 59 59 59/\n– Bạc Liêu 02913 75 75 75 /\n- Cần Thơ: *6869(Nhớ bấm dấu sao phía trước)  /\n- Hà Tiên: *5656 (Nhớ bấm dấu sao phía trước)\n7. Khiếu nại / Phản ánh\nPhản hồi gợi ý:\tDạ em xin lỗi vì sự bất tiện ạ. Anh/chị vui lòng cung cấp mã chuyến, số điện thoại đặt xe, tỉnh và ngày đi, em sẽ ghi nhận và chuyển cho bộ phận CSKH xử lý ngay ạ.\n8. Khen dịch vụ\nPhản hồi gợi ý:\tDạ em cảm ơn anh/chị nhiều ạ, rất vui khi được phục vụ! Mong anh/chị tiếp tục ủng hộ Taxi điện Nam Thắng nha 🚖\n\nCâu 10: Taxi điện giá rẻ Nam Thắng\nTaxi điện Nam Thắng với gần 1.500 xe cùng đội ngũ nhân lực chuyên nghiệp, chúng tôi tự hào là đơn vị tiên phong đưa mô hình taxi điện giá rẻ phủ sóng 10 khu vực trọng điểm tại miền Tây.\n\n##Giọng điệu & phong cách phản hồi\n- Thân thiện, lịch sự, dễ hiểu.\n- Có thể thêm emoji nhẹ nhàng như 🚖📱☎️ để tin nhắn gần gũi hơn.\n- Không nói quá dài; tránh dùng thuật ngữ kỹ thuật.\n- Trọng tâm là giúp khách hiểu nhanh, đặt xe dễ, phản hồi rõ.\n\n##Kênh & trang web hỗ trợ\nWebsite: https://taxinamthang.vn - https://taxinamthang.com \nĐặt xe qua Zalo: https://datxezalo.taxinamthang.vn\nTải ứng dụng: https://taxinamthang.vn/taiapp"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        752,
+        928
+      ],
+      "id": "76a0fc08-9eb5-4e28-bd0b-ced6bc48a5b4",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        512,
+        1136
+      ],
+      "id": "b6273139-dce3-4a0f-b5c5-671159d6e7a8",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "h8uMGM40rjJEezE6",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        768,
+        1168
+      ],
+      "id": "593483ed-3611-444a-a69a-30e6f0456b20",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $now }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTimeTool",
+      "typeVersion": 2,
+      "position": [
+        864,
+        1168
+      ],
+      "id": "14ec63dd-4508-4f91-9cd3-d8d4847750f6",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Tách trường thông tin').item.json.id_user }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        656,
+        1152
+      ],
+      "id": "4e0b4792-30ce-4cff-a6b4-6df072ae9388",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "ilftwzpQQF6Ubv4E",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1i0ZV-0ZBUF0j5QWW1ag3boWHjFWM6XJ3Zn-NKriGeFo",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1526269808,
+          "mode": "list",
+          "cachedResultName": "TRA_CUU_GIA_THEO_TUYEN",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1i0ZV-0ZBUF0j5QWW1ag3boWHjFWM6XJ3Zn-NKriGeFo/edit#gid=1526269808"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        1280,
+        1120
+      ],
+      "id": "7f163ae4-c98b-4912-901e-191c47e4f574",
+      "name": "TRA_CUU_GIA_THEO_TUYEN",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "530b6807-6490-4abe-ba28-cbea19354e7d",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -928,
+        752
+      ],
+      "id": "5d7c0cb8-f3ff-4f1c-9746-174f7a4f2ecd",
+      "name": "Webhook",
+      "webhookId": "530b6807-6490-4abe-ba28-cbea19354e7d"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1446048987,
+          "mode": "list",
+          "cachedResultName": "Token Zalo OA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=1446048987"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1232,
+        928
+      ],
+      "id": "b802f7b1-1a47-4126-831b-33eca270a38e",
+      "name": "Token Zalo OA",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7a78f981-c36d-44b9-b5a2-858b99819700",
+              "name": "access_token",
+              "value": "={{ $json[\"access_token\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "a566b993-5e43-4010-831f-3eff6279c744",
+              "name": "refresh_token",
+              "value": "={{ $json[\"refresh_token\"]}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        256,
+        0
+      ],
+      "id": "877e9293-34ac-4fec-a929-bc69ddc1b586",
+      "name": "Edit Fields1",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "jsCode": "// Lấy dữ liệu gốc từ input\nconst raw =$input.first().json.data;\n\n// Nếu dữ liệu gốc đang là string (chuỗi JSON), parse lại\nconst data = (typeof raw === 'string') ? JSON.parse(raw) : raw;\n\n// Lấy error_name nếu có\nconst accessToken = data.access_token || null;\nconst refreshToken = data.refresh_token || null;\n\n// Trả về kết quả\nreturn [\n  {\n    json: {\n      access_token: accessToken,\n      refresh_token: refreshToken,\n      original: data   // giữ luôn bản gốc để kiểm tra\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        0
+      ],
+      "id": "5eee9d49-998f-4faf-a8f2-94a7b0ac6736",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        0
+      ],
+      "id": "e4c58507-295b-4bce-9f68-02cd3a6c30aa",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1446048987,
+          "mode": "list",
+          "cachedResultName": "Token Zalo OA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=1446048987"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Access token": "={{ $json.access_token }}",
+            "Refresh Token": "={{ $json.refresh_token }}",
+            "App_id": "4333976733510324462"
+          },
+          "matchingColumns": [
+            "App_id"
+          ],
+          "schema": [
+            {
+              "id": "App_id",
+              "displayName": "App_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Secret key",
+              "displayName": "Secret key",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Access token",
+              "displayName": "Access token",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Refresh Token",
+              "displayName": "Refresh Token",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        432,
+        0
+      ],
+      "id": "cf8bf79b-5e9b-4add-af2d-3c6ddac5f649",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://oauth.zaloapp.com/v4/oa/access_token",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "secret_key",
+              "value": "={{ $json['Secret key'] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "refresh_token",
+              "value": "={{ $json['Refresh Token'] }}"
+            },
+            {
+              "name": "app_id",
+              "value": "={{ $json.App_id }}"
+            },
+            {
+              "name": "grant_type",
+              "value": "refresh_token"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -80,
+        0
+      ],
+      "id": "3349651a-75ab-439d-b7dc-17da1afa5334",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "content": "Refresh Token OA lúc giữa đêm",
+        "height": 240,
+        "width": 1232
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -544,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "675b6fcd-1473-474d-b6c8-0dfb3e87c7a6",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f3251316-5ed6-492c-81ba-a64f55ec1360",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "phản ánh",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "6154e508-1f19-48b5-b73c-c985fb0c271b",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "khiếu nại",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "c87d33d0-d418-4177-b708-1e10d81511f8",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "xin lỗi",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1072,
+        736
+      ],
+      "id": "5c45317d-0ed1-41d9-b727-e5e1736674d0",
+      "name": "Nếu khách phản ánh hoặc không"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1742473571,
+          "mode": "list",
+          "cachedResultName": "KH phản ánh",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=1742473571"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ngày gửi": "={{ $now.toFormat(\"dd/MM/yyyy HH:mm\") }}\n",
+            "User Zalo": "={{ $('Webhook').item.json.body.sender.id }}",
+            "Tin nhắn User": "={{ $('Webhook').item.json.body.message.text }}",
+            "Output AI": "={{ $json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Ngày gửi",
+              "displayName": "Ngày gửi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "User Zalo",
+              "displayName": "User Zalo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tin nhắn User",
+              "displayName": "Tin nhắn User",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Output AI",
+              "displayName": "Output AI",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1376,
+        544
+      ],
+      "id": "25bfd628-8aed-4739-af3b-da45275628df",
+      "name": "Thêm dòng sheet KH phản ánh",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1136574668,
+          "mode": "list",
+          "cachedResultName": "Log Message Zalo OA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=1136574668"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ngày gửi": "={{ $now.toFormat(\"dd/MM/yyyy HH:mm\") }}",
+            "User Zalo": "={{ $('Webhook').item.json.body.sender.id }}",
+            "Tin nhắn User": "={{ $('Webhook').item.json.body.message.text }}",
+            "Output AI": "={{ $json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Ngày gửi",
+              "displayName": "Ngày gửi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "User Zalo",
+              "displayName": "User Zalo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tin nhắn User",
+              "displayName": "Tin nhắn User",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Output AI",
+              "displayName": "Output AI",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1376,
+        736
+      ],
+      "id": "da86f8bc-0aa4-4ca4-b9f9-61486dc4c1a3",
+      "name": "Thêm dòng ở sheet log tin nhắn",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openapi.zalo.me/v3.0/oa/message/cs",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $json['Access token'] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"recipient\": {\n    \"user_id\": \"{{ $('Webhook').item.json.body.sender.id }}\"\n  },\n  \"message\": {\n      \"text\": {{ $('AI Agent').item.json.output.toJsonString() }}\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1488,
+        928
+      ],
+      "id": "4a62e088-747e-4b7e-9051-8e93a23d6cdb",
+      "name": "Phản hồi tin nhắn cho user"
+    },
+    {
+      "parameters": {
+        "description": "Gọi công cụ này để thêm thông tin KH vào google sheet",
+        "workflowId": {
+          "__rl": true,
+          "value": "jW3RjGxT0ADM4oWm",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/jW3RjGxT0ADM4oWm",
+          "cachedResultName": "Quản lý id Khách hàng Zalo"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Tách trường thông tin').item.json.id_user }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        992,
+        1152
+      ],
+      "id": "fae75f0c-53a5-4df5-b3c1-04f27a85629d",
+      "name": "add_id"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 105345884,
+          "mode": "list",
+          "cachedResultName": "Danh sách khách hàng",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=105345884"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.data.user_id }}",
+            "Tên": "={{ $json.data.display_name }}",
+            "SĐT_KH": "={{ $json.data.shared_info.phone }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "Ngày tạo",
+              "displayName": "Ngày tạo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Tên",
+              "displayName": "Tên",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "SĐT_KH",
+              "displayName": "SĐT_KH",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        336,
+        -288
+      ],
+      "id": "12fec562-f82e-49e5-9927-202003a577e4",
+      "name": "Update row in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://openapi.zalo.me/v3.0/oa/user/detail",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Get Token Zalo OA 1').item.json['Access token'] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "user_id",
+              "value": "={{ $json.ID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        144,
+        -288
+      ],
+      "id": "4c62b5ee-ffcc-45d9-a234-3fb55e8acd18",
+      "name": "Get info_user Zalo OA"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1446048987,
+          "mode": "list",
+          "cachedResultName": "Token Zalo OA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=1446048987"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -272,
+        0
+      ],
+      "id": "87d7ed3d-6da9-4ae8-a75b-88f18cc4de9f",
+      "name": "Get Token Zalo OA",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1446048987,
+          "mode": "list",
+          "cachedResultName": "Token Zalo OA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=1446048987"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -288,
+        -288
+      ],
+      "id": "ab0f5b78-bb0a-4772-804e-0c593efea900",
+      "name": "Get Token Zalo OA 1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 105345884,
+          "mode": "list",
+          "cachedResultName": "Danh sách khách hàng",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=105345884"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -80,
+        -288
+      ],
+      "id": "97618261-8d52-4633-837e-ece74813bcc1",
+      "name": "Get danh sách KH",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -464,
+        -288
+      ],
+      "id": "a07b9e30-3f0f-448a-81c6-145b52115429",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "content": "Cập nhật thông tin Khách hàng vào giữa đêm",
+        "height": 240,
+        "width": 1232
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -544,
+        -336
+      ],
+      "typeVersion": 1,
+      "id": "cad20c2a-1bba-4f0c-adb9-1e0016d030c5",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e6b22ae3-2f90-4189-b388-75198d9e537e",
+              "name": "id_user",
+              "value": "={{ $json.body.sender.id }}",
+              "type": "string"
+            },
+            {
+              "id": "766012d5-2975-49c1-a9d0-5437751f6063",
+              "name": "message",
+              "value": "={{ $json.body.message.text }}",
+              "type": "string"
+            },
+            {
+              "id": "015fa3ad-16fa-4a7a-8ee5-43bac94edca8",
+              "name": "type_message",
+              "value": "={{ $json.body.message.attachments[0].type }}",
+              "type": "string"
+            },
+            {
+              "id": "d384f5eb-379e-4e46-a08c-20c269b0c95d",
+              "name": "event_name",
+              "value": "={{ $json.body.event_name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -768,
+        752
+      ],
+      "id": "9c0e8e5a-742f-4baa-8c55-67a74651815d",
+      "name": "Tách trường thông tin"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1596588210,
+          "mode": "list",
+          "cachedResultName": "DS KH Chatbot không trả lời",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=1596588210"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -336,
+        752
+      ],
+      "id": "8d72ed73-5215-4c34-8f71-613b03f8a245",
+      "name": "Lấy DSKH bot không  trả lời",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "Zalo_ID"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        752
+      ],
+      "id": "b527130a-4d74-4293-8938-1b4e0e84240f",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1c6976d-fcc5-47f3-b28a-8448095dfd01",
+              "leftValue": "={{ $('Aggregate').first().json.Zalo_ID }}",
+              "rightValue": "={{ $('Tách trường thông tin').item.json.id_user }}",
+              "operator": {
+                "type": "array",
+                "operation": "contains",
+                "rightType": "any"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        64,
+        752
+      ],
+      "id": "bd19b299-5323-43a5-863c-c7316a52874c",
+      "name": "Kiểm tra DSKH loại trừ"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ed88c9b9-766a-43bb-acb4-19117342c6a7",
+              "leftValue": "={{ $json.merged_all }}",
+              "rightValue": "em là Trường CSKH",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2112,
+        928
+      ],
+      "id": "9e7eba64-5b24-48e5-8b29-12c9f1581245",
+      "name": "If2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2320,
+        1024
+      ],
+      "id": "3144a91d-4e07-4191-8892-dcee1a22f38e",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -480,
+        -512
+      ],
+      "id": "4607cf4f-5181-4c20-865e-5214926d6545",
+      "name": "Schedule Trigger2"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1596588210,
+          "mode": "list",
+          "cachedResultName": "DS KH Chatbot không trả lời",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=1596588210"
+        },
+        "startIndex": 3,
+        "numberToDelete": "={{ $json.row_number }}"
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        112,
+        -512
+      ],
+      "id": "1bbb46dd-9a23-4a6a-81bd-251878522779",
+      "name": "Delete rows or columns from sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        -512
+      ],
+      "id": "dd5b7404-61f0-45c2-be57-4b85ec828455",
+      "name": "Lấy số dòng cuối"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1596588210,
+          "mode": "list",
+          "cachedResultName": "DS KH Chatbot không trả lời",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=1596588210"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -304,
+        -512
+      ],
+      "id": "47217a85-7c6c-44ed-bb84-9a4b1e9dda11",
+      "name": "Lấy DSKH bot không  trả lời1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Xóa DSKH bot không trả lời vào giữa đêm",
+        "height": 240,
+        "width": 1232
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -544,
+        -592
+      ],
+      "typeVersion": 1,
+      "id": "e1f0428b-eac2-462e-99c1-c559ed06ebe1",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "url": "https://openapi.zalo.me/v2.0/oa/conversation",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "data",
+              "value": "={\"user_id\":{{ $json.data.user_id }},\"offset\":0,\"count\":5} "
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Token Zalo OA').item.json['Access token'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1696,
+        928
+      ],
+      "id": "b99c8c0f-c7da-4811-9918-69e9634b6b4d",
+      "name": "Lấy 5 tin nhắn gần nhất"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Function node - Run Once for All Items\nconst input = items[0].json;   // <-- thay $json bằng items[0].json\nconst data = input.data || [];\n\n// Lọc và sắp xếp\nconst texts = data\n  .filter(m => m.type === 'text' && m.message && m.message.trim() !== '')\n  .sort((a,b) => a.time - b.time);\n\n// Gộp tin nhắn\nconst merged_all = texts\n  .map(m => ` ${m.message.trim()}`)\n  .join('\\n\\n');\n\nreturn [{ json: { merged_all } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1904,
+        928
+      ],
+      "id": "d56a761d-6bbc-4f13-abf5-93a727379f2e",
+      "name": "Gộp 5 tin nhắn gần nhất"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        384,
+        1056
+      ],
+      "id": "3b0b2d7b-7ca8-41ad-8c0b-0161978bfb59",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "S7PDY5QIHfPcgTkT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "projectId": {
+          "__rl": true,
+          "value": "eco-tape-471516-s5",
+          "mode": "list",
+          "cachedResultName": "n8nproject",
+          "cachedResultUrl": "https://console.cloud.google.com/bigquery?project=eco-tape-471516-s5"
+        },
+        "sqlQuery": "{{ $fromAI(\"sql\",\"Thông tin sql để truy vấn nhầm phản hổi yêu cầu của người dùng\") }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleBigQueryTool",
+      "typeVersion": 2.1,
+      "position": [
+        1136,
+        1152
+      ],
+      "id": "9505e1f1-d87c-4165-847a-f2e693e3e826",
+      "name": "Execute a SQL query in Google BigQuery",
+      "credentials": {
+        "googleBigQueryOAuth2Api": {
+          "id": "F2UdM4fGR9lX8pnR",
+          "name": "Google BigQuery account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1596588210,
+          "mode": "list",
+          "cachedResultName": "DS KH Chatbot không trả lời",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=1596588210"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Zalo_ID": "={{ $('Phản hồi tin nhắn cho user').item.json.data.user_id }}"
+          },
+          "matchingColumns": [
+            "Zalo_ID"
+          ],
+          "schema": [
+            {
+              "id": "Zalo_ID",
+              "displayName": "Zalo_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2320,
+        832
+      ],
+      "id": "65a7a991-573d-4f76-866c-777afad7c85c",
+      "name": "Thêm ID vào sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f6ed68a5-9640-46da-9036-63d3a8a61156",
+              "leftValue": "={{ $('Tách trường thông tin').item.json.message.toNumber() }}",
+              "rightValue": 1000,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        496,
+        816
+      ],
+      "id": "d8e664e1-8ce4-4734-924e-30e46a49f561",
+      "name": "Nếu số >1000",
+      "notesInFlow": false,
+      "notes": "Nếu khách nhập số 1000 thì mới chuyển qua AI"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f6ed68a5-9640-46da-9036-63d3a8a61156",
+              "leftValue": "={{ $('Tách trường thông tin').item.json.message }}",
+              "rightValue": "^\\d+$",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        272,
+        912
+      ],
+      "id": "271ae5ba-2321-415d-8039-223bfe72ddc5",
+      "name": "Ktra tin nhắn có phải là số không",
+      "notes": "Nếu khách hàng gửi tin nhắn chỉ có số (tra cứu giá) thì k phản hồi"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0b75ebf5-30f4-4cbd-988d-f21f0a63d784",
+              "leftValue": "={{ $json.event_name }}",
+              "rightValue": "follow",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {
+          "ignoreCase": false
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -560,
+        768
+      ],
+      "id": "f0458c48-4272-4214-9099-c6aded7796b5",
+      "name": "Nếu không phải follow"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1446048987,
+          "mode": "list",
+          "cachedResultName": "Token Zalo OA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=1446048987"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -288,
+        992
+      ],
+      "id": "8a979af6-c5d0-4ac1-aff2-c70ebda23bab",
+      "name": "Token Zalo OA1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openapi.zalo.me/v3.0/oa/message/cs",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $json['Access token'] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"recipient\": {\n    \"user_id\": \"{{ $('Webhook').item.json.body.follower.id }}\"\n  },\n  \"message\": {\n      \"text\": \"🚖 Cảm ơn Anh/Chị đã quan tâm Taxi điện Nam Thắng!\\nDịch vụ taxi điện giá rẻ – tiết kiệm – thân thiện môi trường tại Miền Tây.\\n\\n🎁 Tải app và nhập mã giới thiệu \\\"nam thang\\\" để nhận ưu đãi lên đến 200.000đ.\\n🔗 Tải app: https://taxinamthang.vn/taiapp\\n\\n💬 Cần hỗ trợ? Em – trợ lý ảo Nam Thắng – luôn sẵn sàng ạ.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -32,
+        992
+      ],
+      "id": "39baf04d-a66e-469e-b2a8-bb057c9bf4a0",
+      "name": "Phản hồi tin nhắn cho user khi follow"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "857a762e-e324-4f9f-b203-381b17078b91",
+              "leftValue": "={{ $json.so_km_1c }}",
+              "rightValue": "={{ $('Tách trường thông tin').item.json.message.toNumber() }}",
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        640,
+        528
+      ],
+      "id": "51a7e840-91e7-479a-91f8-4437ec5d2a25",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1D0J65GcqATB8HdDclAvJDFvVdgn_ipjBfwGHdOmg6dk",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "TRA_CUU_GIA_HD",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D0J65GcqATB8HdDclAvJDFvVdgn_ipjBfwGHdOmg6dk/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        432,
+        528
+      ],
+      "id": "56d4b653-0bd7-4290-8aa7-508b72eb404b",
+      "name": "Sheet giá hợp đồng thường",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1446048987,
+          "mode": "list",
+          "cachedResultName": "Token Zalo OA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=1446048987"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        848,
+        528
+      ],
+      "id": "81a7ad54-51a6-497e-8410-af38f0ed0508",
+      "name": "Token Zalo OA2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openapi.zalo.me/v3.0/oa/message/cs",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $json['Access token'] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"recipient\": {\n    \"user_id\": \"{{ $('Tách trường thông tin').item.json.id_user }}\"\n  },\n  \"message\": {\n      \"text\": {{ $('Filter').item.json.show_4_cho.toJsonString() }}\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        528
+      ],
+      "id": "19251085-1333-4c9e-b026-a09cf60121d9",
+      "name": "Phản hồi tin nhắn cho user1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        0,
+        544
+      ],
+      "id": "a6204134-d6cf-47dd-8565-1e671a093c88",
+      "name": "No Operation, do nothing3"
+    },
+    {
+      "parameters": {
+        "content": "Tra cứu giá hợp đồng",
+        "height": 304,
+        "width": 912
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        336,
+        400
+      ],
+      "typeVersion": 1,
+      "id": "6d338427-3ef1-40d0-beec-b7d6b7888751",
+      "name": "Sticky Note3"
+    }
+  ],
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Token Zalo OA",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Nếu khách phản ánh hoặc không",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TRA_CUU_GIA_THEO_TUYEN": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Tách trường thông tin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Zalo OA": {
+      "main": [
+        [
+          {
+            "node": "Phản hồi tin nhắn cho user",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Token Zalo OA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nếu khách phản ánh hoặc không": {
+      "main": [
+        [
+          {
+            "node": "Thêm dòng sheet KH phản ánh",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Thêm dòng ở sheet log tin nhắn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Phản hồi tin nhắn cho user": {
+      "main": [
+        [
+          {
+            "node": "Lấy 5 tin nhắn gần nhất",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add_id": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get info_user Zalo OA": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Token Zalo OA": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Token Zalo OA 1": {
+      "main": [
+        [
+          {
+            "node": "Get danh sách KH",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get danh sách KH": {
+      "main": [
+        [
+          {
+            "node": "Get info_user Zalo OA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Get Token Zalo OA 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tách trường thông tin": {
+      "main": [
+        [
+          {
+            "node": "Nếu không phải follow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy DSKH bot không  trả lời": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Kiểm tra DSKH loại trừ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kiểm tra DSKH loại trừ": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ktra tin nhắn có phải là số không",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Thêm ID vào sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Lấy DSKH bot không  trả lời1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy số dòng cuối": {
+      "main": [
+        [
+          {
+            "node": "Delete rows or columns from sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy DSKH bot không  trả lời1": {
+      "main": [
+        [
+          {
+            "node": "Lấy số dòng cuối",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy 5 tin nhắn gần nhất": {
+      "main": [
+        [
+          {
+            "node": "Gộp 5 tin nhắn gần nhất",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gộp 5 tin nhắn gần nhất": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Execute a SQL query in Google BigQuery": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nếu số >1000": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sheet giá hợp đồng thường",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ktra tin nhắn có phải là số không": {
+      "main": [
+        [
+          {
+            "node": "Nếu số >1000",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nếu không phải follow": {
+      "main": [
+        [
+          {
+            "node": "Lấy DSKH bot không  trả lời",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Token Zalo OA1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Zalo OA1": {
+      "main": [
+        [
+          {
+            "node": "Phản hồi tin nhắn cho user khi follow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Token Zalo OA2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sheet giá hợp đồng thường": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Zalo OA2": {
+      "main": [
+        [
+          {
+            "node": "Phản hồi tin nhắn cho user1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timeSavedPerExecution": 1
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    },
+    "node:Schedule Trigger1": {
+      "recurrenceRules": []
+    },
+    "node:Schedule Trigger2": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "connection": "upgrade",
+            "host": "n8n.taxinamthang.com",
+            "content-length": "223",
+            "content-type": "application/json",
+            "user-agent": "ZaloWebhook",
+            "x-zevent-server": "OA OpenAPI",
+            "x-zevent-signature": "mac=bf59aa50357c30206236841c9cd11b2d4cef3a9c5ea0afe2bc9f2802535fcf48"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_name": "user_send_text",
+            "app_id": "635907464226302074",
+            "sender": {
+              "id": "393680199261278909"
+            },
+            "recipient": {
+              "id": "2937195321559469898"
+            },
+            "message": {
+              "text": "33",
+              "msg_id": "0340f38dbb27d17f8830"
+            },
+            "timestamp": "1761631874896"
+          },
+          "webhookUrl": "https://n8n.taxinamthang.com/webhook/530b6807-6490-4abe-ba28-cbea19354e7d",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "50269a37-b65b-4ada-9912-6807530e8778",
+  "triggerCount": 4,
+  "shared": [
+    {
+      "createdAt": "2025-10-17T04:03:33.116Z",
+      "updatedAt": "2025-10-17T04:03:33.116Z",
+      "role": "workflow:owner",
+      "workflowId": "osNNjEUOiurM9RWG",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
