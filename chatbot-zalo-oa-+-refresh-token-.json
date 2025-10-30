@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-10-17T04:03:33.106Z",
-  "updatedAt": "2025-10-29T02:31:18.000Z",
+  "updatedAt": "2025-10-30T06:37:56.000Z",
   "id": "osNNjEUOiurM9RWG",
   "name": "Chatbot Zalo OA + Refresh Token",
   "active": true,
@@ -1422,8 +1422,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        272,
-        912
+        256,
+        848
       ],
       "id": "271ae5ba-2321-415d-8039-223bfe72ddc5",
       "name": "Ktra tin nhắn có phải là số không",
@@ -1549,8 +1549,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        640,
-        528
+        752,
+        320
       ],
       "id": "51a7e840-91e7-479a-91f8-4437ec5d2a25",
       "name": "Filter"
@@ -1574,8 +1574,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        432,
-        528
+        592,
+        320
       ],
       "id": "56d4b653-0bd7-4290-8aa7-508b72eb404b",
       "name": "Sheet giá hợp đồng thường",
@@ -1605,8 +1605,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        848,
-        528
+        912,
+        320
       ],
       "id": "81a7ad54-51a6-497e-8410-af38f0ed0508",
       "name": "Token Zalo OA2",
@@ -1638,8 +1638,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1040,
-        528
+        1072,
+        320
       ],
       "id": "19251085-1333-4c9e-b026-a09cf60121d9",
       "name": "Phản hồi tin nhắn cho user1"
@@ -1658,17 +1658,108 @@
     {
       "parameters": {
         "content": "Tra cứu giá hợp đồng",
-        "height": 304,
+        "height": 464,
         "width": 912
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        336,
-        400
+        352,
+        256
       ],
       "typeVersion": 1,
       "id": "6d338427-3ef1-40d0-beec-b7d6b7888751",
       "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1446048987,
+          "mode": "list",
+          "cachedResultName": "Token Zalo OA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iuPm2Y33uEyLgpfRAOOZosHl4Q_fNt-4_9JqXt2kSY4/edit#gid=1446048987"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        512
+      ],
+      "id": "420be22f-a69e-4603-83ce-16edb21772b5",
+      "name": "Token Zalo OA3",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openapi.zalo.me/v3.0/oa/message/cs",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $json['Access token'] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"recipient\": {\n    \"user_id\": \"{{ $('Tách trường thông tin').item.json.id_user }}\"\n  },\n  \"message\": {\n      \"text\": \"Giá hợp đồng đường dài bên em từ 20km trở lên, Anh/Chị hãy nhập số từ 20 trở lên ạ ☺️☺️\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        832,
+        512
+      ],
+      "id": "df4babbc-183a-4ecc-84af-6176f511a855",
+      "name": "Phản hồi tin nhắn cho user2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "74a6e21d-7e97-4b17-8fc8-13761cf90968",
+              "leftValue": "={{ $('Tách trường thông tin').item.json.message.toNumber() }}",
+              "rightValue": 20,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        384,
+        336
+      ],
+      "id": "5b6988d7-d243-415d-afa4-032d2585f7b8",
+      "name": "Nếu số lớn hơn 20 thì true"
     }
   ],
   "connections": {
@@ -2055,7 +2146,7 @@
         ],
         [
           {
-            "node": "Sheet giá hợp đồng thường",
+            "node": "Nếu số lớn hơn 20 thì true",
             "type": "main",
             "index": 0
           }
@@ -2141,6 +2232,35 @@
           }
         ]
       ]
+    },
+    "Token Zalo OA3": {
+      "main": [
+        [
+          {
+            "node": "Phản hồi tin nhắn cho user2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nếu số lớn hơn 20 thì true": {
+      "main": [
+        [
+          {
+            "node": "Sheet giá hợp đồng thường",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Token Zalo OA3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -2199,7 +2319,7 @@
       }
     ]
   },
-  "versionId": "50269a37-b65b-4ada-9912-6807530e8778",
+  "versionId": "068c5654-b545-4df4-9489-b8881ab94053",
   "triggerCount": 4,
   "shared": [
     {
