@@ -1,0 +1,219 @@
+{
+  "createdAt": "2025-10-27T08:14:40.091Z",
+  "updatedAt": "2025-10-30T08:09:50.000Z",
+  "id": "eGlGwgJWtX8WdCqd",
+  "name": "Demo Upload Ảnh Zalo OA (binary đúng chuẩn)",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apyhub.com//processor/image/resize/url/file",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "width",
+              "value": "500"
+            },
+            {
+              "name": "height",
+              "value": "500"
+            },
+            {
+              "name": "height",
+              "value": "500"
+            },
+            {
+              "name": "auto_orientation",
+              "value": "false"
+            },
+            {
+              "name": "preserve_format",
+              "value": "true"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apy-token",
+              "value": "APY0CfUsmoIm4zmhfSIILqzf5ovXOVtMtNKjNh8bEXeTcXXnUSDzvYqGTV0KAovPK"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "https://m.yodycdn.com/products/hinhanhdoremon1_m2li5fg6ukia624wq58.jpg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -64,
+        176
+      ],
+      "id": "ed948c85-60a7-4217-817e-a92feb32a797",
+      "name": "Resize hình Facebook url1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openapi.zalo.me/v2.0/oa/upload/image",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "dAH0Gechg4QPe4f6YgshHfwbJaEAj_56cjje4yRA_7cgisOPzVxLIAMBLGBrxkfVjvrh9-VtrdUbe4qGzltAQQUxAIFPx8n9YgbkEFl5stgFjZmUoF2TPOM91Yp2ZU9mW_r-A_6AzNoGnHSQsBwi6h_4Cs7DfvKmWDbrHTomu4EH_s0MrVESV9gi7dVueRqmbyKgTzIZa765sm8tpg67NBBOO3cjgjjT_i1R1koN-tkzv641tuV41e7sHmtT_iDdiQjQ2zQXv4gAsMnKnQJDCwRhIaptiEXAZkKK4U-hX4wGtXnGtTMY0O7H7Ll6jxOiql5JAOV_wNVLYMqHm_lt4xoBRNIZtSXruxXU1wV5x07gdtnVeidV8BACN3xC-yHWlBH4DVoxxr-PjdOMzk_V5gEwJ7zXH2OyqJEEjgL2"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "18376267-2774-4995-8255-f6a090537fde",
+      "name": "Upload Image to Zalo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        320,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.imgur.com/3/image",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Client-ID {{clientId}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "type",
+              "value": "file"
+            },
+            {
+              "name": "title",
+              "value": "Simple upload"
+            },
+            {
+              "name": "description",
+              "value": "This is a simple image upload in Imgur"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "image",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        496,
+        320
+      ],
+      "id": "cb6f8fef-ad2b-4d7d-8cee-9e3e872ab11d",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        240,
+        144
+      ],
+      "id": "873bed9d-a8e9-48a2-8519-914c6d74de71",
+      "name": "Extract from File"
+    }
+  ],
+  "connections": {
+    "Resize hình Facebook url1": {
+      "main": [
+        [
+          {
+            "node": "Upload Image to Zalo",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Image to Zalo": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        []
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "f5988595-34c0-496a-a285-d183cb5c53f9",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-27T08:14:40.095Z",
+      "updatedAt": "2025-10-27T08:14:40.095Z",
+      "role": "workflow:owner",
+      "workflowId": "eGlGwgJWtX8WdCqd",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
