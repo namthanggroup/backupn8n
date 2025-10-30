@@ -1051,24 +1051,10 @@
   "staticData": {
     "node:Gmail Trigger": {
       "Gmail Trigger": {
-        "lastTimeChecked": 1761748076,
+        "lastTimeChecked": 1761814540,
         "possibleDuplicates": [
-          "19a305e5c8515dc0",
-          "19a2f9ad2af45e62",
-          "19a2f6263ceace48",
-          "19a2f5a9749a5990",
-          "19a2e2de30ad5103",
-          "19a2e227b2e67f09",
-          "19a2de98a38408fb",
-          "19a2ddc0c08525db",
-          "19a2ddc0a9572414",
-          "19a2dd1a8016cd7a",
-          "19a2dceed4338f52",
-          "19a2dcde856ad925",
-          "19a2dcc3865bbbc7",
-          "19a2c237a246b8a1",
-          "19a2c06eebf222f4",
-          "19a2b8c13a0252fe"
+          "19a345473ba8e3d3",
+          "19a3411c244c2ef5"
         ]
       }
     }
