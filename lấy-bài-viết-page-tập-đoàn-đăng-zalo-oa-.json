@@ -1,0 +1,258 @@
+{
+  "createdAt": "2025-10-27T08:14:40.091Z",
+  "updatedAt": "2025-11-02T15:58:32.000Z",
+  "id": "eGlGwgJWtX8WdCqd",
+  "name": "Lấy bài viết page Tập đoàn đăng Zalo OA",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apyhub.com//processor/image/resize/url/file",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "width",
+              "value": "500"
+            },
+            {
+              "name": "height",
+              "value": "500"
+            },
+            {
+              "name": "height",
+              "value": "500"
+            },
+            {
+              "name": "auto_orientation",
+              "value": "false"
+            },
+            {
+              "name": "preserve_format",
+              "value": "true"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apy-token",
+              "value": "APY0CfUsmoIm4zmhfSIILqzf5ovXOVtMtNKjNh8bEXeTcXXnUSDzvYqGTV0KAovPK"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "https://m.yodycdn.com/products/hinhanhdoremon1_m2li5fg6ukia624wq58.jpg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -64,
+        176
+      ],
+      "id": "ed948c85-60a7-4217-817e-a92feb32a797",
+      "name": "Resize hình Facebook url1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openapi.zalo.me/v2.0/oa/upload/image",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "dAH0Gechg4QPe4f6YgshHfwbJaEAj_56cjje4yRA_7cgisOPzVxLIAMBLGBrxkfVjvrh9-VtrdUbe4qGzltAQQUxAIFPx8n9YgbkEFl5stgFjZmUoF2TPOM91Yp2ZU9mW_r-A_6AzNoGnHSQsBwi6h_4Cs7DfvKmWDbrHTomu4EH_s0MrVESV9gi7dVueRqmbyKgTzIZa765sm8tpg67NBBOO3cjgjjT_i1R1koN-tkzv641tuV41e7sHmtT_iDdiQjQ2zQXv4gAsMnKnQJDCwRhIaptiEXAZkKK4U-hX4wGtXnGtTMY0O7H7Ll6jxOiql5JAOV_wNVLYMqHm_lt4xoBRNIZtSXruxXU1wV5x07gdtnVeidV8BACN3xC-yHWlBH4DVoxxr-PjdOMzk_V5gEwJ7zXH2OyqJEEjgL2"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "18376267-2774-4995-8255-f6a090537fde",
+      "name": "Upload Image to Zalo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        384,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openapi.zalo.me/v2.0/article/create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "WlOi9SLjk0c7yYOXnckx2O3t8YJ6SQ9TvPj01RnUWLUictrvgNg-1EwUGtEhPA8YylHeGEGLacwXn6u0hGJkGPoV1JYaTV58jwuL4hPn_a2rZZuPerNWMBwPUIdzG8r1sxvqDyvxgctTk4qo-MMd7jkiNLIRF84hfCrWSOaWf5cuqaCAeZIBKhhB4p_w5OrgqUz72TntW4NQdHGa-r_RTkU0DI70UUrJqBaACPnNv66XjXCyZMVERuk9Co6SU-vjkgSFGRXQmowQkLTIj2QuUkt-GnR1F8HSyj4TBzu0o7dxtGShlXhRGflYCo-01_f6iVWH5uOvsMc8pWGbompUSVZSG2BJ9xjFulLc6TrlYbIOjqGEfd6cUv7fPH6_BxvFcE1L9BbnlrEgg6OglsEWKvIzE2IGGlbeC7IehHl2SBKD"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"normal\",\n  \"title\": \"News\",\n  \"author\": \"News\",\n  \"cover\": {\n    \"cover_type\": \"photo\",\n    \"photo_url\": \"{{ $json.webContentLink }}\",\n    \"status\": \"show\"\n  },\n  \"description\": \"This is news\",\n  \"body\": [\n    {\n      \"type\": \"text\",\n      \"content\": \"This is news\"\n    },\n    {\n      \"type\": \"text\",\n      \"content\": \"This is news\"\n    }\n  ],\n  \"status\": \"show\",\n  \"comment\": \"show\"\n} ",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        416,
+        256
+      ],
+      "id": "cb6f8fef-ad2b-4d7d-8cee-9e3e872ab11d",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        576,
+        80
+      ],
+      "id": "873bed9d-a8e9-48a2-8519-914c6d74de71",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        688,
+        256
+      ],
+      "id": "43ca3acb-266a-4096-85bd-f1248d5b0283",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "name": "test",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1AcmhXfEqW9TzVmbXtBZIiHdMwK5Yz1D5",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        144,
+        240
+      ],
+      "id": "687ccfe7-f269-4c6b-bc88-e3d02027164c",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "kyBduUUKSGEf7fek",
+          "name": "Google Drive account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Resize hình Facebook url1": {
+      "main": [
+        [
+          {
+            "node": "Upload Image to Zalo",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Image to Zalo": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        []
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        []
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        []
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "fbbb508d-89bd-43c3-8097-4a1973f54e52",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-27T08:14:40.095Z",
+      "updatedAt": "2025-10-27T08:14:40.095Z",
+      "role": "workflow:owner",
+      "workflowId": "eGlGwgJWtX8WdCqd",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
