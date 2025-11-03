@@ -1,0 +1,74 @@
+{
+  "createdAt": "2025-11-03T00:58:47.105Z",
+  "updatedAt": "2025-11-03T01:43:37.000Z",
+  "id": "n19SaJkUJT4rRjAW",
+  "name": "Gửi tin doanh thu nhóm Checker - Telegram",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2eb645de-acd3-4976-aa10-6f69b17cd9b8",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "5b116aa0-b178-49fa-a033-07a878a7b53e",
+      "name": "Send a text message",
+      "webhookId": "b9877a96-ea8b-4ec5-8ee9-584da16322c8",
+      "credentials": {
+        "telegramApi": {
+          "id": "jqJSmI4qpbZPx1WO",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "6fd2cf32-0d4a-469c-ad12-daab1e61bd4d",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-11-03T00:58:47.110Z",
+      "updatedAt": "2025-11-03T00:58:47.110Z",
+      "role": "workflow:owner",
+      "workflowId": "n19SaJkUJT4rRjAW",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
