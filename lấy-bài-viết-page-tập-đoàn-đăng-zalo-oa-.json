@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-10-27T08:14:40.091Z",
-  "updatedAt": "2025-11-02T15:58:32.000Z",
+  "updatedAt": "2025-11-03T03:33:37.000Z",
   "id": "eGlGwgJWtX8WdCqd",
   "name": "Lấy bài viết page Tập đoàn đăng Zalo OA",
   "active": false,
@@ -15,15 +15,11 @@
           "parameters": [
             {
               "name": "width",
-              "value": "500"
+              "value": "=870"
             },
             {
               "name": "height",
-              "value": "500"
-            },
-            {
-              "name": "height",
-              "value": "500"
+              "value": "=488"
             },
             {
               "name": "auto_orientation",
@@ -40,7 +36,7 @@
           "parameters": [
             {
               "name": "apy-token",
-              "value": "APY0CfUsmoIm4zmhfSIILqzf5ovXOVtMtNKjNh8bEXeTcXXnUSDzvYqGTV0KAovPK"
+              "value": "APY0PCGRDVlpe1V8TqXWgQiL7LH78EKZ1XFxwaW8WC9p6Rt54fPl0br8JQ9BfE6VAW29xtJ"
             }
           ]
         },
@@ -49,7 +45,7 @@
           "parameters": [
             {
               "name": "url",
-              "value": "https://m.yodycdn.com/products/hinhanhdoremon1_m2li5fg6ukia624wq58.jpg"
+              "value": "={{ $('Limit').item.json.posts.data[0].attachments.data[0].media.image.src }}"
             }
           ]
         },
@@ -58,46 +54,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -64,
-        176
+        448,
+        144
       ],
       "id": "ed948c85-60a7-4217-817e-a92feb32a797",
       "name": "Resize hình Facebook url1"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://openapi.zalo.me/v2.0/oa/upload/image",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "access_token",
-              "value": "dAH0Gechg4QPe4f6YgshHfwbJaEAj_56cjje4yRA_7cgisOPzVxLIAMBLGBrxkfVjvrh9-VtrdUbe4qGzltAQQUxAIFPx8n9YgbkEFl5stgFjZmUoF2TPOM91Yp2ZU9mW_r-A_6AzNoGnHSQsBwi6h_4Cs7DfvKmWDbrHTomu4EH_s0MrVESV9gi7dVueRqmbyKgTzIZa765sm8tpg67NBBOO3cjgjjT_i1R1koN-tkzv641tuV41e7sHmtT_iDdiQjQ2zQXv4gAsMnKnQJDCwRhIaptiEXAZkKK4U-hX4wGtXnGtTMY0O7H7Ll6jxOiql5JAOV_wNVLYMqHm_lt4xoBRNIZtSXruxXU1wV5x07gdtnVeidV8BACN3xC-yHWlBH4DVoxxr-PjdOMzk_V5gEwJ7zXH2OyqJEEjgL2"
-            }
-          ]
-        },
-        "sendBody": true,
-        "contentType": "multipart-form-data",
-        "bodyParameters": {
-          "parameters": [
-            {
-              "parameterType": "formBinaryData",
-              "name": "file",
-              "inputDataFieldName": "data"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "18376267-2774-4995-8255-f6a090537fde",
-      "name": "Upload Image to Zalo",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        384,
-        32
-      ]
     },
     {
       "parameters": {
@@ -108,13 +69,13 @@
           "parameters": [
             {
               "name": "access_token",
-              "value": "WlOi9SLjk0c7yYOXnckx2O3t8YJ6SQ9TvPj01RnUWLUictrvgNg-1EwUGtEhPA8YylHeGEGLacwXn6u0hGJkGPoV1JYaTV58jwuL4hPn_a2rZZuPerNWMBwPUIdzG8r1sxvqDyvxgctTk4qo-MMd7jkiNLIRF84hfCrWSOaWf5cuqaCAeZIBKhhB4p_w5OrgqUz72TntW4NQdHGa-r_RTkU0DI70UUrJqBaACPnNv66XjXCyZMVERuk9Co6SU-vjkgSFGRXQmowQkLTIj2QuUkt-GnR1F8HSyj4TBzu0o7dxtGShlXhRGflYCo-01_f6iVWH5uOvsMc8pWGbompUSVZSG2BJ9xjFulLc6TrlYbIOjqGEfd6cUv7fPH6_BxvFcE1L9BbnlrEgg6OglsEWKvIzE2IGGlbeC7IehHl2SBKD"
+              "value": "wh8H3lNBv5pljXiAzitdNEYp7m_sruPPZFWRJTVAcsAtxsP_xlNYRAl5Uss__jrIr8rq1Ss2Y3hCdWjllx_pK-h4SLwMluvktxG9PhVJh6p8eHKwl86DQAA74sxYcUP1dfnlGzYcxqEdsXP4nE2nUD7w6bh4-vfbkO1WIVgDd6U5Z61hqF-ONPNq6WtgqwyCbQuG6z2raX2nqXWoo_A67hFJ6JtjeO49-QS79E6yiNMLn0X7sBkNKCEL6W6Vd9ietUCV8BBpwowfyH9yx-wGBQcSDpBEbRCwXAWlR-sZkr2HtIHYq-sbKxxLB43yyBOGYU08Cyx_YnkpyZ0ooTJF1wx1GXVJxjWZnl5a7gBfn2l1udeifzBWVEYhGKEmhhfAh8X6MDAqn5-VdMDmtxYVMuUQ7sPjB4hCPVBMwLW"
             }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"type\": \"normal\",\n  \"title\": \"News\",\n  \"author\": \"News\",\n  \"cover\": {\n    \"cover_type\": \"photo\",\n    \"photo_url\": \"{{ $json.webContentLink }}\",\n    \"status\": \"show\"\n  },\n  \"description\": \"This is news\",\n  \"body\": [\n    {\n      \"type\": \"text\",\n      \"content\": \"This is news\"\n    },\n    {\n      \"type\": \"text\",\n      \"content\": \"This is news\"\n    }\n  ],\n  \"status\": \"show\",\n  \"comment\": \"show\"\n} ",
+        "jsonBody": "={\n  \"type\": \"normal\",\n  \"title\": \"{{ $('AI Agent - Tiêu đề').item.json.output }}\",\n  \"author\": \"N8N\",\n  \"cover\": {\n    \"cover_type\": \"photo\",\n    \"photo_url\": \"{{ $json.webContentLink }}\",\n    \"status\": \"show\"\n  },\n  \"description\": {{ $('AI Agent mô tả').item.json.output.toJsonString() }},\n  \"body\": [\n    {\n      \"type\": \"text\",\n      \"content\":{{ $('AI Agent - Tiêu đề').item.json.output.toJsonString() }}\n    },\n    {\n      \"type\": \"text\",\n      \"content\": {{ $('Limit').item.json.posts.data[0].message.toJsonString() }}\n    }\n  ],\n  \"status\": \"show\",\n  \"comment\": \"show\"\n} ",
         "options": {
           "redirect": {
             "redirect": {}
@@ -124,36 +85,62 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        416,
-        256
+        800,
+        144
       ],
       "id": "cb6f8fef-ad2b-4d7d-8cee-9e3e872ab11d",
       "name": "HTTP Request"
     },
     {
       "parameters": {
-        "operation": "binaryToPropery",
-        "options": {}
+        "resource": "page",
+        "operation": "getPagePosts",
+        "pageId": "105488927507685"
       },
-      "type": "n8n-nodes-base.extractFromFile",
+      "type": "n8n-nodes-social-facebook.facebookPage",
       "typeVersion": 1,
       "position": [
-        576,
-        80
+        -480,
+        176
       ],
-      "id": "873bed9d-a8e9-48a2-8519-914c6d74de71",
-      "name": "Extract from File"
+      "id": "8037aa75-2d46-4508-8895-5a4309eb4a22",
+      "name": "Get Page Posts",
+      "credentials": {
+        "facebookApiBotzvn": {
+          "id": "T6zJMKiDY0CEWteS",
+          "name": "Facebook Rạch Giá"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "page"
+      },
+      "type": "n8n-nodes-social-facebook.facebookPage",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -144
+      ],
+      "id": "84836b8d-7aa0-4204-8875-9d0c02e0cc12",
+      "name": "Get All Pages User Manage",
+      "credentials": {
+        "facebookApiBotzvn": {
+          "id": "T6zJMKiDY0CEWteS",
+          "name": "Facebook Rạch Giá"
+        }
+      }
     },
     {
       "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
+      "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        688,
-        256
+        -288,
+        176
       ],
-      "id": "43ca3acb-266a-4096-85bd-f1248d5b0283",
-      "name": "When clicking ‘Execute workflow’"
+      "id": "88ead838-81a4-49a1-9e03-217a8c799698",
+      "name": "Limit"
     },
     {
       "parameters": {
@@ -173,8 +160,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        144,
-        240
+        608,
+        144
       ],
       "id": "687ccfe7-f269-4c6b-bc88-e3d02027164c",
       "name": "Upload file",
@@ -184,17 +171,95 @@
           "name": "Google Drive account"
         }
       }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -656,
+        176
+      ],
+      "id": "a59fdec9-b294-4433-9987-58e220383421",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        352
+      ],
+      "id": "e1f10cff-4034-46c5-a56f-09820846ace6",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "h8uMGM40rjJEezE6",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        176,
+        368
+      ],
+      "id": "b082d83d-fc93-4b0e-9a96-c7c22817ecb5",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "h8uMGM40rjJEezE6",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.posts.data[0].message.toJsonString() }}",
+        "options": {
+          "systemMessage": "Hãy đóng vai một content creator, tôi có bài viết rất dài , bạn hãy viết 1 đoạn tóm tắt, mô tả nội dung trên dưới 300 kí từ, càng ngắn gọn càng tốt để tôi đặt ở đầu bài viết. Chỉ xuất ra đoạn văn mô tả, không cần nói gì thêm"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        176
+      ],
+      "id": "e65874a5-4ef3-4383-a647-38573f7be151",
+      "name": "AI Agent mô tả"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Get Page Posts').item.json.posts.data[0].message }}",
+        "options": {
+          "systemMessage": "Hãy đóng vai một content creator, tôi có bài viết rất dài , bạn hãy đặt tiêu đề cho bài viết, càng ngắn gọn càng tốt để tôi đặt ở đầu bài viết. Chỉ xuất ra tiêu đề, không cần nói gì thêm"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        176,
+        176
+      ],
+      "id": "ed7fcb16-bc99-4c14-b796-451b1dff8ef9",
+      "name": "AI Agent - Tiêu đề"
     }
   ],
   "connections": {
     "Resize hình Facebook url1": {
       "main": [
         [
-          {
-            "node": "Upload Image to Zalo",
-            "type": "main",
-            "index": 0
-          },
           {
             "node": "Upload file",
             "type": "main",
@@ -203,24 +268,31 @@
         ]
       ]
     },
-    "Upload Image to Zalo": {
-      "main": [
-        []
-      ]
-    },
     "HTTP Request": {
       "main": [
         []
       ]
     },
-    "Extract from File": {
+    "Get Page Posts": {
       "main": [
-        []
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
-    "When clicking ‘Execute workflow’": {
+    "Limit": {
       "main": [
-        []
+        [
+          {
+            "node": "AI Agent mô tả",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Upload file": {
@@ -228,6 +300,61 @@
         [
           {
             "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Page Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent mô tả",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Tiêu đề",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent mô tả": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Tiêu đề",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Tiêu đề": {
+      "main": [
+        [
+          {
+            "node": "Resize hình Facebook url1",
             "type": "main",
             "index": 0
           }
@@ -243,7 +370,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "fbbb508d-89bd-43c3-8097-4a1973f54e52",
+  "versionId": "7cb138a0-386a-4156-be27-dcbabe5c0b58",
   "triggerCount": 0,
   "shared": [
     {
