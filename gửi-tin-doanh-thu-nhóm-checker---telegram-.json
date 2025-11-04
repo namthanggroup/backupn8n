@@ -1,31 +1,22 @@
 {
   "createdAt": "2025-11-03T00:58:47.105Z",
-  "updatedAt": "2025-11-03T01:43:37.000Z",
+  "updatedAt": "2025-11-04T09:20:09.000Z",
   "id": "n19SaJkUJT4rRjAW",
   "name": "Gửi tin doanh thu nhóm Checker - Telegram",
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        0,
-        0
-      ],
-      "id": "2eb645de-acd3-4976-aa10-6f69b17cd9b8",
-      "name": "When clicking ‘Execute workflow’"
-    },
-    {
       "parameters": {
+        "chatId": "-4880257447",
+        "text": "={{ $json.noi_dung}}",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        208,
-        0
+        304,
+        -176
       ],
       "id": "5b116aa0-b178-49fa-a033-07a878a7b53e",
       "name": "Send a text message",
@@ -36,10 +27,65 @@
           "name": "Telegram account"
         }
       }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        -176
+      ],
+      "id": "634378f2-dfc8-4a6a-b507-514d2506c0d9",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1vGrO6PqevTuESKzKl70wHX_c83pM5406zNVKeIqbtZg/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "SO_LIEU_BAO_CAO",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1vGrO6PqevTuESKzKl70wHX_c83pM5406zNVKeIqbtZg/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        128,
+        -176
+      ],
+      "id": "c3cfaf6a-974a-4e65-8756-9ba1007a2ad6",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
     }
   ],
   "connections": {
-    "When clicking ‘Execute workflow’": {
+    "Send a text message": {
+      "main": [
+        []
+      ]
+    },
+    "Get row(s) in sheet": {
       "main": [
         [
           {
@@ -49,18 +95,36 @@
           }
         ]
       ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timeSavedPerExecution": 1
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "6fd2cf32-0d4a-469c-ad12-daab1e61bd4d",
-  "triggerCount": 0,
+  "versionId": "78afb446-6550-44b4-956b-603ed6ed8ea8",
+  "triggerCount": 1,
   "shared": [
     {
       "createdAt": "2025-11-03T00:58:47.110Z",
