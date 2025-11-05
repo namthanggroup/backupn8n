@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-10-17T06:01:27.381Z",
-  "updatedAt": "2025-10-19T13:47:26.000Z",
+  "updatedAt": "2025-11-05T06:02:08.000Z",
   "id": "rnhDaS0UShr6YZmu",
   "name": "Facebook chatbot",
   "active": true,
@@ -284,7 +284,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer EAAWnTWJlkysBPgIQFQEoFbZCIzl4wfKZCSJfPnP4xgkpeSjZCdZCsOOFfs75lZCSA3CVTKISMslrzo76DBCIK3OiY0gxlUpintWyIShFf2CWrpZBvFvRA5kvv03Ep2CFrZC7gAbxqXkN56Nv0N1eXWxe8x7llxHPB9tEOCfRd8eydeIlD2UNZBwmx6b9Lie0VBOct3zkqiZByANgnyWj6vdx9dKgg"
+              "value": "EAAWnTWJlkysBP8WSwyryvdJ9tcHhGzj5oxMacuTijbG9SP8GYDqW6VHcd9AV1ZB1wVcq2oWs1Ie8ROuduLkBIcTr5ZBMMYYfNjCUPATDRVJH98nAVVsiPw3caRm6n25A6FgU3tY3U4YNjlk9WZAeUmZCvnJgpGTddPZAQ2unvQnEZBTWeAawVpeDGZBxsTJx5LgFeBKxQ1scwYFCgJnBuhCobRPZBwZDZD"
             }
           ]
         },
@@ -1336,7 +1336,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "e2771358-d7b4-4d6d-bd7c-e37390dfab94",
+  "versionId": "7c3303fd-c237-42f9-bca5-992ec8dd0051",
   "triggerCount": 1,
   "shared": [
     {
