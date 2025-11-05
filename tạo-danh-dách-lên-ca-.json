@@ -1,0 +1,323 @@
+{
+  "createdAt": "2025-11-05T06:18:29.676Z",
+  "updatedAt": "2025-11-05T09:04:13.000Z",
+  "id": "QsbCuQGSdSszVEtG",
+  "name": "Tạo danh dách lên ca",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        0
+      ],
+      "id": "63b1faa9-b288-43e4-8f06-89448315d7f9",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1sNeRlI4biMyU0lryyYiwksBeqDr7sZQi25lQL5zUF0U/edit?gid=913309228#gid=913309228",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 913309228,
+          "mode": "list",
+          "cachedResultName": "QL_LEN_XUONG_CA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sNeRlI4biMyU0lryyYiwksBeqDr7sZQi25lQL5zUF0U/edit#gid=913309228"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "thoi_gian_tao",
+              "lookupValue": "={{ $now.format('dd/MM/yyyy')}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "abab861b-5a64-42c3-b3db-6979dbeae418",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1sNeRlI4biMyU0lryyYiwksBeqDr7sZQi25lQL5zUF0U/edit?gid=913309228#gid=913309228",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 913309228,
+          "mode": "list",
+          "cachedResultName": "QL_LEN_XUONG_CA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sNeRlI4biMyU0lryyYiwksBeqDr7sZQi25lQL5zUF0U/edit#gid=913309228"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "hinhthuc_kinhdoanh": "={{ $json.hinhthuc_kinhdoanh }}",
+            "thoi_gian_tao": "={{ $json.thoi_gian_tao }}",
+            "nhan_vien_tao": "={{ $json.nhan_vien_tao }}",
+            "hoten_msnv": "={{ $json.hoten_msnv }}",
+            "sdt_laixe": "={{ $json.sdt_laixe }}",
+            "so_tai": "={{ $json.so_tai }}",
+            "trangthai_len_xuong_ca": "={{ $json.trangthai_len_xuong_ca }}",
+            "loaihinh_hoptac": "={{ $json.loaihinh_hoptac }}",
+            "ly_do_xuong_ca": "={{ $json.ly_do_xuong_ca }}",
+            "ghi_chu": "={{ $json.ghi_chu }}",
+            "thoi_gian": "={{ $json.thoi_gian }}",
+            "sotai_hoten_msnv": "={{ $json.sotai_hoten_msnv }}",
+            "hinhthuc_luong": "={{ $json.hinhthuc_luong }}",
+            "bien_kiem_soat": "={{ $json.bien_kiem_soat }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "hinhthuc_kinhdoanh",
+              "displayName": "hinhthuc_kinhdoanh",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "thoi_gian_tao",
+              "displayName": "thoi_gian_tao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nhan_vien_tao",
+              "displayName": "nhan_vien_tao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "hoten_msnv",
+              "displayName": "hoten_msnv",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sdt_laixe",
+              "displayName": "sdt_laixe",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "so_tai",
+              "displayName": "so_tai",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "trangthai_len_xuong_ca",
+              "displayName": "trangthai_len_xuong_ca",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "loaihinh_hoptac",
+              "displayName": "loaihinh_hoptac",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ly_do_xuong_ca",
+              "displayName": "ly_do_xuong_ca",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ghi_chu",
+              "displayName": "ghi_chu",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cap_nhat",
+              "displayName": "cap_nhat",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "thoi_gian",
+              "displayName": "thoi_gian",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sotai_hoten_msnv",
+              "displayName": "sotai_hoten_msnv",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hinhthuc_luong",
+              "displayName": "hinhthuc_luong",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "bien_kiem_soat",
+              "displayName": "bien_kiem_soat",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        0
+      ],
+      "id": "7c36c185-157d-4ee5-812a-a277e9aaba51",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "24b8a4eb-ecb9-43a2-86e8-f2fa525a729e",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        80,
+        0
+      ],
+      "id": "3c37cded-e611-4c26-b41d-9240f07600dd",
+      "name": "Webhook",
+      "webhookId": "24b8a4eb-ecb9-43a2-86e8-f2fa525a729e"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "59fea110-9ed9-47a0-a35a-b63b733804e0",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-11-05T06:18:29.681Z",
+      "updatedAt": "2025-11-05T06:18:29.681Z",
+      "role": "workflow:owner",
+      "workflowId": "QsbCuQGSdSszVEtG",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
