@@ -1,0 +1,128 @@
+{
+  "createdAt": "2025-11-07T01:33:38.346Z",
+  "updatedAt": "2025-11-07T07:53:07.000Z",
+  "id": "Q6dg7SL1B9oZ9Itk",
+  "name": "[ZALO CÁ NHÂN] Bắn tin nhắn test",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-social-zalo.zaloUserLogin",
+      "typeVersion": 3,
+      "position": [
+        -368,
+        -32
+      ],
+      "id": "2b0f7c27-f0e3-49ab-8322-46fa6829922d",
+      "name": "Zalo Login Via QR Code",
+      "credentials": {
+        "n8nApi": {
+          "id": "30tjNLmMIWJCCXUX",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "zalo-user",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -192,
+        -32
+      ],
+      "id": "6f5d584f-7374-40c2-b326-5257a8c059a9",
+      "name": "Webhook",
+      "webhookId": "d199eff9-b445-44fc-a73f-e4c20b01d0da"
+    },
+    {
+      "parameters": {
+        "resource": "get",
+        "operation": "findUser",
+        "phoneNumber": "={{ $json.body['SĐT Tài xế'] }}"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        32,
+        -32
+      ],
+      "id": "799fb4c5-9c56-406b-b60a-29da97876189",
+      "name": "Tìm người dùng theo số điện thoại",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "AOQc0dA8FAqT73BM",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-07T01:36:46.694Z"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $json.response.uid }}",
+        "message": "={{ $('Webhook').item.json.body['Họ_tên_lái_xe'] }} -  {{ $('Webhook').item.json.body['Số tài'] }}\n--------------------------\nĐÃ ĐĂNG KÝ HỢP ĐỒNG THÀNH CÔNG\n- ID: {{ $('Webhook').item.json.body.ID }}\nℹ️ Thông tin: {{ $('Webhook').item.json.body['Chiều_đi'] }} | {{ $('Webhook').item.json.body['Số_km_quy_định'] }}km| {{ $('Webhook').item.json.body['Số_tiền_hợp_đồng'].toLocaleString('vi-VN') }}đ |  {{ $('Webhook').item.json.body['Số_giờ_chờ_quy_định'] }} giờ chờ\n🕐 Thời gian bắt đầu: {{ $('Webhook').item.json.body['thời_gian_đi'] }}\n📍 Địa điểm: {{ $('Webhook').item.json.body['Điểm_đi'] }} 🔁 {{ $('Webhook').item.json.body['Điểm_đến'] }}\n📑 Loại hợp đồng: {{ $('Webhook').item.json.body['Loại hợp đồng'] }}\n---------\nHãy nhắn \"ok\" nếu nhận được tin nhắn tự động"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        256,
+        -32
+      ],
+      "id": "a60a9a93-748f-4057-909c-cd9054835bc7",
+      "name": "Gửi tin nhắn",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "AOQc0dA8FAqT73BM",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-07T01:36:46.694Z"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Tìm người dùng theo số điện thoại",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tìm người dùng theo số điện thoại": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "a98a54af-2289-48ee-94f9-5d6f3af4d144",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-11-07T01:33:38.351Z",
+      "updatedAt": "2025-11-07T01:33:38.351Z",
+      "role": "workflow:owner",
+      "workflowId": "Q6dg7SL1B9oZ9Itk",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
