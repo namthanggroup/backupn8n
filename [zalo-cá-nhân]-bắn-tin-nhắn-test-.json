@@ -1,9 +1,9 @@
 {
   "createdAt": "2025-11-07T01:33:38.346Z",
-  "updatedAt": "2025-11-07T07:53:07.000Z",
+  "updatedAt": "2025-11-08T10:27:11.000Z",
   "id": "Q6dg7SL1B9oZ9Itk",
   "name": "[ZALO CÁ NHÂN] Bắn tin nhắn test",
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
@@ -11,8 +11,8 @@
       "type": "n8n-nodes-social-zalo.zaloUserLogin",
       "typeVersion": 3,
       "position": [
-        -368,
-        -32
+        -416,
+        -208
       ],
       "id": "2b0f7c27-f0e3-49ab-8322-46fa6829922d",
       "name": "Zalo Login Via QR Code",
@@ -32,8 +32,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -192,
-        -32
+        -240,
+        -208
       ],
       "id": "6f5d584f-7374-40c2-b326-5257a8c059a9",
       "name": "Webhook",
@@ -48,15 +48,15 @@
       "type": "n8n-nodes-social-zalo.zaloUserInteract",
       "typeVersion": 1,
       "position": [
-        32,
-        -32
+        -16,
+        -208
       ],
       "id": "799fb4c5-9c56-406b-b60a-29da97876189",
       "name": "Tìm người dùng theo số điện thoại",
       "credentials": {
         "zaloUserCredentialsApi": {
-          "id": "AOQc0dA8FAqT73BM",
-          "name": "Zalo Mai Nhựt Trường - 2025-11-07T01:36:46.694Z"
+          "id": "QV0k3PrZYFDex8PR",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
         }
       }
     },
@@ -68,17 +68,318 @@
       "type": "n8n-nodes-social-zalo.zaloUserInteract",
       "typeVersion": 1,
       "position": [
-        256,
-        -32
+        208,
+        -208
       ],
       "id": "a60a9a93-748f-4057-909c-cd9054835bc7",
       "name": "Gửi tin nhắn",
       "credentials": {
         "zaloUserCredentialsApi": {
-          "id": "AOQc0dA8FAqT73BM",
-          "name": "Zalo Mai Nhựt Trường - 2025-11-07T01:36:46.694Z"
+          "id": "QV0k3PrZYFDex8PR",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
         }
       }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "zalo-user-bien-ban",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -512,
+        192
+      ],
+      "id": "aa239767-8422-41a9-9ced-e0d1f58b905a",
+      "name": "Webhook1",
+      "webhookId": "d199eff9-b445-44fc-a73f-e4c20b01d0da"
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $json.response.uid }}",
+        "message": "={{ $json.body['Họ_tên_nhân_viên'] }} - {{ $json.body['Mã_số_nhân_viên'] }}\n--------------------------\nKính mời Anh/Chị về văn phòng gặp bộ phận Pháp chế để tường trình một sự việc mới được ghi nhận.\n- Số tài: {{ $json.body['Số_tài'] }}\n- Ngày ghi nhận: {{ $json.body['Ngày_ghi_nhận_sự_việc'] }}\n--------------\n(Đây là tin nhắn tự động)\nMọi thắc mắc liên hệ BP.Pháp chế (giờ hành chính)"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        176,
+        240
+      ],
+      "id": "e6e0aa88-a17b-4f37-8c8b-e07f85e9c5cf",
+      "name": "Gửi tin nhắn1",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "QV0k3PrZYFDex8PR",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d5fca233-e87f-4a71-90a0-99675b28215b",
+              "leftValue": "={{ $json.body.Uid_Zalo_User }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -256,
+        192
+      ],
+      "id": "86495e5a-af6e-43dd-be61-d74b98624f74",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $json.body.Uid_Zalo_User }}",
+        "message": "={{ $json.body['Họ_tên_nhân_viên'] }} - {{ $json.body['Mã_số_nhân_viên'] }}\n--------------------------\nKính mời Anh/Chị về văn phòng gặp bộ phận Pháp chế để tường trình một sự việc mới được ghi nhận.\n- Số tài: {{ $json.body['Số_tài'] }}\n- Ngày ghi nhận: {{ $json.body['Ngày_ghi_nhận_sự_việc'] }}\n--------------\n(Đây là tin nhắn tự động)\nMọi thắc mắc liên hệ BP.Pháp chế (giờ hành chính)\n\n"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        48
+      ],
+      "id": "5a779ad9-30bf-4f75-bcfb-f9884b9d3362",
+      "name": "Gửi tin nhắn2",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "QV0k3PrZYFDex8PR",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "get",
+        "operation": "findUser",
+        "phoneNumber": "={{ $('Webhook1').item.json.body['Số_điện_thoại_lái_xe'] }}"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        240
+      ],
+      "id": "4d3cbf1e-fa73-4dc9-aee3-9f07122864f9",
+      "name": "Tìm người dùng theo số điện thoại1",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "QV0k3PrZYFDex8PR",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Gửi tin nhắn vi phạm",
+        "height": 400,
+        "width": 1072
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -592,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "7fef6157-b0e8-443f-b2df-6110cbf86978",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "zalo-user-bien-ban",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        672,
+        208
+      ],
+      "id": "57deb773-637b-4d26-a449-3331843151f5",
+      "name": "Webhook2",
+      "webhookId": "d199eff9-b445-44fc-a73f-e4c20b01d0da"
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $json.response.uid }}",
+        "message": "={{ $json.body['Họ_tên_nhân_viên'] }} - {{ $json.body['Mã_số_nhân_viên'] }}\n--------------------------\nKính mời Anh/Chị về văn phòng gặp bộ phận Pháp chế để tường trình một sự việc mới được ghi nhận.\n- Số tài: {{ $json.body['Số_tài'] }}\n- Ngày ghi nhận: {{ $json.body['Ngày_ghi_nhận_sự_việc'] }}\n--------------\n(Đây là tin nhắn tự động)\nMọi thắc mắc liên hệ BP.Pháp chế (giờ hành chính)"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        256
+      ],
+      "id": "df0aa4ac-8b22-44e3-a875-eeb13c1a2d6d",
+      "name": "Gửi tin nhắn3",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "QV0k3PrZYFDex8PR",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d5fca233-e87f-4a71-90a0-99675b28215b",
+              "leftValue": "={{ $json.body.Uid_Zalo_User }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        928,
+        208
+      ],
+      "id": "3aa48fb4-e1d4-4d90-980e-79a03e627705",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $json.body.Uid_Zalo_User }}",
+        "message": "={{ $json.body['Họ_tên_nhân_viên'] }} - {{ $json.body['Mã_số_nhân_viên'] }}\n--------------------------\nKính mời Anh/Chị về văn phòng gặp bộ phận Pháp chế để tường trình một sự việc mới được ghi nhận.\n- Số tài: {{ $json.body['Số_tài'] }}\n- Ngày ghi nhận: {{ $json.body['Ngày_ghi_nhận_sự_việc'] }}\n--------------\n(Đây là tin nhắn tự động)\nMọi thắc mắc liên hệ BP.Pháp chế (giờ hành chính)\n\n"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        1168,
+        64
+      ],
+      "id": "f934c414-3834-4f5d-a5f9-68472ad04307",
+      "name": "Gửi tin nhắn4",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "QV0k3PrZYFDex8PR",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "get",
+        "operation": "findUser",
+        "phoneNumber": "={{ $('Webhook2').item.json.body['Số_điện_thoại_lái_xe'] }}"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        1168,
+        256
+      ],
+      "id": "01319061-b8ba-4455-b55e-38ef6b0315d3",
+      "name": "Tìm người dùng theo số điện thoại2",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "QV0k3PrZYFDex8PR",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Gửi tin nhắn vi phạm",
+        "height": 400,
+        "width": 1072
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        592,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "01e5cd8e-7661-40c5-8c39-ac7879bdafe7",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://adminphuquoc2.dieuhanhtaxi.vn/account/login",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "username",
+              "value": "adminrachgia"
+            },
+            {
+              "name": "password",
+              "value": "NamThang@@04"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        816,
+        -208
+      ],
+      "id": "ab2c65f4-c456-4190-b364-9f547bdc6785",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "https://adminphuquoc2.dieuhanhtaxi.vn/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        -128
+      ],
+      "id": "a1eeca2f-f6ff-4e22-9ecc-57edbd2869e5",
+      "name": "HTTP Request1"
     }
   ],
   "connections": {
@@ -103,18 +404,156 @@
           }
         ]
       ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Tìm người dùng theo số điện thoại1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tìm người dùng theo số điện thoại1": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook2": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Tìm người dùng theo số điện thoại2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tìm người dùng theo số điện thoại2": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timeSavedPerExecution": 1
   },
   "staticData": null,
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "a98a54af-2289-48ee-94f9-5d6f3af4d144",
-  "triggerCount": 0,
+  "pinData": {
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "connection": "upgrade",
+            "host": "n8n.taxinamthang.com",
+            "content-length": "238",
+            "user-agent": "AppsheetBot/0.0 (https://about.appsheet.com/home/; support@appsheet.com)",
+            "accept-encoding": "gzip, deflate",
+            "traceparent": "00-0fb07d57697bd6687abc72be903d714f-449ec1ee0cdc4896-00",
+            "content-type": "application/json"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "Ngày_ghi_nhận_sự_việc": "08/11/2025",
+            "Mã_số_nhân_viên": "VL0235",
+            "Họ_tên_nhân_viên": "NGUYỄN MẠNH THƯỜNG",
+            "Số_tài": "VL1071",
+            "Số_điện_thoại_lái_xe": "0968215800",
+            "Uid_Zalo_User": "3217328175088485642"
+          },
+          "webhookUrl": "https://n8n.taxinamthang.com/webhook/zalo-user-bien-ban",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Webhook2": [
+      {
+        "json": {
+          "headers": {
+            "connection": "upgrade",
+            "host": "n8n.taxinamthang.com",
+            "content-length": "238",
+            "user-agent": "AppsheetBot/0.0 (https://about.appsheet.com/home/; support@appsheet.com)",
+            "accept-encoding": "gzip, deflate",
+            "traceparent": "00-0fb07d57697bd6687abc72be903d714f-449ec1ee0cdc4896-00",
+            "content-type": "application/json"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "Ngày_ghi_nhận_sự_việc": "08/11/2025",
+            "Mã_số_nhân_viên": "VL0235",
+            "Họ_tên_nhân_viên": "NGUYỄN MẠNH THƯỜNG",
+            "Số_tài": "VL1071",
+            "Số_điện_thoại_lái_xe": "0968215800",
+            "Uid_Zalo_User": "3217328175088485642"
+          },
+          "webhookUrl": "https://n8n.taxinamthang.com/webhook/zalo-user-bien-ban",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "7ac2fdb7-daf8-4d0b-8011-62e45d9fd94b",
+  "triggerCount": 4,
   "shared": [
     {
       "createdAt": "2025-11-07T01:33:38.351Z",
