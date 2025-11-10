@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-11-07T01:33:38.346Z",
-  "updatedAt": "2025-11-08T10:27:11.000Z",
+  "updatedAt": "2025-11-10T06:50:30.000Z",
   "id": "Q6dg7SL1B9oZ9Itk",
   "name": "[ZALO CÁ NHÂN] Bắn tin nhắn test",
   "active": true,
@@ -209,7 +209,7 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "zalo-user-bien-ban",
+        "path": "zalo-user-qlpt",
         "options": {}
       },
       "type": "n8n-nodes-base.webhook",
@@ -552,7 +552,7 @@
       }
     ]
   },
-  "versionId": "7ac2fdb7-daf8-4d0b-8011-62e45d9fd94b",
+  "versionId": "50a5a3be-f52f-4cb0-b173-05563b33fd64",
   "triggerCount": 4,
   "shared": [
     {
