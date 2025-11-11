@@ -1,9 +1,9 @@
 {
   "createdAt": "2025-11-07T01:33:38.346Z",
-  "updatedAt": "2025-11-10T06:50:30.000Z",
+  "updatedAt": "2025-11-11T10:03:29.000Z",
   "id": "Q6dg7SL1B9oZ9Itk",
   "name": "[ZALO CÁ NHÂN] Bắn tin nhắn test",
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
@@ -319,7 +319,7 @@
     },
     {
       "parameters": {
-        "content": "Gửi tin nhắn vi phạm",
+        "content": "Gửi tin nhắn qlpt",
         "height": 400,
         "width": 1072
       },
@@ -380,6 +380,96 @@
       ],
       "id": "a1eeca2f-f6ff-4e22-9ecc-57edbd2869e5",
       "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "limit": 1000,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "https://drive.google.com/drive/u/2/folders/1saqXWijLpyplLTqbvk1bkjXwsLEaox3O",
+            "mode": "url"
+          },
+          "whatToSearch": "folders"
+        },
+        "options": {
+          "fields": [
+            "name",
+            "webViewLink"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        96,
+        848
+      ],
+      "id": "0846c92d-f01f-457a-a494-55044b244f2a",
+      "name": "Search files and folders",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "kyBduUUKSGEf7fek",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1TzB4MHVVtrdNpKmuEsU_67EsGJzskdlxE4MDPVXIf0U/edit?gid=861947919#gid=861947919",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 861947919,
+          "mode": "list",
+          "cachedResultName": "Các xe đã upload trên folder",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TzB4MHVVtrdNpKmuEsU_67EsGJzskdlxE4MDPVXIf0U/edit#gid=861947919"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "BKS": "={{ $json.name }}"
+          },
+          "matchingColumns": [
+            "BKS"
+          ],
+          "schema": [
+            {
+              "id": "BKS",
+              "displayName": "BKS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        384,
+        848
+      ],
+      "id": "a7061ff7-480a-41f7-95c0-619e7d71162c",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
     }
   ],
   "connections": {
@@ -484,6 +574,17 @@
           }
         ]
       ]
+    },
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -523,36 +624,9 @@
           "executionMode": "production"
         }
       }
-    ],
-    "Webhook2": [
-      {
-        "json": {
-          "headers": {
-            "connection": "upgrade",
-            "host": "n8n.taxinamthang.com",
-            "content-length": "238",
-            "user-agent": "AppsheetBot/0.0 (https://about.appsheet.com/home/; support@appsheet.com)",
-            "accept-encoding": "gzip, deflate",
-            "traceparent": "00-0fb07d57697bd6687abc72be903d714f-449ec1ee0cdc4896-00",
-            "content-type": "application/json"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "Ngày_ghi_nhận_sự_việc": "08/11/2025",
-            "Mã_số_nhân_viên": "VL0235",
-            "Họ_tên_nhân_viên": "NGUYỄN MẠNH THƯỜNG",
-            "Số_tài": "VL1071",
-            "Số_điện_thoại_lái_xe": "0968215800",
-            "Uid_Zalo_User": "3217328175088485642"
-          },
-          "webhookUrl": "https://n8n.taxinamthang.com/webhook/zalo-user-bien-ban",
-          "executionMode": "production"
-        }
-      }
     ]
   },
-  "versionId": "50a5a3be-f52f-4cb0-b173-05563b33fd64",
+  "versionId": "728e6278-ba95-477b-9472-6757f1a4ce9b",
   "triggerCount": 4,
   "shared": [
     {
