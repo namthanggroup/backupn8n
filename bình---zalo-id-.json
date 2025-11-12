@@ -1,0 +1,237 @@
+{
+  "createdAt": "2025-11-12T14:23:48.631Z",
+  "updatedAt": "2025-11-12T15:30:16.000Z",
+  "id": "bFzJKN0wDsQZyA24",
+  "name": "Bình - Zalo id",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-social-zalo.zaloUserLogin",
+      "typeVersion": 3,
+      "position": [
+        160,
+        -144
+      ],
+      "id": "56b9953a-fae6-458f-97f7-58210b6e8a36",
+      "name": "Zalo Login Via QR Code",
+      "credentials": {
+        "n8nApi": {
+          "id": "30tjNLmMIWJCCXUX",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw",
+          "mode": "list",
+          "cachedResultName": "Log gửi tin nhắn đk hđ thành công",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 416620983,
+          "mode": "list",
+          "cachedResultName": "Source nhân sự chưa có uid",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit#gid=416620983"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "detectAutomatically"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        336,
+        -144
+      ],
+      "id": "50fb0820-14a1-4ae2-aaf2-68f09627740c",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Fn0I8yy2yZKk9nZl",
+          "name": "n8n credential - zalo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "get",
+        "operation": "getUserInfo",
+        "userId": "={{ $json.DIEN_THOAI_DI_DONG }}"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -144
+      ],
+      "id": "dc11693f-0228-4ef8-a17b-d27f92880bad",
+      "name": "Lấy thông tin người dùng",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "71QjzdrhZAsOZi6s",
+          "name": "Zalo Thanh Bình - 2025-11-12T14:26:47.935Z"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw",
+          "mode": "list",
+          "cachedResultName": "Log gửi tin nhắn đk hđ thành công",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 416620983,
+          "mode": "list",
+          "cachedResultName": "Source nhân sự chưa có uid",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit#gid=416620983"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "uid"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "HO_TEN",
+              "displayName": "HO_TEN",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "VI_TRI_CONG_VIEC",
+              "displayName": "VI_TRI_CONG_VIEC",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "DIEN_THOAI_DI_DONG",
+              "displayName": "DIEN_THOAI_DI_DONG",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "uid",
+              "displayName": "uid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        768,
+        -144
+      ],
+      "id": "37deef0f-b396-4645-9a8c-7218af80f426",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Fn0I8yy2yZKk9nZl",
+          "name": "n8n credential - zalo"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Lấy thông tin người dùng",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy thông tin người dùng": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "5959dfbc-7c2f-4b70-8f71-bdfae20ad876",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-11-12T14:23:48.634Z",
+      "updatedAt": "2025-11-12T14:23:48.634Z",
+      "role": "workflow:owner",
+      "workflowId": "bFzJKN0wDsQZyA24",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
