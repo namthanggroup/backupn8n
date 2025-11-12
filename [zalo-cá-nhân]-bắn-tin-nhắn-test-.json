@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-11-07T01:33:38.346Z",
-  "updatedAt": "2025-11-11T10:03:29.000Z",
+  "updatedAt": "2025-11-12T10:09:11.000Z",
   "id": "Q6dg7SL1B9oZ9Itk",
   "name": "[ZALO CÁ NHÂN] Bắn tin nhắn test",
   "active": false,
@@ -193,7 +193,7 @@
     },
     {
       "parameters": {
-        "content": "Gửi tin nhắn vi phạm",
+        "content": "Gửi tin nhắn vi phạm cho Tài xế",
         "height": 400,
         "width": 1072
       },
@@ -224,68 +224,14 @@
     },
     {
       "parameters": {
-        "threadId": "={{ $json.response.uid }}",
-        "message": "={{ $json.body['Họ_tên_nhân_viên'] }} - {{ $json.body['Mã_số_nhân_viên'] }}\n--------------------------\nKính mời Anh/Chị về văn phòng gặp bộ phận Pháp chế để tường trình một sự việc mới được ghi nhận.\n- Số tài: {{ $json.body['Số_tài'] }}\n- Ngày ghi nhận: {{ $json.body['Ngày_ghi_nhận_sự_việc'] }}\n--------------\n(Đây là tin nhắn tự động)\nMọi thắc mắc liên hệ BP.Pháp chế (giờ hành chính)"
+        "threadId": "=6570572738127149955",
+        "message": "=⤴️ 𝐓𝐇Ô𝐍𝐆 𝐓𝐈𝐍 𝐓À𝐈 𝐗Ế 𝐋Ê𝐍 𝐂𝐀 𝐆𝐈Ữ𝐀 𝐆𝐈Ờ ⤴️\n\n- H̲ọ̲ ̲t̲ê̲n̲:  {{ $json.body['Họ tên'] }}\n- BKS: {{ $json.body['Biển kiểm soát'] }}\n- L̲o̲ạ̲i̲ ̲h̲ì̲n̲h̲: {{ $json.body['Loại hình'] }} - {{ $json.body['Hình thức'] }}\n- T̲h̲ờ̲i̲ ̲g̲i̲a̲n̲ ̲l̲ê̲n̲ ̲c̲a̲: {{ $json.body['Thời gian lên ca'] }}\n- G̲h̲i̲ ̲c̲h̲ú̲: {{ $json.body['Ghi chú'] }}\n(Đây là tin nhắn tự động)"
       },
       "type": "n8n-nodes-social-zalo.zaloUserInteract",
       "typeVersion": 1,
       "position": [
-        1360,
-        256
-      ],
-      "id": "df0aa4ac-8b22-44e3-a875-eeb13c1a2d6d",
-      "name": "Gửi tin nhắn3",
-      "credentials": {
-        "zaloUserCredentialsApi": {
-          "id": "QV0k3PrZYFDex8PR",
-          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "d5fca233-e87f-4a71-90a0-99675b28215b",
-              "leftValue": "={{ $json.body.Uid_Zalo_User }}",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "notEmpty",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        928,
-        208
-      ],
-      "id": "3aa48fb4-e1d4-4d90-980e-79a03e627705",
-      "name": "If1"
-    },
-    {
-      "parameters": {
-        "threadId": "={{ $json.body.Uid_Zalo_User }}",
-        "message": "={{ $json.body['Họ_tên_nhân_viên'] }} - {{ $json.body['Mã_số_nhân_viên'] }}\n--------------------------\nKính mời Anh/Chị về văn phòng gặp bộ phận Pháp chế để tường trình một sự việc mới được ghi nhận.\n- Số tài: {{ $json.body['Số_tài'] }}\n- Ngày ghi nhận: {{ $json.body['Ngày_ghi_nhận_sự_việc'] }}\n--------------\n(Đây là tin nhắn tự động)\nMọi thắc mắc liên hệ BP.Pháp chế (giờ hành chính)\n\n"
-      },
-      "type": "n8n-nodes-social-zalo.zaloUserInteract",
-      "typeVersion": 1,
-      "position": [
-        1168,
-        64
+        1216,
+        32
       ],
       "id": "f934c414-3834-4f5d-a5f9-68472ad04307",
       "name": "Gửi tin nhắn4",
@@ -298,35 +244,14 @@
     },
     {
       "parameters": {
-        "resource": "get",
-        "operation": "findUser",
-        "phoneNumber": "={{ $('Webhook2').item.json.body['Số_điện_thoại_lái_xe'] }}"
-      },
-      "type": "n8n-nodes-social-zalo.zaloUserInteract",
-      "typeVersion": 1,
-      "position": [
-        1168,
-        256
-      ],
-      "id": "01319061-b8ba-4455-b55e-38ef6b0315d3",
-      "name": "Tìm người dùng theo số điện thoại2",
-      "credentials": {
-        "zaloUserCredentialsApi": {
-          "id": "QV0k3PrZYFDex8PR",
-          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "content": "Gửi tin nhắn qlpt",
-        "height": 400,
+        "content": "Gửi tin nhắn lên cá #5h App QLPPT",
+        "height": 640,
         "width": 1072
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         592,
-        48
+        16
       ],
       "typeVersion": 1,
       "id": "01e5cd8e-7661-40c5-8c39-ac7879bdafe7",
@@ -470,6 +395,317 @@
           "name": "Google Sheets account"
         }
       }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body['Họ tên'] }}",
+                    "rightValue": "RG",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "4292a200-4cc3-4dd2-b82c-18e08c17d30e"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Rạch Giá"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6ba9e95e-779a-471a-a3ab-2e220ad49f5e",
+                    "leftValue": "={{ $json.body['Họ tên'] }}",
+                    "rightValue": "CM",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cà Mau"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "2f6f672b-13da-4286-bec2-19fd1edc783b",
+                    "leftValue": "={{ $json.body['Họ tên'] }}",
+                    "rightValue": "AG",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "An Giang"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7bb3a7f4-7c6a-442e-99e7-fe49f84cfa1c",
+                    "leftValue": "={{ $json.body['Họ tên'] }}",
+                    "rightValue": "BL",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Bạc Liêu"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3d897559-0818-4d78-a3fb-d69e5ccdaa1c",
+                    "leftValue": "={{ $json.body['Họ tên'] }}",
+                    "rightValue": "ST",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Sóc Trăng"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "81d2350a-7919-40b7-b093-13e58be86915",
+                    "leftValue": "={{ $json.body['Họ tên'] }}",
+                    "rightValue": "HG",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Hậu Giang"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "96358af3-d43c-43e2-a403-182b6e144804",
+                    "leftValue": "={{ $json.body['Họ tên'] }}",
+                    "rightValue": "Cần Thơ",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cần Thơ"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        864,
+        112
+      ],
+      "id": "118a1a34-07a6-4a2a-b457-b8cb5dec96b1",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "threadId": "=8397655013303857446",
+        "message": "=⤴️ 𝐓𝐇Ô𝐍𝐆 𝐓𝐈𝐍 𝐓À𝐈 𝐗Ế 𝐋Ê𝐍 𝐂𝐀 𝐆𝐈Ữ𝐀 𝐆𝐈Ờ ⤴️\n\n- H̲ọ̲ ̲t̲ê̲n̲:  {{ $json.body['Họ tên'] }}\n- BKS: {{ $json.body['Biển kiểm soát'] }}\n- L̲o̲ạ̲i̲ ̲h̲ì̲n̲h̲: {{ $json.body['Loại hình'] }} - {{ $json.body['Hình thức'] }}\n- T̲h̲ờ̲i̲ ̲g̲i̲a̲n̲ ̲l̲ê̲n̲ ̲c̲a̲: {{ $json.body['Thời gian lên ca'] }}\n- G̲h̲i̲ ̲c̲h̲ú̲: {{ $json.body['Ghi chú'] }}\n(Đây là tin nhắn tự động)"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        224
+      ],
+      "id": "1249439b-abb0-4b94-82cd-dcc2df2ffc01",
+      "name": "Gửi tin nhắn6",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "QV0k3PrZYFDex8PR",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "threadId": "=4891969062223966031",
+        "message": "=⤴️ 𝐓𝐇Ô𝐍𝐆 𝐓𝐈𝐍 𝐓À𝐈 𝐗Ế 𝐋Ê𝐍 𝐂𝐀 𝐆𝐈Ữ𝐀 𝐆𝐈Ờ ⤴️\n\n- H̲ọ̲ ̲t̲ê̲n̲:  {{ $json.body['Họ tên'] }}\n- BKS: {{ $json.body['Biển kiểm soát'] }}\n- L̲o̲ạ̲i̲ ̲h̲ì̲n̲h̲: {{ $json.body['Loại hình'] }} - {{ $json.body['Hình thức'] }}\n- T̲h̲ờ̲i̲ ̲g̲i̲a̲n̲ ̲l̲ê̲n̲ ̲c̲a̲: {{ $json.body['Thời gian lên ca'] }}\n- G̲h̲i̲ ̲c̲h̲ú̲: {{ $json.body['Ghi chú'] }}\n(Đây là tin nhắn tự động)"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        320
+      ],
+      "id": "0130f345-49f4-4a84-b789-82ee1055e2bf",
+      "name": "Gửi tin nhắn7",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "QV0k3PrZYFDex8PR",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "threadId": "=8984752782100529948",
+        "message": "=⤴️ 𝐓𝐇Ô𝐍𝐆 𝐓𝐈𝐍 𝐓À𝐈 𝐗Ế 𝐋Ê𝐍 𝐂𝐀 𝐆𝐈Ữ𝐀 𝐆𝐈Ờ ⤴️\n\n- H̲ọ̲ ̲t̲ê̲n̲:  {{ $json.body['Họ tên'] }}\n- BKS: {{ $json.body['Biển kiểm soát'] }}\n- L̲o̲ạ̲i̲ ̲h̲ì̲n̲h̲: {{ $json.body['Loại hình'] }} - {{ $json.body['Hình thức'] }}\n- T̲h̲ờ̲i̲ ̲g̲i̲a̲n̲ ̲l̲ê̲n̲ ̲c̲a̲: {{ $json.body['Thời gian lên ca'] }}\n- G̲h̲i̲ ̲c̲h̲ú̲: {{ $json.body['Ghi chú'] }}\n(Đây là tin nhắn tự động)"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        416
+      ],
+      "id": "7c0b7e42-a9f8-4fe7-b4f6-efbc9ce2dd48",
+      "name": "Gửi tin nhắn8",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "QV0k3PrZYFDex8PR",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "threadId": "=1424032541887569775",
+        "message": "=⤴️ 𝐓𝐇Ô𝐍𝐆 𝐓𝐈𝐍 𝐓À𝐈 𝐗Ế 𝐋Ê𝐍 𝐂𝐀 𝐆𝐈Ữ𝐀 𝐆𝐈Ờ ⤴️\n\n- H̲ọ̲ ̲t̲ê̲n̲:  {{ $json.body['Họ tên'] }}\n- BKS: {{ $json.body['Biển kiểm soát'] }}\n- L̲o̲ạ̲i̲ ̲h̲ì̲n̲h̲: {{ $json.body['Loại hình'] }} - {{ $json.body['Hình thức'] }}\n- T̲h̲ờ̲i̲ ̲g̲i̲a̲n̲ ̲l̲ê̲n̲ ̲c̲a̲: {{ $json.body['Thời gian lên ca'] }}\n- G̲h̲i̲ ̲c̲h̲ú̲: {{ $json.body['Ghi chú'] }}\n(Đây là tin nhắn tự động)"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        512
+      ],
+      "id": "1cc0bc21-6639-485f-8acb-df41a4912cd9",
+      "name": "Gửi tin nhắn9",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "QV0k3PrZYFDex8PR",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "threadId": "=1429354811666139770",
+        "message": "=⤴️ 𝐓𝐇Ô𝐍𝐆 𝐓𝐈𝐍 𝐓À𝐈 𝐗Ế 𝐋Ê𝐍 𝐂𝐀 𝐆𝐈Ữ𝐀 𝐆𝐈Ờ ⤴️\n\n- H̲ọ̲ ̲t̲ê̲n̲:  {{ $json.body['Họ tên'] }}\n- BKS: {{ $json.body['Biển kiểm soát'] }}\n- L̲o̲ạ̲i̲ ̲h̲ì̲n̲h̲: {{ $json.body['Loại hình'] }} - {{ $json.body['Hình thức'] }}\n- T̲h̲ờ̲i̲ ̲g̲i̲a̲n̲ ̲l̲ê̲n̲ ̲c̲a̲: {{ $json.body['Thời gian lên ca'] }}\n- G̲h̲i̲ ̲c̲h̲ú̲: {{ $json.body['Ghi chú'] }}\n(Đây là tin nhắn tự động)"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        128
+      ],
+      "id": "dcb565dd-3905-4046-9dd7-6c9f4ae4c5c5",
+      "name": "Gửi tin nhắn5",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "QV0k3PrZYFDex8PR",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "threadId": "=9050962767637850423",
+        "message": "=⤴️ 𝐓𝐇Ô𝐍𝐆 𝐓𝐈𝐍 𝐓À𝐈 𝐗Ế 𝐋Ê𝐍 𝐂𝐀 𝐆𝐈Ữ𝐀 𝐆𝐈Ờ ⤴️\n\n- H̲ọ̲ ̲t̲ê̲n̲:  {{ $json.body['Họ tên'] }}\n- BKS: {{ $json.body['Biển kiểm soát'] }}\n- L̲o̲ạ̲i̲ ̲h̲ì̲n̲h̲: {{ $json.body['Loại hình'] }} - {{ $json.body['Hình thức'] }}\n- T̲h̲ờ̲i̲ ̲g̲i̲a̲n̲ ̲l̲ê̲n̲ ̲c̲a̲: {{ $json.body['Thời gian lên ca'] }}\n- G̲h̲i̲ ̲c̲h̲ú̲: {{ $json.body['Ghi chú'] }}\n(Đây là tin nhắn tự động)"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        1408,
+        32
+      ],
+      "id": "acde6dd2-0c7a-48ab-8b46-2dd31e7d7eb3",
+      "name": "Checker RG",
+      "credentials": {
+        "zaloUserCredentialsApi": {
+          "id": "QV0k3PrZYFDex8PR",
+          "name": "Zalo Mai Nhựt Trường - 2025-11-08T09:50:44.369Z"
+        }
+      }
     }
   ],
   "connections": {
@@ -539,36 +775,7 @@
       "main": [
         [
           {
-            "node": "If1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If1": {
-      "main": [
-        [
-          {
-            "node": "Gửi tin nhắn4",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Tìm người dùng theo số điện thoại2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Tìm người dùng theo số điện thoại2": {
-      "main": [
-        [
-          {
-            "node": "Gửi tin nhắn3",
+            "node": "Switch",
             "type": "main",
             "index": 0
           }
@@ -580,6 +787,70 @@
         [
           {
             "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gửi tin nhắn5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gửi tin nhắn6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gửi tin nhắn7",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gửi tin nhắn8",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gửi tin nhắn8",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gửi tin nhắn9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gửi tin nhắn4": {
+      "main": [
+        [
+          {
+            "node": "Checker RG",
             "type": "main",
             "index": 0
           }
@@ -626,7 +897,7 @@
       }
     ]
   },
-  "versionId": "728e6278-ba95-477b-9472-6757f1a4ce9b",
+  "versionId": "4862c810-5d91-48c8-8306-f13fb14584cc",
   "triggerCount": 4,
   "shared": [
     {
