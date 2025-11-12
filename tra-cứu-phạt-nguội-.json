@@ -1,0 +1,523 @@
+{
+  "createdAt": "2025-11-12T12:29:09.641Z",
+  "updatedAt": "2025-11-12T14:09:31.000Z",
+  "id": "8dIBhX3Lu8V3O6SV",
+  "name": "Tra cứu phạt nguội",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -864,
+        -112
+      ],
+      "id": "382c3b08-6215-4a81-9415-656070b2af65",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f311e1f0-9498-4537-9958-d6f57792b879",
+              "name": "BienSoXe",
+              "value": "={{ $json['BIEN SO'] }}",
+              "type": "string"
+            },
+            {
+              "id": "48e4da61-c137-4a99-88b3-8956ab1dd906",
+              "name": "LoaiXe",
+              "value": "1",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -448,
+        -112
+      ],
+      "id": "0867cf82-db38-4fab-948a-1a8714ca1d43",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.csgt.vn/?mod=contact&task=tracuu_post&ajax",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Cookie",
+              "value": "={{ $('Lấy Captcha').item.json.headers['set-cookie'][0] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "BienKS",
+              "value": "={{ $('Edit Fields').item.json.BienSoXe }}"
+            },
+            {
+              "name": "Xe",
+              "value": "={{ $('Edit Fields').item.json.LoaiXe }}"
+            },
+            {
+              "name": "captcha",
+              "value": "={{ $json.content }}"
+            },
+            {
+              "name": "ipClient",
+              "value": "9.9.9.91"
+            },
+            {
+              "name": "cUrl",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        176,
+        -112
+      ],
+      "id": "f4c6fde1-6199-46c4-b9db-682076a6dae5",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => {\n  const inputData = item.json.data;\n  let url = null;\n  try {\n    const cleanText = inputData.toString().trim();\n    if (!cleanText) throw new Error(\"Không có dữ liệu đầu vào hợp lệ\");\n    const json = JSON.parse(cleanText);\n    if (!json.href) throw new Error(\"Không có trường 'href' trong JSON\");\n    url = json.href.replace(/\\\\\\//g, \"/\");\n  } catch (err) {\n    console.error(\"Lỗi khi xử lý item:\", err.message);\n  }\n  return {\n    json: { url }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        384,
+        -112
+      ],
+      "id": "a56d5a2d-610b-40f1-8025-fcb966df1461",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "url": "https://www.csgt.vn/lib/captcha/captcha.class.php",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -240,
+        -112
+      ],
+      "id": "9685f1f2-849c-40be-a7a0-5cd5fed075b1",
+      "name": "Lấy Captcha"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "extract text from this image\nresponse only text extracted from image",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -32,
+        -112
+      ],
+      "id": "c30b7a37-1458-4e64-ad90-f4ee0a68ad0d",
+      "name": "Giải Captcha",
+      "credentials": {
+        "openAiApi": {
+          "id": "S7PDY5QIHfPcgTkT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Cookie",
+              "value": "={{ $('Lấy Captcha').item.json.headers['set-cookie'][0] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        624,
+        -112
+      ],
+      "id": "a9df6d33-a242-46ff-865b-1203ebe133db",
+      "name": "Lấy HTML kết quả"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "noidung",
+              "cssSelector": ".col-md-9",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        832,
+        -112
+      ],
+      "id": "2c9e72de-44e8-45c4-a882-8d6524aa9194",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1WZCK_dUACvdt8vUT_6hRnEErwomcXEHn-UXlxPGUgIk",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "KẾT QUẢ",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "BKS": "=",
+            "Màu biển": "={{ $json.noidung[1] }}",
+            "Loại phương tiện": "={{ $json.noidung[2] }}",
+            "Thời gian vi phạm": "={{ $json.noidung[3] }}",
+            "Địa điểm vi phạm": "={{ $json.noidung[4] }}",
+            "Hành vi vi phạm": "={{ $json.noidung[5] }}",
+            "Trạng thái": "={{ $json.noidung[6] }}",
+            "Đơn vị phát hiện vi phạm": "={{ $json.noidung[7] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "BKS",
+              "displayName": "BKS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Màu biển",
+              "displayName": "Màu biển",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Loại phương tiện",
+              "displayName": "Loại phương tiện",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Thời gian vi phạm",
+              "displayName": "Thời gian vi phạm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Địa điểm vi phạm",
+              "displayName": "Địa điểm vi phạm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Hành vi vi phạm",
+              "displayName": "Hành vi vi phạm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Trạng thái",
+              "displayName": "Trạng thái",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Đơn vị phát hiện vi phạm",
+              "displayName": "Đơn vị phát hiện vi phạm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1248,
+        -128
+      ],
+      "id": "50602cf0-6177-4ac0-a223-06bf66b908c6",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1aKpEn8g3R5cUDIvZNzfMoR90skdyTSxUp9ZRWlavgN8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "BIEN SO",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -656,
+        -112
+      ],
+      "id": "2c3495cc-2ab9-4a2b-b6ee-4b8d1a29aed4",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "489c69df-e25a-4489-b2a3-535bacff824b",
+              "leftValue": "={{ $json.noidung[0] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        -112
+      ],
+      "id": "c18d7bb3-fe8d-46d2-a888-b0db5af3aead",
+      "name": "If"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Lấy Captcha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Lấy HTML kết quả",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy Captcha": {
+      "main": [
+        [
+          {
+            "node": "Giải Captcha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Giải Captcha": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy HTML kết quả": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "f2329b89-ef85-41df-aac1-bf084162d141",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-11-12T12:29:09.650Z",
+      "updatedAt": "2025-11-12T12:29:09.650Z",
+      "role": "workflow:owner",
+      "workflowId": "8dIBhX3Lu8V3O6SV",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
