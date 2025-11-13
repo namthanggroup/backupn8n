@@ -1,0 +1,1625 @@
+{
+  "createdAt": "2025-11-13T03:05:39.371Z",
+  "updatedAt": "2025-11-13T03:07:28.000Z",
+  "id": "11VZo7jeMdqGwGcZ",
+  "name": "Gửi tin đăng ký hợp đồng - Zalo user",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "threadId": "={{ $json.response.uid }}",
+        "message": "={{ $('Google Sheets Trigger - RG').item.json.hoten_lx }} - {{ $('Google Sheets Trigger - RG').item.json.so_tai }}\n--------------------------\nĐÃ ĐĂNG KÝ HỢP ĐỒNG THÀNH CÔNG\n- ID: {{ $('Google Sheets Trigger - RG').item.json.id }}\nℹ️ Thông tin: {{ $('Google Sheets Trigger - RG').item.json.chieu_di }} | {{ $('Google Sheets Trigger - RG').item.json.sokm_quydinh }}km| {{ Number($('Google Sheets Trigger - RG').item.json.sotien_hopdong).toLocaleString('vi-VN') }}đ | {{ $('Google Sheets Trigger - RG').item.json.so_giocho_quydinh_gio }} giờ chờ\n🕐 Thời gian bắt đầu: {{ $('Google Sheets Trigger - RG').item.json.thoigian_batdau }}\n📍 Địa điểm: {{ $('Google Sheets Trigger - RG').item.json.diem_di }} 🔁 {{ $('Google Sheets Trigger - RG').item.json.diem_den }}\n📑 Loại hợp đồng: {{ $('Google Sheets Trigger - RG').item.json.loai_hopdong }}\n---------\nHãy nhắn \"ok\" nếu nhận được tin nhắn tự động"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -976,
+        400
+      ],
+      "id": "4594983a-9b79-473b-a4b9-118e9880434a",
+      "name": "Gửi tin nhắn"
+    },
+    {
+      "parameters": {
+        "resource": "get",
+        "operation": "findUser",
+        "phoneNumber": "={{ $json.sdt_taixe }}"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -1232,
+        400
+      ],
+      "id": "cc425d4f-8a15-4275-b2cb-f69b319e992a",
+      "name": "Tìm người dùng theo số điện thoại"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "21e3b2d4-45ff-405d-bf98-00378997ee10",
+              "leftValue": "={{ $json.sdt_taixe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1536,
+        384
+      ],
+      "id": "13fcfd14-722e-42db-a22d-3ab8ad4d82f6",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $json.response.uid }}",
+        "message": "={{ $('Google Sheets Trigger - CM').item.json.hoten_lx }} - {{ $('Google Sheets Trigger - CM').item.json.so_tai }}\n--------------------------\nĐÃ ĐĂNG KÝ HỢP ĐỒNG THÀNH CÔNG\n- ID: {{ $('Google Sheets Trigger - CM').item.json.id }}\nℹ️ Thông tin: {{ $('Google Sheets Trigger - CM').item.json.chieu_di }} | {{ $('Google Sheets Trigger - CM').item.json.sokm_quydinh }}km| {{ Number($('Google Sheets Trigger - CM').item.json.sotien_hopdong).toLocaleString('vi-VN') }}đ | {{ $('Google Sheets Trigger - CM').item.json.so_giocho_quydinh_gio }} giờ chờ\n🕐 Thời gian bắt đầu: {{ $('Google Sheets Trigger - CM').item.json.thoigian_batdau }}\n📍 Địa điểm: {{ $('Google Sheets Trigger - CM').item.json.diem_di }} 🔁 {{ $('Google Sheets Trigger - CM').item.json.diem_den }}\n📑 Loại hợp đồng: {{ $('Google Sheets Trigger - CM').item.json.loai_hopdong }}\n---------\nHãy nhắn \"ok\" nếu nhận được tin nhắn tự động"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        704
+      ],
+      "id": "95503e50-b094-47ad-a220-dc904e1e2683",
+      "name": "Gửi tin nhắn1"
+    },
+    {
+      "parameters": {
+        "resource": "get",
+        "operation": "findUser",
+        "phoneNumber": "={{ $json.sdt_taixe }}"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -1232,
+        704
+      ],
+      "id": "f7b3d05a-ef7f-46f5-a73c-bc1a943c3775",
+      "name": "Tìm người dùng theo số điện thoại1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "21e3b2d4-45ff-405d-bf98-00378997ee10",
+              "leftValue": "={{ $json.sdt_taixe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1520,
+        688
+      ],
+      "id": "b045b327-d776-496f-8b0a-e065f1655b49",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $json.response.uid }}",
+        "message": "={{ $('Google Sheets Trigger - AG').item.json.hoten_lx }} - {{ $('Google Sheets Trigger - AG').item.json.so_tai }}\n--------------------------\nĐÃ ĐĂNG KÝ HỢP ĐỒNG THÀNH CÔNG\n- ID: {{ $('Google Sheets Trigger - AG').item.json.id }}\nℹ️ Thông tin: {{ $('Google Sheets Trigger - AG').item.json.chieu_di }} | {{ $('Google Sheets Trigger - AG').item.json.sokm_quydinh }}km| {{ Number($('Google Sheets Trigger - AG').item.json.sotien_hopdong).toLocaleString('vi-VN') }}đ | {{ $('Google Sheets Trigger - AG').item.json.so_giocho_quydinh_gio }} giờ chờ\n🕐 Thời gian bắt đầu: {{ $('Google Sheets Trigger - AG').item.json.thoigian_batdau }}\n📍 Địa điểm: {{ $('Google Sheets Trigger - AG').item.json.diem_di }} 🔁 {{ $('Google Sheets Trigger - AG').item.json.diem_den }}\n📑 Loại hợp đồng: {{ $('Google Sheets Trigger - AG').item.json.loai_hopdong }}\n---------\nHãy nhắn \"ok\" nếu nhận được tin nhắn tự động"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        976
+      ],
+      "id": "de107eca-66ee-4994-b309-c69275b7d943",
+      "name": "Gửi tin nhắn2"
+    },
+    {
+      "parameters": {
+        "resource": "get",
+        "operation": "findUser",
+        "phoneNumber": "={{ $json.sdt_taixe }}"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -1232,
+        976
+      ],
+      "id": "fc47c507-1de8-4f7d-8634-32884222ab42",
+      "name": "Tìm người dùng theo số điện thoại2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "21e3b2d4-45ff-405d-bf98-00378997ee10",
+              "leftValue": "={{ $json.sdt_taixe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1520,
+        960
+      ],
+      "id": "987bf5a0-7816-4072-b7cb-db9d0982bd10",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1760,
+        48
+      ],
+      "id": "eaee78c5-e3a1-4442-8d94-26bd44092e83",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "get"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -1568,
+        48
+      ],
+      "id": "42169593-7ca2-4a16-b085-da229e58cc06",
+      "name": "Lấy danh sách bạn bè"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8f2cdd4b-90e3-4507-841d-4a06b3f010a4",
+              "leftValue": "={{ $json.success }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1312,
+        48
+      ],
+      "id": "3f637f37-412b-4e9b-8fbf-6037258618af",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "sendTo": "mntruong.ntrg@namthanggroup.vn",
+        "subject": "Zalo bot Taxi điện mất kết nối",
+        "message": "Zalo bot Taxi điện mất kết nối, kiểm tra gấp",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1024,
+        64
+      ],
+      "id": "6173b26e-da2e-4157-adb4-f95ec911d66a",
+      "name": "Send a message",
+      "webhookId": "e406eb12-4c3c-4ad9-9eec-690be8ff8c29"
+    },
+    {
+      "parameters": {
+        "content": "Kiểm tra Credential Zalo User",
+        "height": 192,
+        "width": 944
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1792,
+        -16
+      ],
+      "typeVersion": 1,
+      "id": "859f4c6b-5853-4731-b033-1f0fc1a7bff3",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "getMetadata": true
+      },
+      "type": "n8n-nodes-social-zalo.zaloUser",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        16
+      ],
+      "id": "2f9e5540-6277-4617-b54a-a3f654fbbc24",
+      "name": "Zalo Event Trigger"
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $('Zalo Event Trigger').item.json.data.uidFrom }}",
+        "message": "Chào Anh/Chị, em là bot Taxi điện Nam Thắng. Em chỉ gửi tin nhắn tự động nên Anh/Chị nhắn cho em, em không trả lời đâu nhé."
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        16
+      ],
+      "id": "fdefdc08-b40a-4bf1-8d2d-31e09928029b",
+      "name": "Gửi tin nhắn3"
+    },
+    {
+      "parameters": {
+        "operation": "sendStickerMessage",
+        "threadId": "={{ $('Zalo Event Trigger').item.json.data.uidFrom }}",
+        "stickerKeywords": "love"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        64,
+        16
+      ],
+      "id": "61bdd6f7-998c-421f-a4a0-aab3fc3c7306",
+      "name": "Gửi tin nhắn sticker"
+    },
+    {
+      "parameters": {
+        "content": "Tự động kết bạn -> gửi tin nhắn -> gửi sticker -> lưu vào sheet",
+        "height": 224,
+        "width": 976
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -672,
+        -48
+      ],
+      "typeVersion": 1,
+      "id": "2967e688-0ba7-4873-aeec-d086ee2f2b9b",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "resource": "friend",
+        "operation": "acceptFriendRequest",
+        "userId": "={{ $json.uid }}"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        16
+      ],
+      "id": "cb501a21-e828-47df-8cee-ed7ea96243af",
+      "name": "Đồng ý lời mời kết bạn"
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $json.response.uid }}",
+        "message": "={{ $('Google Sheets Trigger - BL').item.json.hoten_lx }} - {{ $('Google Sheets Trigger - BL').item.json.so_tai }}\n--------------------------\nĐÃ ĐĂNG KÝ HỢP ĐỒNG THÀNH CÔNG\n- ID: {{ $('Google Sheets Trigger - BL').item.json.id }}\nℹ️ Thông tin: {{ $('Google Sheets Trigger - BL').item.json.chieu_di }} | {{ $('Google Sheets Trigger - BL').item.json.sokm_quydinh }}km| {{ Number($('Google Sheets Trigger - BL').item.json.sotien_hopdong).toLocaleString('vi-VN') }}đ | {{ $('Google Sheets Trigger - BL').item.json.so_giocho_quydinh_gio }} giờ chờ\n🕐 Thời gian bắt đầu: {{ $('Google Sheets Trigger - BL').item.json.thoigian_batdau }}\n📍 Địa điểm: {{ $('Google Sheets Trigger - BL').item.json.diem_di }} 🔁 {{ $('Google Sheets Trigger - BL').item.json.diem_den }}\n📑 Loại hợp đồng: {{ $('Google Sheets Trigger - BL').item.json.loai_hopdong }}\n---------\nHãy nhắn \"ok\" nếu nhận được tin nhắn tự động"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -944,
+        1216
+      ],
+      "id": "f22ae13c-a7de-4192-95c0-3ad7f5244487",
+      "name": "Gửi tin nhắn4"
+    },
+    {
+      "parameters": {
+        "resource": "get",
+        "operation": "findUser",
+        "phoneNumber": "={{ $json.sdt_taixe }}"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -1216,
+        1216
+      ],
+      "id": "4bfaabcd-f604-4f47-aaab-607412d972df",
+      "name": "Tìm người dùng theo số điện thoại3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "21e3b2d4-45ff-405d-bf98-00378997ee10",
+              "leftValue": "={{ $json.sdt_taixe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1504,
+        1200
+      ],
+      "id": "98c09a60-b145-485e-aef8-f432906b02cd",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $json.response.uid }}",
+        "message": "={{ $('Google Sheets Trigger - ST').item.json.hoten_lx }} - {{ $('Google Sheets Trigger - ST').item.json.so_tai }}\n--------------------------\nĐÃ ĐĂNG KÝ HỢP ĐỒNG THÀNH CÔNG\n- ID: {{ $('Google Sheets Trigger - ST').item.json.id }}\nℹ️ Thông tin: {{ $('Google Sheets Trigger - ST').item.json.chieu_di }} | {{ $('Google Sheets Trigger - ST').item.json.sokm_quydinh }}km| {{ Number($('Google Sheets Trigger - ST').item.json.sotien_hopdong).toLocaleString('vi-VN') }}đ | {{ $('Google Sheets Trigger - ST').item.json.so_giocho_quydinh_gio }} giờ chờ\n🕐 Thời gian bắt đầu: {{ $('Google Sheets Trigger - ST').item.json.thoigian_batdau }}\n📍 Địa điểm: {{ $('Google Sheets Trigger - ST').item.json.diem_di }} 🔁 {{ $('Google Sheets Trigger - ST').item.json.diem_den }}\n📑 Loại hợp đồng: {{ $('Google Sheets Trigger - ST').item.json.loai_hopdong }}\n---------\nHãy nhắn \"ok\" nếu nhận được tin nhắn tự động"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -992,
+        1440
+      ],
+      "id": "85a91bc5-0a73-40c3-bb4e-847fef7d062c",
+      "name": "Gửi tin nhắn5"
+    },
+    {
+      "parameters": {
+        "resource": "get",
+        "operation": "findUser",
+        "phoneNumber": "={{ $json.sdt_taixe }}"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -1264,
+        1440
+      ],
+      "id": "fb5e9b2d-2c16-41a3-84cb-deb0886112a4",
+      "name": "Tìm người dùng theo số điện thoại4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "21e3b2d4-45ff-405d-bf98-00378997ee10",
+              "leftValue": "={{ $json.sdt_taixe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1552,
+        1424
+      ],
+      "id": "a9149002-ebc5-43c1-a9ad-a1fa3ed7c462",
+      "name": "If5"
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $json.response.uid }}",
+        "message": "={{ $('Google Sheets Trigger - VL').item.json.hoten_lx }} - {{ $('Google Sheets Trigger - VL').item.json.so_tai }}\n--------------------------\nĐÃ ĐĂNG KÝ HỢP ĐỒNG THÀNH CÔNG\n- ID: {{ $('Google Sheets Trigger - VL').item.json.id }}\nℹ️ Thông tin: {{ $('Google Sheets Trigger - VL').item.json.chieu_di }} | {{ $('Google Sheets Trigger - VL').item.json.sokm_quydinh }}km| {{ Number($('Google Sheets Trigger - VL').item.json.sotien_hopdong).toLocaleString('vi-VN') }}đ | {{ $('Google Sheets Trigger - VL').item.json.so_giocho_quydinh_gio }} giờ chờ\n🕐 Thời gian bắt đầu: {{ $('Google Sheets Trigger - VL').item.json.thoigian_batdau }}\n📍 Địa điểm: {{ $('Google Sheets Trigger - VL').item.json.diem_di }} 🔁 {{ $('Google Sheets Trigger - VL').item.json.diem_den }}\n📑 Loại hợp đồng: {{ $('Google Sheets Trigger - VL').item.json.loai_hopdong }}\n---------\nHãy nhắn \"ok\" nếu nhận được tin nhắn tự động"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -1008,
+        1664
+      ],
+      "id": "d18b1f45-4745-4cbb-a2f4-edb176bd4394",
+      "name": "Gửi tin nhắn6"
+    },
+    {
+      "parameters": {
+        "resource": "get",
+        "operation": "findUser",
+        "phoneNumber": "={{ $json.sdt_taixe }}"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -1280,
+        1664
+      ],
+      "id": "2ea38819-8f6a-4f81-b5e4-8e18f8c09973",
+      "name": "Tìm người dùng theo số điện thoại5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "21e3b2d4-45ff-405d-bf98-00378997ee10",
+              "leftValue": "={{ $json.sdt_taixe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1568,
+        1648
+      ],
+      "id": "f98ba20d-d49f-4c7e-acab-a3d14ee8419f",
+      "name": "If6"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Họ tên": "={{ $('Tìm người dùng theo số điện thoại').item.json.response.display_name }}",
+            "SĐT_Zalo": "={{ $('If').item.json.sdt_taixe }}",
+            "Thời gian gửi": "={{ new Date().toDateTime().format('dd/MM/yyyy') }}\n"
+          },
+          "matchingColumns": [
+            "SĐT_Zalo"
+          ],
+          "schema": [
+            {
+              "id": "SĐT_Zalo",
+              "displayName": "SĐT_Zalo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Họ tên",
+              "displayName": "Họ tên",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thời gian gửi",
+              "displayName": "Thời gian gửi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -688,
+        400
+      ],
+      "id": "6a7c6833-6561-425c-85f9-dc57319d6b60",
+      "name": "Ghi vào Sheet log5"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1619113259,
+          "mode": "list",
+          "cachedResultName": "Kết bạn",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit#gid=1619113259"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "uid": "={{ $json.uid }}",
+            "display_name": "={{ $json.dis_name }}",
+            "message": "={{ $json.message }}",
+            "ngay": "={{ new Date().toDateTime().format('dd/MM/yyyy') }}"
+          },
+          "matchingColumns": [
+            "SĐT_Zalo"
+          ],
+          "schema": [
+            {
+              "id": "ngay",
+              "displayName": "ngay",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "uid",
+              "displayName": "uid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "display_name",
+              "displayName": "display_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -272,
+        208
+      ],
+      "id": "ac0ac3ad-fae7-44cb-8203-a4ca421a39a3",
+      "name": "Ghi vào Sheet log8"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5bc2518b-a255-44a1-94da-cf0c294d3e1c",
+              "name": "uid",
+              "value": "={{ $json.data.uidFrom }}",
+              "type": "string"
+            },
+            {
+              "id": "73a1cd3e-a8a1-4915-b03a-b819a6224911",
+              "name": "dis_name",
+              "value": "={{ $json.data.dName }}",
+              "type": "string"
+            },
+            {
+              "id": "d17d4541-1a2d-438b-9a86-572ebc41a41f",
+              "name": "message",
+              "value": "={{ $json.data.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -496,
+        16
+      ],
+      "id": "b4341b3d-c0b5-4d77-91eb-fd33b337cdbd",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Họ tên": "={{ $('Tìm người dùng theo số điện thoại5').item.json.response.display_name }}",
+            "SĐT_Zalo": "={{ $('If6').item.json.sdt_taixe }}",
+            "Thời gian gửi": "={{ new Date().toDateTime().format('dd/MM/yyyy') }}\n"
+          },
+          "matchingColumns": [
+            "SĐT_Zalo"
+          ],
+          "schema": [
+            {
+              "id": "SĐT_Zalo",
+              "displayName": "SĐT_Zalo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Họ tên",
+              "displayName": "Họ tên",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thời gian gửi",
+              "displayName": "Thời gian gửi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -688,
+        1648
+      ],
+      "id": "620cc747-d2bd-4900-95eb-94d578b34aea",
+      "name": "Ghi vào Sheet log2"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Họ tên": "={{ $('Tìm người dùng theo số điện thoại4').item.json.response.display_name }}",
+            "SĐT_Zalo": "={{ $('If5').item.json.sdt_taixe }}",
+            "Thời gian gửi": "={{ new Date().toDateTime().format('dd/MM/yyyy') }}\n"
+          },
+          "matchingColumns": [
+            "SĐT_Zalo"
+          ],
+          "schema": [
+            {
+              "id": "SĐT_Zalo",
+              "displayName": "SĐT_Zalo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Họ tên",
+              "displayName": "Họ tên",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thời gian gửi",
+              "displayName": "Thời gian gửi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "msnv",
+              "displayName": "msnv",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -672,
+        1440
+      ],
+      "id": "8f6fd37d-7ab9-4c39-a797-6e579218cc0b",
+      "name": "Ghi vào Sheet log7"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Họ tên": "={{ $('Tìm người dùng theo số điện thoại3').item.json.response.display_name }}",
+            "SĐT_Zalo": "={{ $('If4').item.json.sdt_taixe }}",
+            "Thời gian gửi": "={{ new Date().toDateTime().format('dd/MM/yyyy') }}\n"
+          },
+          "matchingColumns": [
+            "SĐT_Zalo"
+          ],
+          "schema": [
+            {
+              "id": "SĐT_Zalo",
+              "displayName": "SĐT_Zalo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Họ tên",
+              "displayName": "Họ tên",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thời gian gửi",
+              "displayName": "Thời gian gửi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -704,
+        1216
+      ],
+      "id": "e9b1ec97-09e6-4abf-92f3-11372d97e784",
+      "name": "Ghi vào Sheet log1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Họ tên": "={{ $('Tìm người dùng theo số điện thoại2').item.json.response.display_name }}",
+            "SĐT_Zalo": "={{ $('If2').item.json.sdt_taixe }}",
+            "Thời gian gửi": "={{ new Date().toDateTime().format('dd/MM/yyyy') }}\n"
+          },
+          "matchingColumns": [
+            "SĐT_Zalo"
+          ],
+          "schema": [
+            {
+              "id": "SĐT_Zalo",
+              "displayName": "SĐT_Zalo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Họ tên",
+              "displayName": "Họ tên",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thời gian gửi",
+              "displayName": "Thời gian gửi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "msnv",
+              "displayName": "msnv",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -704,
+        976
+      ],
+      "id": "4ae4e494-4ac4-4803-b9d3-0b016100f83c",
+      "name": "Ghi vào Sheet log6"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Họ tên": "={{ $('Tìm người dùng theo số điện thoại1').item.json.response.display_name }}",
+            "SĐT_Zalo": "={{ $('If1').item.json.sdt_taixe }}",
+            "Thời gian gửi": "={{ new Date().toDateTime().format('dd/MM/yyyy') }}\n"
+          },
+          "matchingColumns": [
+            "SĐT_Zalo"
+          ],
+          "schema": [
+            {
+              "id": "SĐT_Zalo",
+              "displayName": "SĐT_Zalo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Họ tên",
+              "displayName": "Họ tên",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thời gian gửi",
+              "displayName": "Thời gian gửi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "msnv",
+              "displayName": "msnv",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -704,
+        704
+      ],
+      "id": "e99a8f54-7c51-43c8-92ce-023cb344b63b",
+      "name": "Ghi vào Sheet log"
+    },
+    {
+      "parameters": {
+        "resource": "get"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        544
+      ],
+      "id": "5c668ce1-1b3b-4449-b32a-449a5d44ef8e",
+      "name": "Lấy danh sách bạn bè1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "response",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        544
+      ],
+      "id": "da4f064e-df3d-426a-b450-1194c9d0545f",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1181860287,
+          "mode": "list",
+          "cachedResultName": "DS bạn bè mới tải",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit#gid=1181860287"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "UID_Zalo User": "='{{ $json.userId }}",
+            "Display_name": "={{ $json.displayName }}"
+          },
+          "matchingColumns": [
+            "SĐT_Zalo"
+          ],
+          "schema": [
+            {
+              "id": "UID_Zalo User",
+              "displayName": "UID_Zalo User",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Display_name",
+              "displayName": "Display_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        128,
+        544
+      ],
+      "id": "9583da43-3b37-4b83-88c4-4b0f1891b2e6",
+      "name": "Ghi vào Sheet log9"
+    },
+    {
+      "parameters": {
+        "resource": "get",
+        "operation": "getUserInfo",
+        "userId": "=8316854229686835143"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        32,
+        336
+      ],
+      "id": "90e9b8ca-db4f-45c4-8057-6d5a4a4ed0d2",
+      "name": "Lấy thông tin người dùng"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit?gid=1181860287#gid=1181860287",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1181860287,
+          "mode": "list",
+          "cachedResultName": "DS bạn bè mới tải",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit#gid=1181860287"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -128,
+        768
+      ],
+      "id": "c1ca4e1f-9540-4df4-83fb-3399e1de804e",
+      "name": "Get row(s) in sheet"
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $json['UID_Zalo User'] }}",
+        "message": "Nhờ a nhắn lại mã số nhân viên + tỉnh giúp em"
+      },
+      "type": "n8n-nodes-social-zalo.zaloUserInteract",
+      "typeVersion": 1,
+      "position": [
+        80,
+        768
+      ],
+      "id": "3ae363d6-e897-4a8c-b398-664fadc36687",
+      "name": "Gửi tin nhắn7"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "dang-ky-hop-dong",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1968,
+        672
+      ],
+      "id": "8b7f46d8-e634-41e8-bad9-3d94d5b5c94a",
+      "name": "Webhook",
+      "webhookId": "d755e637-e4a0-4142-bfe0-1edadffeab11"
+    }
+  ],
+  "connections": {
+    "Gửi tin nhắn": {
+      "main": [
+        [
+          {
+            "node": "Ghi vào Sheet log5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tìm người dùng theo số điện thoại": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Tìm người dùng theo số điện thoại",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gửi tin nhắn1": {
+      "main": [
+        [
+          {
+            "node": "Ghi vào Sheet log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tìm người dùng theo số điện thoại1": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Tìm người dùng theo số điện thoại1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gửi tin nhắn2": {
+      "main": [
+        [
+          {
+            "node": "Ghi vào Sheet log6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tìm người dùng theo số điện thoại2": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Tìm người dùng theo số điện thoại2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Lấy danh sách bạn bè",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy danh sách bạn bè": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zalo Event Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gửi tin nhắn3": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn sticker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Đồng ý lời mời kết bạn": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gửi tin nhắn4": {
+      "main": [
+        [
+          {
+            "node": "Ghi vào Sheet log1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tìm người dùng theo số điện thoại3": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Tìm người dùng theo số điện thoại3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gửi tin nhắn5": {
+      "main": [
+        [
+          {
+            "node": "Ghi vào Sheet log7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tìm người dùng theo số điện thoại4": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If5": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Tìm người dùng theo số điện thoại4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gửi tin nhắn6": {
+      "main": [
+        [
+          {
+            "node": "Ghi vào Sheet log2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tìm người dùng theo số điện thoại5": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If6": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Tìm người dùng theo số điện thoại5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Ghi vào Sheet log8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy danh sách bạn bè1": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Ghi vào Sheet log9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Gửi tin nhắn7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "f48755b6-1dbc-46d2-8f5a-b9c5407ee4ed",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-11-13T03:05:39.380Z",
+      "updatedAt": "2025-11-13T03:05:39.380Z",
+      "role": "workflow:owner",
+      "workflowId": "11VZo7jeMdqGwGcZ",
+      "projectId": "OMvTh6YKRUAvJA2j"
+    }
+  ],
+  "tags": []
+}
