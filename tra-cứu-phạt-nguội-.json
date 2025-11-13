@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-11-12T12:29:09.641Z",
-  "updatedAt": "2025-11-12T14:09:31.000Z",
+  "updatedAt": "2025-11-13T06:39:03.000Z",
   "id": "8dIBhX3Lu8V3O6SV",
   "name": "Tra cứu phạt nguội",
   "active": false,
@@ -11,8 +11,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -864,
-        -112
+        -960,
+        -272
       ],
       "id": "382c3b08-6215-4a81-9415-656070b2af65",
       "name": "When clicking ‘Execute workflow’"
@@ -40,8 +40,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -448,
-        -112
+        -544,
+        -272
       ],
       "id": "0867cf82-db38-4fab-948a-1a8714ca1d43",
       "name": "Edit Fields"
@@ -90,8 +90,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        176,
-        -112
+        80,
+        -272
       ],
       "id": "f4c6fde1-6199-46c4-b9db-682076a6dae5",
       "name": "HTTP Request1"
@@ -103,8 +103,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        384,
-        -112
+        288,
+        -272
       ],
       "id": "a56d5a2d-610b-40f1-8025-fcb966df1461",
       "name": "Code in JavaScript"
@@ -123,8 +123,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -240,
-        -112
+        -336,
+        -272
       ],
       "id": "9685f1f2-849c-40be-a7a0-5cd5fed075b1",
       "name": "Lấy Captcha"
@@ -146,8 +146,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -32,
-        -112
+        -128,
+        -272
       ],
       "id": "c30b7a37-1458-4e64-ad90-f4ee0a68ad0d",
       "name": "Giải Captcha",
@@ -175,8 +175,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        624,
-        -112
+        736,
+        -288
       ],
       "id": "a9df6d33-a242-46ff-865b-1203ebe133db",
       "name": "Lấy HTML kết quả"
@@ -198,8 +198,8 @@
       "type": "n8n-nodes-base.html",
       "typeVersion": 1.2,
       "position": [
-        832,
-        -112
+        944,
+        -288
       ],
       "id": "2c9e72de-44e8-45c4-a882-8d6524aa9194",
       "name": "HTML"
@@ -312,40 +312,11 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1248,
-        -128
+        1360,
+        -304
       ],
       "id": "50602cf0-6177-4ac0-a223-06bf66b908c6",
       "name": "Append row in sheet",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "uXXg43rKvUapywEv",
-          "name": "Google Sheets account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1aKpEn8g3R5cUDIvZNzfMoR90skdyTSxUp9ZRWlavgN8",
-          "mode": "id"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "BIEN SO",
-          "mode": "name"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [
-        -656,
-        -112
-      ],
-      "id": "2c3495cc-2ab9-4a2b-b6ee-4b8d1a29aed4",
-      "name": "Get row(s) in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "uXXg43rKvUapywEv",
@@ -381,11 +352,74 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1040,
-        -112
+        1152,
+        -288
       ],
       "id": "c18d7bb3-fe8d-46d2-a888-b0db5af3aead",
       "name": "If"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1aKpEn8g3R5cUDIvZNzfMoR90skdyTSxUp9ZRWlavgN8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "BIEN SO",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -752,
+        -272
+      ],
+      "id": "2c3495cc-2ab9-4a2b-b6ee-4b8d1a29aed4",
+      "name": "Lấy BKS",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uXXg43rKvUapywEv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a2c7dce9-a602-4591-864d-41e8c422e845",
+              "leftValue": "={{ $json.url }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        496,
+        -272
+      ],
+      "id": "2eef8ee0-8510-40e7-9da7-fc480454aa97",
+      "name": "If1"
     }
   ],
   "connections": {
@@ -393,7 +427,7 @@
       "main": [
         [
           {
-            "node": "Get row(s) in sheet",
+            "node": "Lấy BKS",
             "type": "main",
             "index": 0
           }
@@ -426,7 +460,7 @@
       "main": [
         [
           {
-            "node": "Lấy HTML kết quả",
+            "node": "If1",
             "type": "main",
             "index": 0
           }
@@ -477,7 +511,18 @@
         ]
       ]
     },
-    "Get row(s) in sheet": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy BKS": {
       "main": [
         [
           {
@@ -488,11 +533,11 @@
         ]
       ]
     },
-    "If": {
+    "If1": {
       "main": [
         [
           {
-            "node": "Append row in sheet",
+            "node": "Lấy HTML kết quả",
             "type": "main",
             "index": 0
           }
@@ -508,7 +553,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "f2329b89-ef85-41df-aac1-bf084162d141",
+  "versionId": "4ecdd0a6-f335-40cb-b11b-f3ffc1e8cf31",
   "triggerCount": 0,
   "shared": [
     {
