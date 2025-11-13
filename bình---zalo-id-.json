@@ -1,28 +1,11 @@
 {
   "createdAt": "2025-11-12T14:23:48.631Z",
-  "updatedAt": "2025-11-12T15:30:16.000Z",
+  "updatedAt": "2025-11-13T09:57:16.000Z",
   "id": "bFzJKN0wDsQZyA24",
   "name": "Bình - Zalo id",
   "active": false,
   "isArchived": false,
   "nodes": [
-    {
-      "parameters": {},
-      "type": "n8n-nodes-social-zalo.zaloUserLogin",
-      "typeVersion": 3,
-      "position": [
-        160,
-        -144
-      ],
-      "id": "56b9953a-fae6-458f-97f7-58210b6e8a36",
-      "name": "Zalo Login Via QR Code",
-      "credentials": {
-        "n8nApi": {
-          "id": "30tjNLmMIWJCCXUX",
-          "name": "n8n account"
-        }
-      }
-    },
     {
       "parameters": {
         "documentId": {
@@ -39,22 +22,17 @@
           "cachedResultName": "Source nhân sự chưa có uid",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QGeWgVNd9q_CM_3_wjirvMrmooera0bEbRYvAANB5Rw/edit#gid=416620983"
         },
-        "options": {
-          "dataLocationOnSheet": {
-            "values": {
-              "rangeDefinition": "detectAutomatically"
-            }
-          }
-        }
+        "options": {}
       },
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        336,
-        -144
+        416,
+        -272
       ],
       "id": "50fb0820-14a1-4ae2-aaf2-68f09627740c",
       "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "Fn0I8yy2yZKk9nZl",
@@ -65,21 +43,60 @@
     {
       "parameters": {
         "resource": "get",
-        "operation": "getUserInfo",
-        "userId": "={{ $json.DIEN_THOAI_DI_DONG }}"
+        "operation": "findUser",
+        "phoneNumber": "={{ $json.DIEN_THOAI_DI_DONG }}"
       },
       "type": "n8n-nodes-social-zalo.zaloUserInteract",
       "typeVersion": 1,
       "position": [
-        560,
-        -144
+        832,
+        -272
       ],
-      "id": "dc11693f-0228-4ef8-a17b-d27f92880bad",
-      "name": "Lấy thông tin người dùng",
+      "id": "ee407adf-7684-40bd-a1f0-81955b4fe676",
+      "name": "Tìm người dùng theo số điện thoại",
       "credentials": {
         "zaloUserCredentialsApi": {
           "id": "71QjzdrhZAsOZi6s",
           "name": "Zalo Thanh Bình - 2025-11-12T14:26:47.935Z"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://developers.zalo.me/tools/explorer/2101160544764536102",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"access_token\": \"9fzeE4Eh1pWccsqwHAW7EIARQ3z5i4zvPlzE5LcFA6Xu-YG4Uuei0rZ7HsPyzqWtGDydJsIx5IvRZXDFQ_yU8MIN1qzWtMerHEfrErQ7Ua9knsT2NhP3Fbl9Tdn1kMy3NjftGKhk71P-eN9rIUiS4Is606eIr7CoFUXQKp28ImSioKTw4OfR2oB2H4iagqaHITr1RYIzPpesz5v5Kvr77Z78M6Gf-qWz5fGlNtkYFYPzr0LW4BTs01NGM0CtkZTNBFq-KJYk91y-oKeHNVuvOd6J7Nbqx3OtTvWlCaVN0trVun4QHei47I7_DbCWY0G7FS9iLrgDGYeYlbKk6UrJIXMQG543pr1K3Ajh43ZDUHOke7LHBC1vAcLL1LusHxG4Fm\",\n  \"zpw_sek\": \"Qs7D0Un5JmDhPSW3wqPF0czbpGRgNWXcQ6RqAF8L7YqQOlfHonKg9YDrqMZu1oei7KFhOfCFCHD2LCTueoG10N13sbYoEZPKDt_9MCOhIGy_M8XEyGf34IzNkchU3s5k8r6eDS0XQ4CVVEXQwI0S2Z5wtadq8XvGEcML2UKIJrm2POPQZIXpBqbAyd-tB7SJRLstJgznCpv8KibaamWL2b9JrNMn0bK4VbctGPiJI39uFv9-Ynfo1LbUY6QU95KP75IIVFitQmevIkvGsoSR0ZL7omx8OIzHBmJaC-zqBIePAyb9useI4G4p-tVxLtm27dMwO9ycVG4OThTtuXjU1s1Ur6I4Sr8WTW--RKTrjnMpDEXQJ0G\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"phone\": \"{{ $json.DIEN_THOAI_DI_DONG }}\",\n  \"zpw_sek\": \"Qs7D0Un5JmDhPSW3wqPF0czbpGRgNWXcQ6RqAF8L7YqQOlfHonKg9YDrqMZu1oei7KFhOfCFCHD2LCTueoG10N13sbYoEZPKDt_9MCOhIGy_M8XEyGf34IzNkchU3s5k8r6eDS0XQ4CVVEXQwI0S2Z5wtadq8XvGEcML2UKIJrm2POPQZIXpBqbAyd-tB7SJRLstJgznCpv8KibaamWL2b9JrNMn0bK4VbctGPiJI39uFv9-Ynfo1LbUY6QU95KP75IIVFitQmevIkvGsoSR0ZL7omx8OIzHBmJaC-zqBIePAyb9useI4G4p-tVxLtm27dMwO9ycVG4OThTtuXjU1s1Ur6I4Sr8WTW--RKTrjnMpDEXQJ0G\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        624,
+        -272
+      ],
+      "id": "fded9f91-46e4-480c-b8f1-9575dea26303",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-social-zalo.zaloUserLogin",
+      "typeVersion": 3,
+      "position": [
+        224,
+        -272
+      ],
+      "id": "5d97cbcd-e34c-47f9-be7d-f74a85795b00",
+      "name": "Zalo Login Via QR Code",
+      "executeOnce": false,
+      "credentials": {
+        "n8nApi": {
+          "id": "30tjNLmMIWJCCXUX",
+          "name": "n8n account"
         }
       }
     },
@@ -102,10 +119,10 @@
         },
         "columns": {
           "mappingMode": "defineBelow",
-          "value": {},
-          "matchingColumns": [
-            "uid"
-          ],
+          "value": {
+            "uid": ""
+          },
+          "matchingColumns": [],
           "schema": [
             {
               "id": "ID",
@@ -154,8 +171,7 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
+              "canBeUsedToMatch": true
             },
             {
               "id": "row_number",
@@ -177,10 +193,10 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        768,
-        -144
+        1040,
+        -272
       ],
-      "id": "37deef0f-b396-4645-9a8c-7218af80f426",
+      "id": "8f73ffa4-4a4b-46eb-a516-3ae7c48f7f3e",
       "name": "Update row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -195,18 +211,29 @@
       "main": [
         [
           {
-            "node": "Lấy thông tin người dùng",
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Lấy thông tin người dùng": {
+    "Tìm người dùng theo số điện thoại": {
       "main": [
         [
           {
             "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Tìm người dùng theo số điện thoại",
             "type": "main",
             "index": 0
           }
@@ -222,7 +249,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "5959dfbc-7c2f-4b70-8f71-bdfae20ad876",
+  "versionId": "09572572-ee9b-4d90-bf44-ff737fc0b24d",
   "triggerCount": 0,
   "shared": [
     {
